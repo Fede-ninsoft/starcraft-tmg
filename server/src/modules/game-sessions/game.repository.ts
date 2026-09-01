@@ -71,11 +71,11 @@ interface AdminGameSummaryRow extends RowDataPacket {
   email: string | null;
   nickname: string | null;
   is_active: number | boolean | null;
-  sessions: number | string | null;
-  configuration: number | string | null;
-  active: number | string | null;
-  finished: number | string | null;
-  abandoned: number | string | null;
+  total_sessions: number | string | null;
+  configuration_count: number | string | null;
+  active_count: number | string | null;
+  finished_count: number | string | null;
+  abandoned_count: number | string | null;
   last_activity_at: string | null;
 }
 
@@ -151,17 +151,17 @@ export class GameRepository {
   async adminSummaryByUser(): Promise<AdminGameStats> {
     const [rows] = await this.pool.execute<AdminGameSummaryRow[]>(
       `SELECT s.owner_type, u.id AS user_id, u.email, p.nickname, u.is_active,
-              COUNT(*) AS sessions,
-              SUM(s.status = 'CONFIGURATION') AS configuration,
-              SUM(s.status = 'ACTIVE') AS active,
-              SUM(s.status = 'FINISHED') AS finished,
-              SUM(s.status = 'ABANDONED') AS abandoned,
+              COUNT(*) AS total_sessions,
+              COALESCE(SUM(CASE WHEN s.status = 'CONFIGURATION' THEN 1 ELSE 0 END), 0) AS configuration_count,
+              COALESCE(SUM(CASE WHEN s.status = 'ACTIVE' THEN 1 ELSE 0 END), 0) AS active_count,
+              COALESCE(SUM(CASE WHEN s.status = 'FINISHED' THEN 1 ELSE 0 END), 0) AS finished_count,
+              COALESCE(SUM(CASE WHEN s.status = 'ABANDONED' THEN 1 ELSE 0 END), 0) AS abandoned_count,
               MAX(s.updated_at) AS last_activity_at
          FROM game_sessions s
          LEFT JOIN users u ON u.id = s.owner_account_id
          LEFT JOIN profiles p ON p.user_id = u.id
         GROUP BY s.owner_type, u.id, u.email, p.nickname, u.is_active
-        ORDER BY sessions DESC, last_activity_at DESC`,
+        ORDER BY total_sessions DESC, last_activity_at DESC`,
     );
 
     const users = rows
@@ -171,11 +171,11 @@ export class GameRepository {
         email: row.email!,
         nickname: row.nickname,
         isActive: Boolean(row.is_active),
-        sessions: Number(row.sessions ?? 0),
-        configuration: Number(row.configuration ?? 0),
-        active: Number(row.active ?? 0),
-        finished: Number(row.finished ?? 0),
-        abandoned: Number(row.abandoned ?? 0),
+        sessions: Number(row.total_sessions ?? 0),
+        configuration: Number(row.configuration_count ?? 0),
+        active: Number(row.active_count ?? 0),
+        finished: Number(row.finished_count ?? 0),
+        abandoned: Number(row.abandoned_count ?? 0),
         lastActivityAt: row.last_activity_at,
       }));
     const guest = rows.find((row) => row.owner_type === 'GUEST');
@@ -184,12 +184,12 @@ export class GameRepository {
       users,
       totals: {
         users: users.length,
-        sessions: rows.reduce((total, row) => total + Number(row.sessions ?? 0), 0),
-        configuration: rows.reduce((total, row) => total + Number(row.configuration ?? 0), 0),
-        active: rows.reduce((total, row) => total + Number(row.active ?? 0), 0),
-        finished: rows.reduce((total, row) => total + Number(row.finished ?? 0), 0),
-        abandoned: rows.reduce((total, row) => total + Number(row.abandoned ?? 0), 0),
-        guestSessions: Number(guest?.sessions ?? 0),
+        sessions: rows.reduce((total, row) => total + Number(row.total_sessions ?? 0), 0),
+        configuration: rows.reduce((total, row) => total + Number(row.configuration_count ?? 0), 0),
+        active: rows.reduce((total, row) => total + Number(row.active_count ?? 0), 0),
+        finished: rows.reduce((total, row) => total + Number(row.finished_count ?? 0), 0),
+        abandoned: rows.reduce((total, row) => total + Number(row.abandoned_count ?? 0), 0),
+        guestSessions: Number(guest?.total_sessions ?? 0),
       },
     };
   }

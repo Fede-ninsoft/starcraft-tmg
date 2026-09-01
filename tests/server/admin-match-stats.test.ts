@@ -7,17 +7,17 @@ describe('resumen administrativo de partidas', () => {
     const rows = [
       {
         owner_type: 'ACCOUNT', user_id: 'user-1', email: 'one@example.com', nickname: 'One', is_active: 1,
-        sessions: '3', configuration: '0', active: '1', finished: '2', abandoned: '0',
+        total_sessions: '3', configuration_count: '0', active_count: '1', finished_count: '2', abandoned_count: '0',
         last_activity_at: '2026-08-30 12:00:00',
       },
       {
         owner_type: 'ACCOUNT', user_id: 'user-2', email: 'two@example.com', nickname: null, is_active: 0,
-        sessions: 1, configuration: 1, active: 0, finished: 0, abandoned: 0,
+        total_sessions: 1, configuration_count: 1, active_count: 0, finished_count: 0, abandoned_count: 0,
         last_activity_at: '2026-08-29 10:00:00',
       },
       {
         owner_type: 'GUEST', user_id: null, email: null, nickname: null, is_active: null,
-        sessions: 2, configuration: 0, active: 1, finished: 0, abandoned: 1,
+        total_sessions: 2, configuration_count: 0, active_count: 1, finished_count: 0, abandoned_count: 1,
         last_activity_at: '2026-08-28 10:00:00',
       },
     ];
