@@ -25,6 +25,7 @@ export const resources = {
       support: 'Contacto',
       faqs: 'FAQ',
       organisedPlay: 'Juego organizado',
+      rules: 'Reglas',
       profile: 'Perfil',
       logout: 'Salir',
       main: 'Navegación principal',
@@ -125,6 +126,7 @@ export const resources = {
     print: { invalid: 'INVALID LIST', minerals: 'minerals', gas: 'gas', perRound: 'per round', supply: 'supply', commandCards: 'Command cards', faction: 'Faction', creep: 'Creep', tactics: 'Tactics', armySlots: 'Army slots', units: 'Units', unit: 'Unit', models: 'Models', supplyShort: 'Sup.', slot: 'Slot', upgrades: 'Upgrades', total: 'Total', summoned: 'Summoned units (reference — do not count)', draftScenarios: 'Scenarios I bring to the draft', missions: 'Missions', deployments: 'Deployments', notes: 'Notes', noSelection: 'Not selected', noValue: '—', scaleSkirmish: 'Skirmish', scaleStandard: 'Standard', scaleGrandOffensive: 'Grand offensive', profileSize: 'Size', profileWounds: 'Wounds', profileEvade: 'Evade', profileArmour: 'Armour', profileSpeed: 'Speed', profileShield: 'Shield', abilities: 'Abilities', weapons: 'Weapons', range: 'Range', target: 'Target', attacks: 'Attacks', hit: 'Hit', surge: 'Surge', damage: 'Damage', keyword: 'Keywords', unitProfile: 'Unit profile', abilityPhaseMovement: 'Movement', abilityPhaseAssault: 'Assault', abilityPhaseCombat: 'Combat', abilityPhaseAny: 'Any phase', combatTags: 'Combat tags:' },
     navigation: {
       home: 'Home', lists: 'My lists', publicLists: 'Public lists', newList: 'New list', support: 'Contact', faqs: 'FAQ', organisedPlay: 'Organised play', profile: 'Profile', logout: 'Log out', main: 'Main navigation', openProfile: 'Open profile',
+      rules: 'Rules',
     },
     changelog: {
       link: "What's new",
