@@ -18,6 +18,21 @@ export interface ChangelogEntry {
  */
 export const CHANGELOG_ENTRIES: readonly ChangelogEntry[] = [
   {
+    version: '2.02',
+    date: '2026-09-12',
+    title: { es: 'Reglas de torneo', en: 'Tournament rules' },
+    changes: [
+      {
+        es: 'Nueva sección de juego organizado en español e inglés, con índice por temas y acceso al PDF oficial.',
+        en: 'New organised play section in Spanish and English, with a topic index and access to the official PDF.',
+      },
+      {
+        es: 'Una flecha fija permite volver al inicio desde cualquier punto de las reglas de torneo.',
+        en: 'A fixed arrow lets you return to the top from anywhere in the tournament rules.',
+      },
+    ],
+  },
+  {
     version: '2.01',
     date: '2026-09-01',
     title: {

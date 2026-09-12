@@ -32,6 +32,7 @@ const PUBLIC_PAGES = new Set<LocalizedPage>([
   'games',
   'support',
   'faqs',
+  'organised-play',
   'terms',
 ]);
 
@@ -58,6 +59,7 @@ const PAGE_COPY: Record<SupportedLocale, Record<LocalizedPage, PageCopy>> = {
       breadcrumb: 'Soporte',
     },
     faqs: { title: 'FAQ de StarCraft TMG | Starcraft Builder', description: 'Consulta en español las preguntas frecuentes y aclaraciones oficiales de StarCraft: The Miniatures Game.', breadcrumb: 'Preguntas frecuentes' },
+    'organised-play': { title: 'Reglas de torneo StarCraft TMG | Starcraft Builder', description: 'Consulta en español las reglas de juego organizado, formatos, emparejamientos, puntuación y arbitraje de StarCraft: The Miniatures Game.', breadcrumb: 'Reglas de torneo' },
     terms: {
       title: 'Términos y condiciones | Starcraft Builder',
       description: 'Consulta los términos y condiciones de uso de Starcraft Builder, proyecto fan no oficial para StarCraft TMG.',
@@ -95,6 +97,7 @@ const PAGE_COPY: Record<SupportedLocale, Record<LocalizedPage, PageCopy>> = {
       breadcrumb: 'Support',
     },
     faqs: { title: 'StarCraft TMG FAQ | Starcraft Builder', description: 'Read the official frequently asked questions and rules clarifications for StarCraft: The Miniatures Game.', breadcrumb: 'FAQ' },
+    'organised-play': { title: 'StarCraft TMG Tournament Rules | Starcraft Builder', description: 'Read the organised play rules for StarCraft: The Miniatures Game, including formats, pairings, scoring, judging and chess clocks.', breadcrumb: 'Organised play' },
     terms: {
       title: 'Terms and conditions | Starcraft Builder',
       description: 'Read the terms and conditions for Starcraft Builder, an unofficial fan-made project for StarCraft TMG.',

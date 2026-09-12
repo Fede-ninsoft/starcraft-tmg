@@ -66,6 +66,7 @@ describe('ruta pública del constructor', () => {
     expect(pageForPathname('/perfil')).toBe('profile');
     expect(pageForPathname('/soporte')).toBe('support');
     expect(pageForPathname('/partidas')).toBe('games');
+    expect(pageForPathname('/reglas-de-torneo')).toBe('organised-play');
     expect(pageForPathname('/public-lists/id', 'id')).toBe('public-list');
   });
 
