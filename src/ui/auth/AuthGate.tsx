@@ -78,7 +78,7 @@ function AuthFooter() {
   const { t: tLegal } = useTranslation('legal');
   const { t: tNavigation } = useTranslation('navigation');
   const locale = routeLocale(window.location.pathname);
-  return <footer className="auth-page__footer"><span>{tLegal('footer')}</span><span className="auth-page__footer-links"><a href={localizedPath('support', locale)}>{tNavigation('support')}</a><span aria-hidden="true">·</span><a href={localizedPath('terms', locale)}>{tLegal('terms')}</a><span aria-hidden="true">·</span><ChangelogLink /><span aria-hidden="true">·</span><AppVersion /></span></footer>;
+  return <footer className="auth-page__footer"><span>{tLegal('footer')}</span><span className="auth-page__footer-links"><a href={localizedPath('tournaments', locale)}>{tNavigation('tournaments')}</a><span aria-hidden="true">·</span><a href={localizedPath('support', locale)}>{tNavigation('support')}</a><span aria-hidden="true">·</span><a href={localizedPath('terms', locale)}>{tLegal('terms')}</a><span aria-hidden="true">·</span><ChangelogLink /><span aria-hidden="true">·</span><AppVersion /></span></footer>;
 }
 
 export function AuthModeTabs({ mode, locale, loginLabel, registerLabel, accessModeLabel, disabled }: {

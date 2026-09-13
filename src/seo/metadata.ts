@@ -33,11 +33,13 @@ const PUBLIC_PAGES = new Set<LocalizedPage>([
   'support',
   'faqs',
   'organised-play',
+  'tournaments',
   'terms',
 ]);
 
 const PAGE_COPY: Record<SupportedLocale, Record<LocalizedPage, PageCopy>> = {
   es: {
+    tournaments: { title: 'Torneos | Starcraft Builder', description: 'Organiza y participa en torneos de StarCraft TMG.', breadcrumb: 'Torneos' },
     home: {
       title: 'Starcraft Builder | Listas para StarCraft TMG',
       description: 'Crea, valida e imprime listas de ejército y gestiona partidas de StarCraft: The Miniatures Game en español o inglés.',
@@ -76,6 +78,7 @@ const PAGE_COPY: Record<SupportedLocale, Record<LocalizedPage, PageCopy>> = {
     'reset-password': { title: 'Restablecer contraseña | Starcraft Builder', description: 'Restablecimiento de la contraseña de Starcraft Builder.', breadcrumb: 'Restablecer contraseña' },
   },
   en: {
+    tournaments: { title: 'Tournaments | Starcraft Builder', description: 'Host and join StarCraft TMG tournaments.', breadcrumb: 'Tournaments' },
     home: {
       title: 'Starcraft Builder | StarCraft TMG Army Lists',
       description: 'Create, validate, and print army lists and manage games for StarCraft: The Miniatures Game in English or Spanish.',

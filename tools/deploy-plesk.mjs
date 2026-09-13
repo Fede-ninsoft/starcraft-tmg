@@ -21,6 +21,7 @@ const tasks = [
   ['node_modules/typescript/bin/tsc', ['-b']],
   ['node_modules/vite/bin/vite.js', ['build']],
   ['node_modules/typescript/bin/tsc', ['-p', 'tsconfig.server.json']],
+  ['tools/build-server.mjs', []],
   ['node_modules/tsx/dist/cli.mjs', ['server/src/db/migrate.ts']],
 ];
 

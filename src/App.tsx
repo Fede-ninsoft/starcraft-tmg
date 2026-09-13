@@ -1,3 +1,4 @@
+import { TournamentsPage } from './ui/tournaments/TournamentsPage';
 import { useCallback, useEffect, useRef, useState, type MouseEvent } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -43,7 +44,7 @@ import './ui/app.css';
 import { findPublicListId, localizedPath, pageFromPath, routeLocale, type LocalizedPage } from './i18n/routing';
 
 type StepId = 'cards' | 'units' | 'scenario' | 'review' | 'stats';
-type PageId = 'home' | 'builder' | 'lists' | 'public-lists' | 'games' | 'profile' | 'public-list' | 'support' | 'faqs' | 'organised-play';
+type PageId = 'home' | 'builder' | 'lists' | 'public-lists' | 'games' | 'profile' | 'public-list' | 'support' | 'faqs' | 'organised-play' | 'tournaments';
 const STEPS: Array<{ id: StepId; label: string }> = [
   { id: 'cards', label: 'commandCards' }, { id: 'units', label: 'recruitment' },
   { id: 'scenario', label: 'mission' }, { id: 'review', label: 'review' },
@@ -58,6 +59,7 @@ const NAV_ICON_THEME: Record<Race, string> = { ZERG: 'organico', TERRAN: 'indust
 const NAV_ITEMS = [
   { page: 'home' as const, key: 'home', icon: 'inicio' },
   { page: 'lists' as const, key: 'lists', icon: 'mis-listas' },
+  { page: 'tournaments' as const, key: 'tournaments', icon: null },
   { page: 'games' as const, key: 'games', icon: 'partidas' },
   { page: 'public-lists' as const, key: 'publicLists', icon: 'listas-publicas' },
   { page: 'builder' as const, key: 'newList', icon: 'nueva-lista' },
@@ -131,6 +133,7 @@ const PAGE_PATHS: Record<Exclude<PageId, 'public-list'>, string> = {
   support: '/soporte',
   faqs: '/faqs',
   'organised-play': '/reglas-de-torneo',
+  tournaments: '/torneos',
 };
 
 function pathForPage(page: PageId, publicListId?: string | null): string {
@@ -146,6 +149,7 @@ export function pageForPathname(pathname: string, publicListId: string | null = 
   if (localizedPage === 'builder') return 'builder';
   if (localizedPage === 'lists') return 'lists';
   if (localizedPage === 'public-lists') return 'public-lists';
+  if (localizedPage === 'tournaments') return 'tournaments';
   if (localizedPage === 'games') return 'games';
   if (localizedPage === 'profile') return 'profile';
   if (localizedPage === 'support') return 'support';
@@ -177,6 +181,8 @@ export function App() {
     <PwaPrompt />
     <PwaNetworkStatus />
     <Routes>
+      <Route path="/:locale/torneos/*" element={<TournamentsRoute />} />
+      <Route path="/:locale/tournaments/*" element={<TournamentsRoute />} />
       <Route path="/crear-lista" element={<GuestBuilderRoute />} />
       <Route path="/:locale/crear-lista" element={<GuestBuilderRoute />} />
       <Route path="/:locale/create-list" element={<GuestBuilderRoute />} />
@@ -266,6 +272,15 @@ function FaqRoute() {
     <FaqPage />
     <footer className="auth-page__footer">{tLegal('footer')} <a href={localizedPath('terms', locale)}>{tLegal('terms')}</a> · <ChangelogLink /> · <AppVersion /></footer>
   </div>;
+}
+
+function TournamentsRoute() {
+  const status = useAuthStore((state) => state.status);
+  const restore = useAuthStore((state) => state.restore);
+  useEffect(() => { if (status === 'checking') void restore(); }, [status, restore]);
+  const locale = routeLocale(window.location.pathname);
+  if (status === 'authenticated') return <AccountRoute />;
+  return <div className="support-standalone"><SeoMetadata page="tournaments" locale={locale} /><header className="support-standalone__header"><a href={localizedPath('home', locale)}><img src="/logo.png" alt="StarCraft" /></a><LanguageSelector /></header><TournamentsPage /></div>;
 }
 
 function OrganisedPlayRoute() {
@@ -669,6 +684,7 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
             <div className="primary-nav__buttons">
               <button aria-current={page === 'home' ? 'page' : undefined} className={`primary-nav__item${page === 'home' ? ' primary-nav__item--active' : ''}`} onClick={() => navigateToPage('home', tNavigation('home'))}><NavigationIcon race={list.race} icon="inicio" />{tNavigation('home')}</button>
               <button aria-current={page === 'lists' ? 'page' : undefined} className={`primary-nav__item${page === 'lists' ? ' primary-nav__item--active' : ''}`} onClick={() => navigateToPage('lists', tNavigation('lists'))}><NavigationIcon race={list.race} icon="mis-listas" />{tNavigation('lists')}</button>
+              <button className={`primary-nav__item${page === 'tournaments' ? ' primary-nav__item--active' : ''}`} onClick={() => navigateToPage('tournaments', tNavigation('tournaments'))}>{tNavigation('tournaments')}</button>
               <button aria-current={page === 'games' ? 'page' : undefined} className={`primary-nav__item${page === 'games' ? ' primary-nav__item--active' : ''}`} onClick={() => navigateToPage('games', tNavigation('games'))}><NavigationIcon race={list.race} icon="partidas" />{tNavigation('games')}</button>
               <button aria-current={page === 'public-lists' ? 'page' : undefined} className={`primary-nav__item${page === 'public-lists' ? ' primary-nav__item--active' : ''}`} onClick={() => navigateToPage('public-lists', tNavigation('publicLists'))}><NavigationIcon race={list.race} icon="listas-publicas" />{tNavigation('publicLists')}</button>
               <button aria-current={page === 'builder' ? 'page' : undefined} className={`primary-nav__item${page === 'builder' ? ' primary-nav__item--active' : ''}`} onClick={() => createList()}><NavigationIcon race={list.race} icon="nueva-lista" />{tNavigation('newList')}</button>
@@ -684,7 +700,7 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
               onChange={(event) => {
                 const destination = event.target.value as PageId;
                 if (destination === 'builder') createList();
-                else navigateToPage(destination, tNavigation(destination === 'home' ? 'home' : destination === 'lists' ? 'lists' : destination === 'games' ? 'games' : destination === 'public-lists' ? 'publicLists' : destination === 'faqs' ? 'faqs' : destination === 'organised-play' ? 'organisedPlay' : 'support'));
+                else navigateToPage(destination, tNavigation(destination === 'home' ? 'home' : destination === 'lists' ? 'lists' : destination === 'tournaments' ? 'tournaments' : destination === 'games' ? 'games' : destination === 'public-lists' ? 'publicLists' : destination === 'faqs' ? 'faqs' : destination === 'organised-play' ? 'organisedPlay' : 'support'));
               }}
             >
               <option value="home">{tNavigation('home')}</option>
@@ -694,6 +710,7 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
               <option value="builder">{tNavigation('newList')}</option>
               <optgroup label={tNavigation('rules')}>
                 <option value="faqs">{tNavigation('faqs')}</option>
+                <option value="tournaments">{tNavigation('tournaments')}</option>
                 <option value="organised-play">{tNavigation('organisedPlay')}</option>
               </optgroup>
               <option value="support">{tNavigation('support')}</option>
@@ -818,6 +835,7 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
 
       {mode === 'account' && page === 'home' && <HomePage onCreateRace={createList} onOpenOwn={(remote) => loadList(remote, remote.revision)} onViewPublic={(id) => { void openPublicList(id); }} onClonePublic={(id) => { void clonePublicList(id); }} onViewAllPublic={() => navigateToPage('public-lists', tNavigation('publicLists'))} onOpenGames={() => navigateToPage('games', tNavigation('games'))} />}
       {mode === 'account' && page === 'lists' && <SavedListsPage onCreate={() => createList()} onLoad={loadList} onViewPublic={(id) => { void openPublicList(id); }} />}
+      {mode === 'account' && page === 'tournaments' && <TournamentsPage />}
       {mode === 'account' && page === 'games' && <GamePage mode="account" embedded />}
       {mode === 'account' && page === 'public-lists' && <PublicListsPage onViewPublic={(id) => { void openPublicList(id); }} onClonePublic={(id) => { void clonePublicList(id); }} />}
       {mode === 'account' && page === 'support' && <SupportPage user={user} />}

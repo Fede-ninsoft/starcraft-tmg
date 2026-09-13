@@ -20,7 +20,7 @@ export function LanguageSelector() {
   const selectLocale = (nextLocale: SupportedLocale) => {
     if (nextLocale === locale) return;
     const page = pageFromPath(location.pathname);
-    const id = findPublicListId(location.pathname);
+    const id = page === 'tournaments' ? location.pathname.split('/')[3] : findPublicListId(location.pathname);
     changeLocale(nextLocale);
     navigate(`${localizedPath(page, nextLocale, id)}${location.search}${location.hash}`);
     if (user) void updateLocale(nextLocale).then(setUser).catch(() => undefined);
