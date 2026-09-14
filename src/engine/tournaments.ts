@@ -16,10 +16,11 @@ export interface TournamentPlayer {
   id: string; name: string; race: Race; status: 'ACTIVE' | 'WITHDRAWN' | 'DISQUALIFIED';
   checkedIn: boolean; spare: boolean; rosters: TournamentRoster[]; rosterHistory?: TournamentRoster[];
 }
-export interface TournamentResult { vp: [number, number]; end: TournamentEnd; winner: 0 | 1 | null; actor: string; at: string; reason: string }
+export interface TournamentResult { vp: [number, number]; end: TournamentEnd; winner: 0 | 1 | null; actor: string; at: string; reason: string; mission?: { id: string; name: string } }
 export interface TournamentMatch { id: string; table: number; players: [string, string | null]; result: TournamentResult | null; disputed: boolean; rosterIds: [string | null, string | null] }
 export interface TournamentRound { number: number; status: 'DRAFT' | 'PUBLISHED' | 'ACTIVE' | 'CLOSED'; seed: number; startedAt: string | null; matches: TournamentMatch[]; warning: string | null }
 export interface Tournament {
+  availableMissions?: { id: string; name: string }[];
   id: string; ownerId: string; ownerName: string; revision: number; createdAt: string;
   status: TournamentStatus; config: TournamentConfig; players: TournamentPlayer[];
   rounds: TournamentRound[]; judges: { id: string; name: string; role: 'HEAD' | 'FLOOR' }[];

@@ -5,7 +5,7 @@ import { useAuthStore } from '@/store/authStore';
 import { loadRemoteLists, type RemoteList } from '@/auth/listService';
 import { createTournament, getTournament, getTournamentAudit, listTournaments, tournamentCommand, type TournamentResponse, type TournamentSummary } from '@/auth/tournamentService';
 import { localizedPath, routeLocale } from '@/i18n/routing';
-import { tournamentScore } from '@/engine/tournaments';
+import { MatchSummary } from './MatchSummary';
 import type { Tournament, TournamentConfig, TournamentMatch, TournamentRoster } from '@/engine/tournaments';
 import type { TournamentCommand } from '../../../server/src/modules/tournaments/tournament.schema';
 import { EventSummary, ParticipantTable, StandingsTable, TournamentIcon, RaceEmblem, PlayerActions, type TournamentIconName } from './TournamentDisplay';
@@ -13,6 +13,7 @@ import './tournaments.css';
 import { TournamentHistory } from './TournamentHistory';
 import { RosterSheet } from './RosterSheet';
 import { AddGuestForm, GuestRosterForm } from './GuestForms';
+import { PairingsEditor } from './PairingsEditor';
 
 type Text = (es: string, en: string) => string;
 const statuses: Record<string, [string, string]> = { DRAFT: ['Borrador', 'Draft'], PUBLISHED: ['Publicado', 'Published'], IN_PROGRESS: ['En curso', 'In progress'], COMPLETED: ['Finalizado', 'Completed'], CANCELLED: ['Cancelado', 'Cancelled'], ACTIVE: ['Activo', 'Active'], CLOSED: ['Cerrada', 'Closed'], WITHDRAWN: ['Retirado', 'Withdrawn'], DISQUALIFIED: ['Descalificado', 'Disqualified'] };
@@ -44,20 +45,25 @@ function ConfigForm({ initial, save, busy, text }: { initial: TournamentConfig; 
 }
 
 function ResultForm({ match, event, correction, send, text, busy }: { match: TournamentMatch; event: Tournament; correction: boolean; send: (command: TournamentCommand) => void; text: Text; busy: boolean }) {
+  const [missionId, setMissionId] = useState(match.result?.mission?.id ?? '');
   const [vp, setVP] = useState<[number, number]>(match.result?.vp ?? [0, 0]);
   const [end, setEnd] = useState<'NORMAL' | 'TIME' | 'CONCESSION' | 'NO_SHOW' | 'GAME_LOSS'>(match.result?.end === 'BYE' ? 'NORMAL' : match.result?.end ?? 'NORMAL');
-  const [winner, setWinner] = useState<0 | 1>(0);
+  const [winner, setWinner] = useState<0 | 1>(match.result?.winner ?? 0);
   const [reason, setReason] = useState('');
   const [rosters, setRosters] = useState<[string | null, string | null]>(match.players.map((id, i) => match.rosterIds[i] ?? event.players.find((p) => p.id === id)?.rosters[0]?.id ?? null) as [string | null, string | null]);
-  return <form className="tournament-result" onSubmit={(e) => { e.preventDefault(); send(correction ? { type: 'RESOLVE', matchId: match.id, vp, end, winner, reason } : { type: 'RESULT', matchId: match.id, vp, end, winner, reason, rosterIds: rosters }); }}>
+  return <form className="tournament-result t-result-compact" onSubmit={(e) => { e.preventDefault(); send(correction ? { type: 'RESOLVE', matchId: match.id, vp, end, winner, reason, missionId: missionId || null } : { type: 'RESULT', matchId: match.id, vp, end, winner, reason, rosterIds: rosters, missionId: missionId || null }); }}>
+    <header className="t-result-heading"><h4>{correction ? text('Corregir resultado', 'Correct result') : text('Registrar resultado', 'Record result')}</h4><span>{event.config.scale === 'standard' ? text('Estándar · 2000 minerales', 'Standard · 2000 minerals') : text('Escaramuza · 1000 minerales', 'Skirmish · 1000 minerals')}</span></header>
+    <label className="t-result-mission">{text('Misión jugada', 'Mission played')}<select required={['NORMAL', 'TIME'].includes(end)} value={missionId} onChange={(e) => setMissionId(e.target.value)}><option value="">{text('Selecciona la misión', 'Choose the mission')}</option>{event.availableMissions?.map((mission) => <option key={mission.id} value={mission.id}>{mission.name}</option>)}</select></label>
+    <div className="t-result-scores">
     {match.players.map((id, i) => { const p = event.players.find((v) => v.id === id); return <div className="t-result-player" key={id}>{p && <RaceEmblem race={p.race} />}
       <label>{p?.name} · PV<input type="number" min="0" max="999" required value={vp[i]} onChange={(e) => setVP(i === 0 ? [Number(e.target.value), vp[1]] : [vp[0], Number(e.target.value)])} /></label>
       {!correction && <label>{event.config.kind === 'COMMUNITY' ? text('Lista utilizada (opcional)', 'Roster used (optional)') : text('Lista utilizada', 'Roster used')}<select required={event.config.kind === 'COMPETITIVE'} value={rosters[i] ?? ''} onChange={(e) => setRosters(i === 0 ? [e.target.value || null, rosters[1]] : [rosters[0], e.target.value || null])}><option value="">{event.config.kind === 'COMMUNITY' ? text('Sin lista', 'No roster') : text('Selecciona una lista', 'Choose a roster')}</option>{p?.rosters.map((r) => <option key={r.id} value={r.id}>{r.list.name}</option>)}</select></label>}
     </div>; })}
+    </div>
     <label>{text('Final', 'Finish')}<select value={end} onChange={(e) => setEnd(e.target.value as typeof end)}>{(['NORMAL', 'TIME', 'CONCESSION', 'NO_SHOW', 'GAME_LOSS'] as const).map((v, i) => <option key={v} value={v}>{[text('Normal', 'Normal'), text('Tiempo', 'Time'), text('Concesión', 'Concession'), text('Incomparecencia', 'No-show'), text('Derrota por sanción', 'Game loss')][i]}</option>)}</select></label>
     {!['NORMAL', 'TIME'].includes(end) && <label>{text('Ganador', 'Winner')}<select value={winner} onChange={(e) => setWinner(Number(e.target.value) as 0 | 1)}>{match.players.map((id, i) => <option key={id} value={i}>{event.players.find((p) => p.id === id)?.name}</option>)}</select></label>}
-    <label>{text('Motivo / observaciones', 'Reason / notes')}<input required={correction} minLength={correction ? 3 : 0} value={reason} onChange={(e) => setReason(e.target.value)} /></label>
-    <button className="tournament-primary" disabled={busy}>{correction ? text('Guardar corrección', 'Save correction') : text('Registrar resultado', 'Record result')}</button>
+    <label className="t-result-notes">{text('Motivo / observaciones', 'Reason / notes')}<textarea rows={1} placeholder={correction ? text('Explica qué se ha corregido…', 'Explain the correction…') : text('Añade un comentario si lo necesitas…', 'Add an optional comment…')} required={correction} minLength={correction ? 3 : 0} maxLength={1000} value={reason} onChange={(e) => setReason(e.target.value)} /></label>
+    <footer className="t-result-footer"><span>{text('PV = puntos de victoria', 'VP = victory points')}</span><button className="tournament-primary" disabled={busy}>{busy ? text('Guardando…', 'Saving…') : correction ? text('Guardar corrección', 'Save correction') : text('Registrar resultado', 'Record result')}</button></footer>
   </form>;
 }
 
@@ -113,7 +119,7 @@ export function TournamentsPage() {
   const status = (v: string) => statuses[v] ? text(...statuses[v]) : v;
   const action = (label: string, command: TournamentCommand) => <button className={['WITHDRAW', 'CANCEL'].includes(command.type) ? 't-danger' : 'tournament-primary'} disabled={busy} onClick={() => void send(command)}>{label}</button>;
   return <section className="tournaments">
-    <header className="tournament-heading"><div><p className="tournament-eyebrow">STARCRAFT · ORGANISED PLAY</p><h1>{t?.config.name ?? text('Torneos', 'Tournaments')}</h1><p>{text('Compite, organiza y sigue cada ronda.', 'Compete, organise and follow every round.')}</p></div><div className="tournament-actions">
+    <header className="tournament-heading"><div><p className="tournament-eyebrow">STARCRAFT · ORGANISED PLAY</p><h1>{t?.config.name ?? text('Torneos Beta', 'Tournaments Beta')}</h1><p>{text('Compite, organiza y sigue cada ronda.', 'Compete, organise and follow every round.')}</p></div><div className="tournament-actions">
       {id ? <button onClick={() => navigate(base)}>{text('Todos los torneos', 'All tournaments')}</button> : user?.emailVerified && <button className="tournament-primary" onClick={() => setCreating(!creating)}>{text('Crear torneo', 'Create tournament')}</button>}
       <a href={localizedPath('organised-play', locale)}>{text('Juego organizado', 'Organised play')}</a>
     </div></header>
@@ -171,14 +177,17 @@ export function TournamentsPage() {
         }} />
       </>}
       {tab === 'rounds' && <>
+        {owner && t.status === 'IN_PROGRESS' && latest?.status === 'PUBLISHED' && <div className="tournament-actions">{action(text('Iniciar ronda', 'Start round'), { type: 'START_ROUND' })}</div>}
+        {owner && t.status === 'IN_PROGRESS' && displayed && displayed.number === latest?.number && displayed.status !== 'CLOSED' && <PairingsEditor key={`${t.revision}-${displayed.number}`} event={t} round={displayed} busy={busy} text={text} send={send} />}
         <label>{text('Ronda', 'Round')}<select value={displayed?.number ?? ''} onChange={(e) => { setRoundNumber(Number(e.target.value)); setResultId(null); }}>{t.rounds.map((r) => <option key={r.number} value={r.number}>{r.number} · {status(r.status)}</option>)}</select></label>
         {displayed?.status === 'ACTIVE' && displayed.startedAt && <p className="tournament-clock" role="timer">{Math.max(0, Math.ceil((Date.parse(displayed.startedAt) + t.config.roundMinutes * 60000 - now) / 60000))} {text('minutos restantes', 'minutes remaining')} {Date.parse(displayed.startedAt) + (t.config.roundMinutes - 15) * 60000 <= now && text('· No iniciéis otra ronda de batalla.', '· Do not start a new battle round.')}</p>}
         {!displayed && <p>{text('Los emparejamientos aparecerán aquí.', 'Pairings will appear here.')}</p>}
-        {displayed?.matches.map((m) => <article className={`tournament-card ${m.players.includes(user?.id ?? '') ? 'tournament-my-match' : ''}`} key={m.id}><h3>{m.players[1] ? `${text('Mesa', 'Table')} ${m.table}` : 'Bye'}</h3>{m.players.map((pid, i) => { const player = t.players.find((p) => p.id === pid); const score = m.result ? tournamentScore(m.result, t.config.scale) : null; const outcome = score ? score[i]![0] > score[1 - i]![0] ? 'win' : score[i]![0] < score[1 - i]![0] ? 'loss' : 'draw' : 'pending'; return <div className={`t-match-player t-match--${outcome}`} key={pid ?? 'bye'}>{player && <RaceEmblem race={player.race} />}<strong>{player?.name ?? 'BYE'}</strong><span className="t-match-score">{m.result && !['BYE', 'NO_SHOW', 'GAME_LOSS', 'CONCESSION'].includes(m.result.end) ? m.result.vp[i] : '—'}</span></div>; })}<p>{m.disputed ? text('En disputa', 'Disputed') : m.result?.end ?? text('Pendiente', 'Pending')}</p>
+        {displayed?.matches.map((m) => <article className={`tournament-card t-match-card ${m.players.includes(user?.id ?? '') ? 'tournament-my-match' : ''}`} key={m.id}><MatchSummary match={m} event={t} text={text} />
           {m.players[1] && (staff || m.players.includes(user?.id ?? '')) && t.status === 'IN_PROGRESS' && ['ACTIVE', 'CLOSED'].includes(displayed.status) && <div className="tournament-actions">
             {(!m.result || staff) && <button onClick={() => setResultId(resultId === m.id ? null : m.id)}>{m.result ? text('Corregir resultado', 'Correct result') : text('Añadir resultado', 'Add result')}</button>}
             {m.result && !m.disputed && <button onClick={() => { const note = window.prompt(text('Motivo de la discrepancia', 'Reason for dispute')); if (note) void send({ type: 'DISPUTE', matchId: m.id, reason: note }); }}>{text('Comunicar discrepancia', 'Report discrepancy')}</button>}
           </div>}
+          {m.result?.mission && <p className="t-format-note"><TournamentIcon name="list" />{text('Misión', 'Mission')}: <strong>{m.result.mission.name}</strong></p>}
           {resultId === m.id && <ResultForm key={`${m.id}-${m.result?.at}`} match={m} event={t} correction={!!m.result} text={text} busy={busy} send={(c) => void send(c)} />}
         </article>)}
       </>}
@@ -190,7 +199,6 @@ export function TournamentsPage() {
           {owner && t.status === 'PUBLISHED' && action(text('Iniciar torneo', 'Start event'), { type: 'START' })}
           {owner && t.status === 'IN_PROGRESS' && (!latest || ['CLOSED', 'DRAFT'].includes(latest.status)) && t.rounds.filter((r) => r.status !== 'DRAFT').length < t.config.rounds && action(text('Generar emparejamientos', 'Generate pairings'), { type: 'GENERATE' })}
           {owner && latest?.status === 'DRAFT' && <>{latest.warning && <p role="alert">{text('La propuesta requiere repeticiones o alcanzó el límite de búsqueda. Revísala en Rondas antes de publicarla.', 'The proposal needs rematches or reached the search limit. Review it in Rounds before publishing.')}</p>}{action(text('Publicar emparejamientos revisados', 'Publish reviewed pairings'), { type: 'PUBLISH_ROUND', acceptWarning: !!latest.warning })}</>}
-          {owner && latest?.status === 'PUBLISHED' && action(text('Iniciar ronda', 'Start round'), { type: 'START_ROUND' })}
           {owner && latest?.status === 'ACTIVE' && action(text('Cerrar ronda', 'Close round'), { type: 'CLOSE_ROUND' })}
           {owner && t.status === 'IN_PROGRESS' && latest?.status === 'CLOSED' && t.rounds.length === t.config.rounds && action(text('Finalizar torneo', 'Complete event'), { type: 'COMPLETE' })}
           {owner && <button onClick={() => { const note = window.prompt(text('Motivo', 'Reason')); if (note) void send(t.status === 'COMPLETED' ? { type: 'REOPEN', reason: note } : { type: 'CANCEL', reason: note }); }}>{t.status === 'COMPLETED' ? text('Reabrir para corregir', 'Reopen for correction') : text('Cancelar torneo', 'Cancel event')}</button>}

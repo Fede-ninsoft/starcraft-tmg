@@ -22,6 +22,7 @@ export function publicTournament(t: StoredTournament, viewer: string | null, now
   if (t.status === 'DRAFT' && t.ownerId !== viewer) throw new HttpError(404, 'TOURNAMENT_NOT_FOUND', 'No existe ese torneo.');
   const { invitationHash: _hash, invitationExpiresAt: _expiry, catalogs: _catalogs, ...view } = structuredClone(t);
   const staff = !!viewer && canManageTournament(t, viewer);
+  view.availableMissions = t.catalogs.ZERG.missionCards.filter((m) => m.scale === t.config.scale).map(({ id, name }) => ({ id, name }));
   view.penalties = staff ? view.penalties : [];
   for (const p of view.players) {
     const opponent = !!viewer && t.rounds.some((r) => ['PUBLISHED', 'ACTIVE'].includes(r.status) && r.matches.some((m) => m.players.includes(viewer) && m.players.includes(p.id)));
@@ -132,6 +133,29 @@ export async function applyTournamentCommand(t: StoredTournament, command: Tourn
     const seed = randomInt(0, 2147483647); const generated = swissPairings(t, seed);
     check(generated.pairs.length > 0, 'PLAYER_COUNT', 'No hay jugadores activos.');
     t.rounds.push({ number: t.rounds.length + 1, status: 'DRAFT', seed, warning: generated.warning, startedAt: null, matches: generated.pairs.map((players, i) => ({ id: randomUUID(), table: i + 1, players, result: players[1] ? null : { vp: [0, 0], end: 'BYE', winner: 0, actor, at: now, reason: '' }, disputed: false, rosterIds: [null, null] })) });
+  } else if (command.type === 'EDIT_PAIRINGS') {
+    requireOwner(t, actor); active();
+    check(round && round.number === command.round && round.status !== 'CLOSED', 'ROUND_STATE', 'Solo puedes cambiar los emparejamientos de la última ronda abierta.');
+    const ids = command.matches.map((m) => m.id);
+    check(ids.length === round.matches.length && new Set(ids).size === ids.length && round.matches.every((m) => ids.includes(m.id)), 'PAIRING_REVIEW', 'Debes conservar todas las partidas de la ronda.');
+    const oldPlayers = round.matches.flatMap((m) => m.players).filter((id): id is string => id !== null).sort();
+    const newPlayers = command.matches.flatMap((m) => m.players).filter((id): id is string => id !== null).sort();
+    check(new Set(newPlayers).size === newPlayers.length && JSON.stringify(oldPlayers) === JSON.stringify(newPlayers), 'PAIRING_REVIEW', 'Cada participante debe aparecer una sola vez. Intercambia los jugadores entre partidas.');
+    check(new Set(command.matches.map((m) => m.table)).size === command.matches.length, 'PAIRING_REVIEW', 'Las mesas no pueden repetirse.');
+    for (const edit of command.matches) {
+      const match = round.matches.find((m) => m.id === edit.id)!;
+      const changed = match.players.some((id, i) => id !== edit.players[i]);
+      check(!changed || !match.result || match.result.end === 'BYE' || command.resetResults, 'PAIRING_REVIEW', 'Confirma que quieres borrar los resultados de las partidas cuyos jugadores cambien.');
+    }
+    for (const edit of command.matches) {
+      const match = round.matches.find((m) => m.id === edit.id)!;
+      if (match.players.some((id, i) => id !== edit.players[i])) {
+        match.players = edit.players;
+        match.rosterIds = [null, null]; match.disputed = false;
+        match.result = edit.players[1] ? null : { vp: [0, 0], end: 'BYE', winner: 0, actor, at: now, reason: command.reason };
+      }
+      match.table = edit.table;
+    }
   } else if (command.type === 'PUBLISH_ROUND' || command.type === 'START_ROUND' || command.type === 'CLOSE_ROUND') {
     requireOwner(t, actor); active(); check(round, 'ROUND_NOT_FOUND', 'No hay ronda.');
     if (command.type === 'PUBLISH_ROUND') { check(round.status === 'DRAFT' && (!round.warning || command.acceptWarning), 'PAIRING_REVIEW', 'Revisa los emparejamientos y acepta la excepción si existe.'); check(t.rounds.filter((r) => r !== round).every((r) => r.matches.every((m) => m.result && !m.disputed)), 'ROUND_UNFINISHED', 'Resuelve las disputas previas.'); round.status = 'PUBLISHED'; }
@@ -158,7 +182,11 @@ export async function applyTournamentCommand(t: StoredTournament, command: Tourn
         });
         m.rosterIds = command.rosterIds;
       }
-      m.result = { vp: command.vp, end: command.end, winner: command.winner, actor, at: now, reason: command.reason };
+      const missionId = command.missionId === undefined ? m.result?.mission?.id : command.missionId;
+      const mission = missionId ? t.catalogs.ZERG.missionCards.find((card) => card.id === missionId && card.scale === t.config.scale) : undefined;
+      check(!missionId || mission, 'MISSION_INVALID', 'Selecciona una misión válida para el valor de las listas de este torneo.');
+      check(!['NORMAL', 'TIME'].includes(command.end) || mission, 'MISSION_REQUIRED', 'Indica la misión jugada antes de guardar el resultado.');
+      m.result = { vp: command.vp, end: command.end, winner: command.winner, actor, at: now, reason: command.reason, ...(mission ? { mission: { id: mission.id, name: mission.name } } : {}) };
       tournamentScore(m.result, t.config.scale); m.disputed = false;
       if (command.end === 'NO_SHOW') player(m.players[command.winner === 0 ? 1 : 0]!).status = 'WITHDRAWN';
     }

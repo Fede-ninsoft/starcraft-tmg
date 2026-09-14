@@ -5,6 +5,8 @@ import type { TournamentCommand } from '../../server/src/modules/tournaments/tou
 export interface TournamentResponse { tournament: Tournament; standings: Standing[]; token?: string }
 export type TournamentSummary = Pick<Tournament, 'id' | 'ownerId' | 'ownerName' | 'status' | 'config'> & { playerCount: number };
 const englishErrors: Record<string, string> = {
+  MISSION_INVALID: 'Choose a mission valid for the roster format of this tournament.',
+  MISSION_REQUIRED: 'Select the mission played before saving the result.',
   CHECK_IN_REQUIRED: 'All players must check in before the tournament starts.',
   GUEST_REQUIRED: 'This action is only available for guest players.',
   UNAUTHENTICATED: 'Sign in to continue.', EMAIL_NOT_VERIFIED: 'Verify your email first.',

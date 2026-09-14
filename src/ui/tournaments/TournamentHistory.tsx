@@ -2,6 +2,7 @@ import type { Tournament } from '@/engine/tournaments';
 import { TournamentIcon, type TournamentText } from './TournamentDisplay';
 
 const labels: Record<string, [string, string]> = {
+  EDIT_PAIRINGS: ['Emparejamientos modificados manualmente', 'Pairings edited manually'],
   ADD_GUEST: ['Participante invitado añadido', 'Guest player added'], GUEST_ROSTER: ['Lista de invitado entregada', 'Guest roster submitted'],
   CONFIGURE: ['Configuración actualizada', 'Settings updated'], DEADLINE: ['Plazo de listas modificado', 'Roster deadline changed'],
   ROUND_COUNT: ['Número de rondas modificado', 'Round count changed'], PUBLISH: ['Torneo publicado', 'Tournament published'],
