@@ -17,8 +17,10 @@ export class TournamentRepository {
     const category = `CASE WHEN status = 'CANCELLED' OR ? > DATE_ADD(${end}, INTERVAL 2 DAY) THEN 'past' WHEN status <> 'DRAFT' AND ? >= ${dateField('rosterDeadlineAt')} THEN 'current' ELSE 'future' END`;
     const clock = now.toISOString().replace('T', ' ').replace('Z', '');
     const filter = period === 'all' ? '' : ` AND (${category}) = ?`;
-    const parameters = period === 'all' ? [ownerId, offset] : [ownerId, clock, clock, period, offset];
-    const [rows] = await this.pool.query<TournamentRow[]>(`SELECT payload, revision FROM tournaments WHERE (status <> 'DRAFT' OR owner_id = ?)${filter} ORDER BY starts_at DESC, id LIMIT 25 OFFSET ?`, parameters);
+    const parameters = period === 'all' ? [ownerId, ownerId, offset] : [ownerId, clock, clock, period, ownerId, offset];
+    // Prioritize active registrations before LIMIT so they also lead the first page.
+    const registered = `COALESCE(JSON_CONTAINS(payload, JSON_OBJECT('id', ?, 'status', 'ACTIVE'), '$.players'), 0)`;
+    const [rows] = await this.pool.query<TournamentRow[]>(`SELECT payload, revision FROM tournaments WHERE (status <> 'DRAFT' OR owner_id = ?)${filter} ORDER BY ${registered} DESC, starts_at DESC, id LIMIT 25 OFFSET ?`, parameters);
     return rows.map(decode);
   }
   async find(id: string): Promise<StoredTournament> {

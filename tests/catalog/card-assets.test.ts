@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
@@ -13,6 +14,7 @@ const manifest = JSON.parse(
     source: string;
     page: number;
     layout: string;
+    slot?: [number, number];
     output: string | { front: string; back: string };
   }>;
 };
@@ -36,6 +38,21 @@ function publicPath(ref: string): string {
 }
 
 describe('assets de cartas originales', () => {
+  it('asigna un recorte y una imagen distintos a cada carta de mando', async () => {
+    const crops = new Map<string, string>();
+    const images = new Map<string, string>();
+    for (const asset of manifest.assets.filter((entry) => entry.layout === 'command')) {
+      const crop = JSON.stringify([asset.source, asset.page, asset.slot]);
+      expect(crops.get(crop), `${asset.id} comparte recorte`).toBeUndefined();
+      crops.set(crop, asset.id);
+
+      const pixels = await sharp(publicPath(asset.output as string)).raw().toBuffer();
+      const hash = createHash('sha256').update(pixels).digest('hex');
+      expect(images.get(hash), `${asset.id} comparte imagen`).toBeUndefined();
+      images.set(hash, asset.id);
+    }
+  });
+
   it('cubre todos los refs del catálogo y no tiene rutas duplicadas', () => {
     const catalogRefs: string[] = [];
     for (const race of availableRaces()) {

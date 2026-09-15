@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { FactionIcon } from '@/ui/common/FactionIcon';
 import { useTranslation } from 'react-i18next';
 import { loadHomeData, setPublicListLike, type RemoteList } from '@/auth/listService';
 import type { Race } from '@/engine/types';
@@ -75,7 +76,7 @@ export function HomePage({
         <div className="home-race-grid">
           {RACES.map((race) => (
             <button key={race.id} type="button" className="home-race-card" onClick={() => onCreateRace(race.id)}>
-              <img src={`/factions/${race.id.toLowerCase()}.png`} alt={`Logo ${race.label}`} />
+              <FactionIcon race={race.id} alt={`Logo ${race.label}`} />
               <span className="home-race-card__copy">
                 <strong>{race.label}</strong>
               <small>{t(race.description)}</small>

@@ -18,6 +18,18 @@ export interface ChangelogEntry {
  */
 export const CHANGELOG_ENTRIES: readonly ChangelogEntry[] = [
   {
+    version: '2.05',
+    date: '2026-09-15',
+    title: { es: 'Torneos más accesibles e iconos uniformes', en: 'More accessible tournaments and consistent icons' },
+    changes: [
+      { es: 'Acciones de torneo más visibles, con iconos y colores según su función, y formularios mejor espaciados.', en: 'More visible tournament actions with meaningful icons and colours, and better-spaced forms.' },
+      { es: 'Los torneos en los que estás inscrito aparecen primero y se destacan con un borde dorado.', en: 'Tournaments you have joined appear first and are highlighted with a golden border.' },
+      { es: 'Inscripción en una ventana compacta y botón para compartir el enlace del torneo.', en: 'Registration in a compact dialog and a button to share the tournament link.' },
+      { es: 'Iconos de facción transparentes y de tamaño uniforme en toda la aplicación.', en: 'Transparent, consistently sized faction icons throughout the app.' },
+      { es: 'Corregidas las imágenes de las cartas tácticas Hydralisk Den, Nexus y Warp Prism.', en: 'Corrected the images for the Hydralisk Den, Nexus and Warp Prism tactical cards.' },
+    ],
+  },
+  {
     version: '2.04',
     date: '2026-09-13',
     title: { es: 'Mejoras del gestor de torneos', en: 'Tournament manager improvements' },

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { FactionIcon } from '@/ui/common/FactionIcon';
 import { useTranslation } from 'react-i18next';
 import { deleteRemoteList, loadRemoteLists, setListPublic, type RemoteList } from '@/auth/listService';
 import { loadCatalog } from '@/catalog/loader';
@@ -217,9 +218,8 @@ export function SavedListsPage({
                 <tr key={row.list.id}>
                   <td>
                     <div className="saved-list-table__identity">
-                      <img
-                        className="saved-list-table__logo"
-                        src={`/factions/${row.list.race.toLowerCase()}.png`}
+                      <FactionIcon
+                        race={row.list.race}
                         alt={`${RACE_LABEL[row.list.race]} ${t('faction').toLocaleLowerCase(locale)}`}
                       />
                       <div>

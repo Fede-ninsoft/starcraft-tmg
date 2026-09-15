@@ -1,0 +1,5 @@
+.faction-icon.faction-icon{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;width:44px;height:44px;min-width:44px;min-height:44px;flex:0 0 44px;margin:0;padding:4px;border:1px solid var(--faction-icon-border);border-radius:6px;background:var(--faction-icon-bg);vertical-align:middle;overflow:hidden}
+.faction-icon--zerg{--faction-icon-bg:#dfcce9;--faction-icon-border:#b283ca}
+.faction-icon--terran{--faction-icon-bg:#c6deed;--faction-icon-border:#72a6cd}
+.faction-icon--protoss{--faction-icon-bg:#f2e8ce;--faction-icon-border:#c7a557}
+.faction-icon>img.faction-icon__image{display:block;width:100%;height:100%;min-width:0;max-width:100%;padding:0;border:0;border-radius:0;background:transparent;object-fit:contain;flex:none}

@@ -85,7 +85,8 @@ export default defineConfig({
             urlPattern: /\/cards\/.*\.(?:png|webp|jpg)$/,
             handler: 'CacheFirst',
             options: {
-              cacheName: 'card-images',
+              // Invalida los recortes incorrectos guardados antes de esta corrección.
+              cacheName: 'card-images-v2',
               expiration: { maxEntries: 400, maxAgeSeconds: 60 * 60 * 24 * 90 },
             },
           },

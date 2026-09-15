@@ -43,6 +43,35 @@ describe.skipIf(process.env.TEST_TOURNAMENT_DATABASE !== '1')('tournament HTTP +
     expect((await fetch(base, { method: 'POST', headers: headers(3), body: JSON.stringify(tournamentConfig) })).status).toBe(403);
     expect((await fetch(base, { method: 'POST', headers: { ...headers(0), Origin: 'https://untrusted.example' }, body: JSON.stringify(tournamentConfig) })).status).toBe(403);
   });
+  it('puts active registrations before pagination and marks only the signed-in player', async () => {
+    const { TournamentRepository } = await import('../../server/src/modules/tournaments/tournament.repository');
+    const { createTournament } = await import('../../server/src/modules/tournaments/tournament.service');
+    const repository = new TournamentRepository(pool);
+    for (let i = 0; i < 26; i++) {
+      const t = createTournament({ ...tournamentConfig, startsAt: '2090-01-01T10:00:00.000Z' }, users[0]!, '2030-01-01T00:00:00.000Z');
+      t.status = 'PUBLISHED'; events.push(t.id); await repository.create(t);
+    }
+    const enrolled = createTournament({ ...tournamentConfig, startsAt: '2000-01-01T10:00:00.000Z' }, users[0]!, '1999-01-01T00:00:00.000Z');
+    enrolled.status = 'PUBLISHED';
+    enrolled.players.push({ id: users[1]!.id, name: 'Registered player', race: 'ZERG', status: 'ACTIVE', checkedIn: false, spare: false, rosters: [] });
+    enrolled.players.push({ id: users[2]!.id, name: 'Withdrawn player', race: 'TERRAN', status: 'WITHDRAWN', checkedIn: false, spare: false, rosters: [] });
+    events.push(enrolled.id); await repository.create(enrolled);
+    const first = await repository.list(users[1]!.id, 0);
+    expect(first).toHaveLength(25);
+    expect(first[0]!.id).toBe(enrolled.id);
+    expect((await repository.list(users[1]!.id, 25)).some((t) => t.id === enrolled.id)).toBe(false);
+    for (const viewer of [null, users[0]!.id, users[2]!.id]) {
+      expect((await repository.list(viewer, 0)).some((t) => t.id === enrolled.id)).toBe(false);
+    }
+    const response = await fetch(base, { headers: headers(1) });
+    expect(response.status).toBe(200);
+    const page = await response.json();
+    expect(page.tournaments[0]).toMatchObject({ id: enrolled.id, isRegistered: true });
+    expect(page.tournaments.slice(1).every((t: { isRegistered: boolean }) => !t.isRegistered)).toBe(true);
+    expect(page.tournaments[0]).not.toHaveProperty('players');
+    const anonymous = await (await fetch(base)).json();
+    expect(anonymous.tournaments.every((t: { isRegistered: boolean }) => !t.isRegistered)).toBe(true);
+  });
   it('persists manual guests without creating platform accounts', async () => {
     const response = await fetch(base, { method: 'POST', headers: headers(0), body: JSON.stringify(tournamentConfig) });
     expect(response.status).toBe(201);

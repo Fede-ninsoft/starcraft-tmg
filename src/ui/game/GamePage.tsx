@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { FactionIcon } from '@/ui/common/FactionIcon';
 import { Link } from 'react-router-dom';
 import { loadCatalog } from '@/catalog/loader';
 import { deriveGameState, type GameCommand, type GamePlayerSlot, type GameSession } from '@/engine/gameSession';
@@ -12,10 +13,6 @@ import './game.css';
 const RACES: Race[] = ['ZERG', 'TERRAN', 'PROTOSS'];
 const RACE_LABEL: Record<Race, string> = { ZERG: 'Zerg', TERRAN: 'Terran', PROTOSS: 'Protoss' };
 const MISSION_SCALE_GROUPS = ['skirmish', 'standard'] as const;
-
-function raceLogo(race: Race): string {
-  return `/factions/${race.toLowerCase()}.png`;
-}
 
 export type GameView = 'library' | 'setup' | 'board';
 
@@ -301,7 +298,7 @@ function RacePicker({ id, labelId, value, onChange }: {
       onKeyDown={handleTriggerKeyDown}
     >
       <span className="game-race-picker__identity">
-        <img src={raceLogo(value)} width="36" height="36" alt="" />
+        <FactionIcon race={value} />
         <span id={`${id}-value`}>{RACE_LABEL[value]}</span>
       </span>
       <span className="game-race-picker__caret" aria-hidden="true" />
@@ -325,7 +322,7 @@ function RacePicker({ id, labelId, value, onChange }: {
         onKeyDown={(event) => handleOptionKeyDown(event, index)}
       >
         <span className="game-race-picker__identity">
-          <img src={raceLogo(race)} width="36" height="36" alt="" />
+          <FactionIcon race={race} />
           <span>{RACE_LABEL[race]}</span>
         </span>
         <span className="game-race-picker__check" aria-hidden="true">{race === value ? '✓' : ''}</span>
@@ -428,7 +425,7 @@ function SetupView({ en, mission, missions, missionId, pointsLimit, players, pen
               <header className="game-player-setup__header">
                 <span className="game-player-setup__number" aria-hidden="true">0{index + 1}</span>
                 <div><strong>{playerLabel}</strong><span>{RACE_LABEL[player.race]}</span></div>
-                <img src={raceLogo(player.race)} width="46" height="46" alt="" />
+                <FactionIcon race={player.race} />
               </header>
               <div className="game-player-setup__fields">
                 <label className="field">
@@ -507,7 +504,7 @@ export function LibraryView({ en, mode, games, guestGames, lists, pending, onCla
               key={slot}
             >
               <div className="game-card__player-identity">
-                <img src={raceLogo(player.race)} width="36" height="36" alt="" />
+                <FactionIcon race={player.race} />
                 <div>
                   <span>{en ? `Player ${slot}` : `Jugador ${slot}`} · {RACE_LABEL[player.race]}</span>
                   <strong title={player.name}>{player.name}</strong>
@@ -525,7 +522,7 @@ export function LibraryView({ en, mode, games, guestGames, lists, pending, onCla
         </div>
 
         {game.linkedListId && <a className="game-card__linked-list" href={linkedListHref(game.linkedListId)}>
-          <img src={raceLogo(linkedList?.race ?? linkedPlayer?.race ?? game.players[0].race)} width="30" height="30" alt="" />
+          <FactionIcon race={linkedList?.race ?? linkedPlayer?.race ?? game.players[0].race} />
           <span><small>{linkedPlayer ? (en ? `${linkedPlayer.name}'s linked list` : `Lista asociada de ${linkedPlayer.name}`) : (en ? 'Linked list' : 'Lista asociada')}</small><strong>{linkedList?.name ?? (en ? 'Open linked list' : 'Abrir lista asociada')}</strong>{linkedList && <span>{[RACE_LABEL[linkedList.race], linkedFaction].filter(Boolean).join(' · ')}</span>}</span>
           <b aria-hidden="true">↗</b>
         </a>}
@@ -733,7 +730,7 @@ function PlayerScoreCard({ en, slot, player, leading, pending, locked, onCommand
     aria-labelledby={titleId}
   >
     <header className="game-player-card__identity">
-      <img src={raceLogo(player.race)} width="44" height="44" alt="" />
+      <FactionIcon race={player.race} />
       <div>
         <span className="game-player-card__slot">{en ? `Player ${slot}` : `Jugador ${slot}`} · {RACE_LABEL[player.race]}</span>
         <h2 id={titleId} title={player.name}>{player.name}</h2>

@@ -3,7 +3,7 @@ import i18n from '@/i18n/config';
 import type { Standing, Tournament, TournamentConfig } from '@/engine/tournaments';
 import type { TournamentCommand } from '../../server/src/modules/tournaments/tournament.schema';
 export interface TournamentResponse { tournament: Tournament; standings: Standing[]; token?: string }
-export type TournamentSummary = Pick<Tournament, 'id' | 'ownerId' | 'ownerName' | 'status' | 'config'> & { playerCount: number };
+export type TournamentSummary = Pick<Tournament, 'id' | 'ownerId' | 'ownerName' | 'status' | 'config'> & { playerCount: number; isRegistered: boolean };
 const englishErrors: Record<string, string> = {
   MISSION_INVALID: 'Choose a mission valid for the roster format of this tournament.',
   MISSION_REQUIRED: 'Select the mission played before saving the result.',

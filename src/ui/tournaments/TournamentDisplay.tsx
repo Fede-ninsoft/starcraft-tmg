@@ -1,4 +1,5 @@
 import { useRef, type ReactNode } from 'react';
+import { FactionIcon } from '@/ui/common/FactionIcon';
 import type { Standing, TournamentConfig, TournamentPlayer, TournamentRoster, TournamentStatus } from '@/engine/tournaments';
 
 export type TournamentText = (es: string, en: string) => string;
@@ -14,8 +15,10 @@ export function PlayerActions({ name, text, children }: { name: string; text: To
     </dialog>
   </>;
 }
-export type TournamentIconName = 'pin' | 'calendar' | 'users' | 'trophy' | 'flag' | 'list' | 'clock' | 'lock' | 'check' | 'settings' | 'info' | 'swords';
+export type TournamentIconName = 'pin' | 'calendar' | 'users' | 'trophy' | 'flag' | 'list' | 'clock' | 'lock' | 'check' | 'settings' | 'info' | 'swords' | 'search' | 'share';
 const paths: Record<TournamentIconName, string> = {
+  share: 'M16 5a3 3 0 1 0 6 0 3 3 0 0 0-6 0ZM2 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0Zm14 7a3 3 0 1 0 6 0 3 3 0 0 0-6 0ZM8 10.5l8-4M8 13.5l8 4',
+  search: 'M20 20l-5-5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z',
   pin: 'M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0ZM12 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z',
   calendar: 'M5 5h14v16H5ZM8 2v6m8-6v6M5 10h14M8 14h2m4 0h2m-8 4h2m4 0h2',
   users: 'M9 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM2 21v-3c0-4 14-4 14 0v3M17 4a4 4 0 0 1 0 8m2 3c3 0 3 4 3 6',
@@ -34,18 +37,22 @@ export function TournamentIcon({ name }: { name: TournamentIconName }) {
 }
 export function RaceEmblem({ race }: { race: TournamentPlayer['race'] }) {
   const label = race[0] + race.slice(1).toLowerCase();
-  return <span className={`t-race t-race--${race.toLowerCase()}`} title={label}><img src={`/factions/${race.toLowerCase()}.png`} alt={label} /><span>{label}</span></span>;
+  return <span className={`t-race t-race--${race.toLowerCase()}`} title={label}><FactionIcon race={race} alt={label} /><span className="t-race-label">{label}</span></span>;
 }
 export function StatusBadge({ value, label }: { value: string; label: string }) {
   return <span className={`tournament-badge t-status--${value.toLowerCase()}`}><span className="t-status-dot" />{label}</span>;
 }
-export function EventSummary({ config, ownerName, count, status, statusLabel, date, text, title }: { config: TournamentConfig; ownerName: string; count: number; status: TournamentStatus; statusLabel: string; date: (v: string) => string; text: TournamentText; title?: ReactNode }) {
-  return <div className="t-event-summary">
-    {title && <div className="t-event-title">{title}</div>}
+export function EventSummary({ config, ownerName, count, status, statusLabel, date, text, title, primaryAction, isRegistered = false }: { config: TournamentConfig; ownerName: string; count: number; status: TournamentStatus; statusLabel: string; date: (v: string) => string; text: TournamentText; title?: ReactNode; primaryAction?: ReactNode; isRegistered?: boolean }) {
+  return <div className={`t-event-summary${isRegistered ? ' t-event-summary--registered' : ''}`}>
+    {title && <div className="t-event-title"><span className="t-event-name">{title}</span>{isRegistered && <span className="t-registration-badge"><TournamentIcon name="check" />{text('Inscrito', 'Registered')}</span>}</div>}
     <div className="t-event-details">
       <span><TournamentIcon name="pin" />{config.location}</span>
       <span><TournamentIcon name="calendar" /><time dateTime={config.startsAt}>{date(config.startsAt)}</time>{config.endsAt && <><span>→</span><time dateTime={config.endsAt}>{date(config.endsAt)}</time></>}</span>
-      <span><TournamentIcon name="users" /><strong>{ownerName}</strong><small>{count}/{config.capacity} {text('jugadores', 'players')}</small></span>
+      <span><TournamentIcon name="users" /><strong>{ownerName}</strong></span>
+      <div className="t-event-controls">
+        {primaryAction}
+        <small>{count}/{config.capacity} {text('jugadores', 'players')}</small>
+      </div>
     </div>
     <div className="t-event-footer"><span><TournamentIcon name="trophy" />{config.kind === 'COMPETITIVE' ? text('Competitivo', 'Competitive') : text('Comunitario', 'Community')}</span><span><TournamentIcon name="swords" />{config.scale === 'standard' ? 'Standard' : 'Skirmish'} · {config.rounds} {text('rondas', 'rounds')}</span><span><TournamentIcon name={config.registrationMode === 'OPEN' ? 'users' : 'lock'} />{config.registrationMode === 'OPEN' ? text('Público', 'Open') : text('Enlace privado', 'Private link')}</span><StatusBadge value={status} label={statusLabel} /></div>
   </div>;

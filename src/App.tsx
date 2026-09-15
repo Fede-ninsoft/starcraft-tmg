@@ -381,6 +381,8 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
   const { t: tCommon } = useTranslation('common');
   const { t: tLegal } = useTranslation('legal');
   const { t: tPwa } = useTranslation('pwa');
+  const navigate = useNavigate();
+  const location = useLocation();
   const locale = routeLocale(typeof window === 'undefined' ? '/' : window.location.pathname);
   const [step, setStep] = useState<StepId>('cards');
   const initialPublicListId = mode === 'account' ? publicListPath() : null;
@@ -566,10 +568,11 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
   const confirmDiscard = (action: string) => (!isDirty && !listVisibilityDirty) || window.confirm(tBuilderUi('discardConfirm', { action }));
   const changeListVisibility = (isPublic: boolean) => { setListIsPublic(isPublic); setListVisibilityDirty(true); };
   const navigateToPage = (nextPage: PageId, destination: string) => {
-    if (page === nextPage) return;
+    if (page === nextPage && nextPage !== 'tournaments') return;
     if (page === 'builder' && !confirmDiscard(locale === 'en' ? `Go to “${destination}”` : `Ir a la sección «${destination}»`)) return;
     const nextPath = pathForPage(nextPage);
-    if (window.location.pathname !== nextPath) window.history.pushState({}, '', nextPath);
+    if (nextPage === 'tournaments') navigate(nextPath);
+    else if (window.location.pathname !== nextPath) window.history.pushState({}, '', nextPath);
     setPublicListId(null);
     setPublicList(null);
     setPage(nextPage);
@@ -835,7 +838,7 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
 
       {mode === 'account' && page === 'home' && <HomePage onCreateRace={createList} onOpenOwn={(remote) => loadList(remote, remote.revision)} onViewPublic={(id) => { void openPublicList(id); }} onClonePublic={(id) => { void clonePublicList(id); }} onViewAllPublic={() => navigateToPage('public-lists', tNavigation('publicLists'))} onOpenGames={() => navigateToPage('games', tNavigation('games'))} />}
       {mode === 'account' && page === 'lists' && <SavedListsPage onCreate={() => createList()} onLoad={loadList} onViewPublic={(id) => { void openPublicList(id); }} />}
-      {mode === 'account' && page === 'tournaments' && <TournamentsPage />}
+      {mode === 'account' && page === 'tournaments' && <TournamentsPage key={location.key} />}
       {mode === 'account' && page === 'games' && <GamePage mode="account" embedded />}
       {mode === 'account' && page === 'public-lists' && <PublicListsPage onViewPublic={(id) => { void openPublicList(id); }} onClonePublic={(id) => { void clonePublicList(id); }} />}
       {mode === 'account' && page === 'support' && <SupportPage user={user} />}

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { FactionIcon } from '@/ui/common/FactionIcon';
 import { useTranslation } from 'react-i18next';
 import { loadCatalog } from '@/catalog/loader';
 import { buildCatalogIndex } from '@/engine/catalogIndex';
@@ -58,7 +59,7 @@ export function ListTable({
             <tr key={row.list.id}>
               <td>
                 <div className="saved-list-table__identity">
-                  <img className="saved-list-table__logo" src={`/factions/${row.list.race.toLowerCase()}.png`} alt={`${RACE_LABEL[row.list.race]} ${t('faction').toLocaleLowerCase(locale)}`} />
+                  <FactionIcon race={row.list.race} alt={`${RACE_LABEL[row.list.race]} ${t('faction').toLocaleLowerCase(locale)}`} />
                   <div>
                     <strong>{row.list.name}</strong>
                     <span>{row.factionName}</span>
