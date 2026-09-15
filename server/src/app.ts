@@ -1,3 +1,5 @@
+import { TournamentRepository } from './modules/tournaments/tournament.repository.js';
+import { createTournamentRouter } from './modules/tournaments/tournament.routes.js';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import type { DatabasePool } from './db/pool.js';
@@ -85,6 +87,7 @@ export function createApp(pool: DatabasePool, env: ServerEnvironment, emailOverr
   app.use('/api/admin', createAdminRouter(authRepository, smtpSettings, emailLogs, smtpEmail, email, supportRepository, gameRepository, env));
   app.use('/api/support', createSupportRouter(supportRepository, authRepository, email, env));
   app.use('/api/lists', requireUser(authRepository, env), createListRouter(listRepository, matchRepository));
+  app.use('/api/tournaments', createTournamentRouter(new TournamentRepository(pool), authRepository, listRepository, env));
   app.use('/api/games', createGameRouter(gameRepository, authRepository, env));
   app.use(errorHandler);
 

@@ -18,13 +18,54 @@ export interface ChangelogEntry {
  */
 export const CHANGELOG_ENTRIES: readonly ChangelogEntry[] = [
   {
-    version: '2.0',
+    version: '2.04',
+    date: '2026-09-13',
+    title: { es: 'Mejoras del gestor de torneos', en: 'Tournament manager improvements' },
+    changes: [
+      { es: 'El visor de listas muestra recursos destacados, unidades y mejoras en tabla y cartas agrupadas por tipo.', en: 'The roster viewer highlights resources, shows units and upgrades in a table and groups cards by type.' },
+      { es: 'Al guardar un torneo aparece una confirmación. Los errores se muestran en una ventana visible.', en: 'Saving a tournament shows a confirmation. Errors appear in a visible dialog.' },
+      { es: 'Formulario simplificado y gestión de participantes en una ventana que no modifica el tamaño de las tablas.', en: 'Simplified forms and player management in a dialog that does not resize tables.' },
+      { es: 'Las listas válidas se admiten aunque tengan guardada una versión de catálogo diferente.', en: 'Valid rosters are accepted even when saved with a different catalog version.' },
+    ],
+  },
+  {
+    version: '2.03',
+    date: '2026-09-13',
+    title: { es: 'Gestión de torneos', en: 'Tournament management' },
+    changes: [
+      { es: 'Crea torneos públicos o por invitación y consulta eventos futuros, en curso y pasados.', en: 'Create public or invitation-only tournaments and browse upcoming, current and past events.' },
+      { es: 'Gestiona inscripciones, invitados sin cuenta, listas, emparejamientos y resultados desde el torneo.', en: 'Manage registrations, guests without accounts, rosters, pairings and results within the tournament.' },
+      { es: 'Los comunitarios admiten jugar sin entregar listas. El organizador administra el evento sin tener que asignar árbitros.', en: 'Community tournaments allow play without submitted rosters. Organisers manage events without assigning judges.' },
+      { es: 'Tablas compactas con iconos de facción, historial de cambios legible y avisos de error en ventanas visibles.', en: 'Compact tables with faction icons, readable change history and visible error dialogs.' },
+    ],
+  },
+  {
+    version: '2.02',
+    date: '2026-09-12',
+    title: { es: 'Reglas de torneo', en: 'Tournament rules' },
+    changes: [
+      {
+        es: 'Nueva sección de juego organizado en español e inglés, con índice por temas y acceso al PDF oficial.',
+        en: 'New organised play section in Spanish and English, with a topic index and access to the official PDF.',
+      },
+      {
+        es: 'Una flecha fija permite volver al inicio desde cualquier punto de las reglas de torneo.',
+        en: 'A fixed arrow lets you return to the top from anywhere in the tournament rules.',
+      },
+    ],
+  },
+  {
+    version: '2.01',
     date: '2026-09-01',
     title: {
-      es: 'Consulta de cartas originales',
-      en: 'Original card previews',
+      es: 'FAQ oficial y consulta de cartas',
+      en: 'Official FAQ and card previews',
     },
     changes: [
+      {
+        es: 'La nueva sección FAQ reúne en español las 68 aclaraciones oficiales e incluye acceso al PDF original en inglés.',
+        en: 'The new FAQ section includes all 68 official clarifications and provides access to the original English PDF.',
+      },
       {
         es: 'Las pantallas de selección incluyen una lupa para consultar la carta original en inglés.',
         en: 'Selection screens now include a magnifier to view the original English card.',
