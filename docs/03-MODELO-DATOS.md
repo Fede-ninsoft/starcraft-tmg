@@ -323,7 +323,7 @@ debe mostrarse como `1 CP`, `2 PE`, `1 BM` o `X CP`, nunca como un número suelt
 El coste de una mejora siempre se muestra como minerales (`+20 min.`) y se
 obtiene de `costByComposition` para la composición seleccionada. Las armas de
 mejora usan exactamente la misma tabla que las armas base, incluidos alcance,
-objetivo, RdA, impacto, surge, daño y palabras clave.
+objetivo, RoA, impacto, surge, daño y palabras clave.
 
 ## 4. Entidades de la lista del usuario
 

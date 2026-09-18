@@ -121,7 +121,7 @@ export function TournamentsPage() {
   const status = (v: string) => statuses[v] ? text(...statuses[v]) : v;
   const action = (label: string, command: TournamentCommand, icon?: TournamentIconName) => <button className={['WITHDRAW', 'CANCEL'].includes(command.type) ? 't-danger' : 'tournament-primary'} data-command={command.type} disabled={busy} onClick={() => void send(command)}>{icon && <TournamentIcon name={icon} />}{label}</button>;
   return <section className="tournaments">
-    <header className="tournament-heading"><div><p className="tournament-eyebrow">STARCRAFT · ORGANISED PLAY</p><h1>{t?.config.name ?? (id ? text('Torneo', 'Tournament') : creating ? text('Crear torneo', 'Create tournament') : text('Torneos Beta', 'Tournaments Beta'))}</h1><p>{text('Compite, organiza y sigue cada ronda.', 'Compete, organise and follow every round.')}</p></div>{!id && <div className="tournament-actions">
+    <header className="tournament-heading"><div><p className="tournament-eyebrow">STARCRAFT · ORGANISED PLAY</p><h1>{t?.config.name ?? (id ? text('Torneo', 'Tournament') : creating ? text('Crear torneo', 'Create tournament') : text('Torneos', 'Tournaments'))}</h1><p>{text('Compite, organiza y sigue cada ronda.', 'Compete, organise and follow every round.')}</p></div>{!id && <div className="tournament-actions">
       {user?.emailVerified && <button disabled={busy} className={creating ? undefined : 'tournament-primary'} onClick={() => setCreating(!creating)}>{creating ? text('Volver al listado', 'Back to tournaments') : text('Crear torneo', 'Create tournament')}</button>}
       <a href={localizedPath('organised-play', locale)}>{text('Juego organizado', 'Organised play')}</a>
     </div>}</header>

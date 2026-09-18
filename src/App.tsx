@@ -79,6 +79,29 @@ function NavigationIcon({ race, icon }: { race: Race; icon: string }) {
   />;
 }
 
+function ListsNavigation({ page, race, onNavigate, onCreate }: { page: PageId; race: Race; onNavigate: (page: PageId, label: string) => void; onCreate: () => void }) {
+  const { t } = useTranslation('navigation');
+  const ref = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    const close = (event: PointerEvent) => { if (!ref.current?.contains(event.target as Node)) ref.current?.removeAttribute('open'); };
+    document.addEventListener('pointerdown', close);
+    return () => document.removeEventListener('pointerdown', close);
+  }, []);
+  return <details ref={ref} className="primary-nav__rules" onKeyDown={(event) => {
+    if (event.key === 'Escape') { event.stopPropagation(); ref.current?.removeAttribute('open'); ref.current?.querySelector('summary')?.focus(); }
+  }}>
+    <summary className={`primary-nav__item${page === 'lists' || page === 'builder' ? ' primary-nav__item--active' : ''}`}><NavigationIcon race={race} icon="mis-listas" />{t('lists')} <span aria-hidden="true">⌄</span></summary>
+    <div className="primary-nav__rules-menu">
+      {NAV_ITEMS.filter((item) => item.page === 'lists' || item.page === 'builder').map((item) => <button type="button" key={item.page} aria-current={page === item.page ? 'page' : undefined} onClick={() => {
+        ref.current?.removeAttribute('open');
+        ref.current?.closest('.primary-nav__mobile')?.removeAttribute('open');
+        if (item.page === 'builder') onCreate();
+        else onNavigate(item.page, t(item.key));
+      }}>{t(item.key)}</button>)}
+    </div>
+  </details>;
+}
+
 function RulesNavigation({ page, onNavigate }: { page: PageId; onNavigate: (page: PageId, label: string) => void }) {
   const { t } = useTranslation('navigation');
   const ref = useRef<HTMLDetailsElement>(null);
@@ -113,7 +136,9 @@ function MobileNavigation({ page, race, onNavigate, onCreate }: { page: PageId; 
   return <details className="primary-nav__mobile">
     <summary>{marker(current)}<span>{t(current.key)}</span></summary>
     <div className="primary-nav__mobile-menu">
-      {NAV_ITEMS.filter((item) => item.page !== 'organised-play').map((item) => item.page === 'faqs'
+      {NAV_ITEMS.filter((item) => item.page !== 'organised-play' && item.page !== 'builder').map((item) => item.page === 'lists'
+        ? <ListsNavigation key="lists" page={page} race={race} onNavigate={onNavigate} onCreate={onCreate} />
+        : item.page === 'faqs'
         ? <RulesNavigation key="rules" page={page} onNavigate={onNavigate} />
         : <button key={item.page} aria-current={item.page === page ? 'page' : undefined} className={item.page === page ? 'primary-nav__mobile-item--active' : ''} onClick={(event) => selectItem(item, event)}>{marker(item)}<span>{t(item.key)}</span></button>)}
     </div>
@@ -686,11 +711,10 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
             <>
             <div className="primary-nav__buttons">
               <button aria-current={page === 'home' ? 'page' : undefined} className={`primary-nav__item${page === 'home' ? ' primary-nav__item--active' : ''}`} onClick={() => navigateToPage('home', tNavigation('home'))}><NavigationIcon race={list.race} icon="inicio" />{tNavigation('home')}</button>
-              <button aria-current={page === 'lists' ? 'page' : undefined} className={`primary-nav__item${page === 'lists' ? ' primary-nav__item--active' : ''}`} onClick={() => navigateToPage('lists', tNavigation('lists'))}><NavigationIcon race={list.race} icon="mis-listas" />{tNavigation('lists')}</button>
+              <ListsNavigation page={page} race={list.race} onNavigate={navigateToPage} onCreate={() => createList()} />
               <button className={`primary-nav__item${page === 'tournaments' ? ' primary-nav__item--active' : ''}`} onClick={() => navigateToPage('tournaments', tNavigation('tournaments'))}>{tNavigation('tournaments')}</button>
               <button aria-current={page === 'games' ? 'page' : undefined} className={`primary-nav__item${page === 'games' ? ' primary-nav__item--active' : ''}`} onClick={() => navigateToPage('games', tNavigation('games'))}><NavigationIcon race={list.race} icon="partidas" />{tNavigation('games')}</button>
               <button aria-current={page === 'public-lists' ? 'page' : undefined} className={`primary-nav__item${page === 'public-lists' ? ' primary-nav__item--active' : ''}`} onClick={() => navigateToPage('public-lists', tNavigation('publicLists'))}><NavigationIcon race={list.race} icon="listas-publicas" />{tNavigation('publicLists')}</button>
-              <button aria-current={page === 'builder' ? 'page' : undefined} className={`primary-nav__item${page === 'builder' ? ' primary-nav__item--active' : ''}`} onClick={() => createList()}><NavigationIcon race={list.race} icon="nueva-lista" />{tNavigation('newList')}</button>
               <RulesNavigation page={page} onNavigate={navigateToPage} />
             </div>
             <span className="primary-nav__divider" aria-hidden="true" />
@@ -707,10 +731,13 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
               }}
             >
               <option value="home">{tNavigation('home')}</option>
-              <option value="lists">{tNavigation('lists')}</option>
+              <optgroup label={tNavigation('lists')}>
+                <option value="lists">{tNavigation('lists')}</option>
+                <option value="builder">{tNavigation('newList')}</option>
+              </optgroup>
               <option value="games">{tNavigation('games')}</option>
               <option value="public-lists">{tNavigation('publicLists')}</option>
-              <option value="builder">{tNavigation('newList')}</option>
+
               <optgroup label={tNavigation('rules')}>
                 <option value="faqs">{tNavigation('faqs')}</option>
                 <option value="tournaments">{tNavigation('tournaments')}</option>
