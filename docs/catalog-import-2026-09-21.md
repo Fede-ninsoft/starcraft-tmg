@@ -24,7 +24,7 @@ Las capturas de cartas de mando existentes coinciden con los costes guardados: F
 
 | Elemento | Falta |
 | --- | --- |
-| Zeratul | Reverso (slot, peana, rol y posibles mejoras). Coste confirmado por la captura adicional: **230 minerales, 1 miniatura, 1 suministro**, sin mejoras seleccionadas visibles. Anverso recibido: único; escudo 3, velocidad 7, armadura 5+, evasión 5+, HP 5, tamaño 2; BIOLOGICAL, PSIONIC, GROUND; etiqueta PROTOSS. |
+| Zeratul | Pendientes: rol, posibles mejoras e imagen del reverso. El usuario confirma que usa la misma peana que Artanis: **Ø 40 mm**, contrastado con `protoss.card.artanis`. La captura `zeratul-hero.png` confirma **HERO, UNIQUE, 230 minerales, 1 miniatura y 1 suministro**. Anverso recibido: escudo 3, velocidad 7, armadura 5+, evasión 5+, HP 5, tamaño 2; BIOLOGICAL, PSIONIC, GROUND; etiqueta PROTOSS. |
 
 No se han asignado costes cero ni costes de unidades/cartas parecidas a los elementos pendientes. Los originales permiten completar la transcripción cuando se reciban los datos ausentes. No se han inventado imágenes de reversos.
 

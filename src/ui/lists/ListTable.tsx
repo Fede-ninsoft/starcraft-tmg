@@ -78,10 +78,14 @@ export function ListTable({
               </td>
               <td><time dateTime={row.list.remoteUpdatedAt}>{new Date(row.list.remoteUpdatedAt).toLocaleString(locale)}</time></td>
               <td>
-                <div className="row saved-list-table__actions">
+                <div className="row saved-list-table__actions saved-list-table__actions--compact">
                   {onOpen && <button type="button" onClick={() => onOpen(row.list)}>{openLabel}</button>}
-                  {row.list.isPublic && onViewPublic && <button type="button" onClick={() => onViewPublic(row.list.id)}>{t('view')}</button>}
-                  {row.list.isPublic && onClonePublic && <button type="button" onClick={() => onClonePublic(row.list.id)}>{t('clone')}</button>}
+                  {row.list.isPublic && onViewPublic && <button type="button" className="saved-list-table__icon-action" aria-label={t('view')} title={t('view')} onClick={() => onViewPublic(row.list.id)}>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" /></svg>
+                  </button>}
+                  {row.list.isPublic && onClonePublic && <button type="button" className="saved-list-table__icon-action" aria-label={t('clone')} title={t('clone')} onClick={() => onClonePublic(row.list.id)}>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="8" y="8" width="12" height="13" rx="2" /><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h3" /></svg>
+                  </button>}
                   {row.list.isPublic && onLikePublic && <button type="button" className={`like-button${row.list.likedByCurrentUser ? ' like-button--active' : ''}`} aria-label={row.list.likedByCurrentUser ? t('unlike') : t('like')} aria-pressed={row.list.likedByCurrentUser} onClick={(event) => { event.stopPropagation(); onLikePublic(row.list.id, row.list.likedByCurrentUser); }}><span className="like-button__icon" aria-hidden="true">{row.list.likedByCurrentUser ? '♥' : '♡'}</span><span>{row.list.likeCount}</span></button>}
                 </div>
               </td>

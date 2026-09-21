@@ -582,6 +582,38 @@
   color: color-mix(in srgb, var(--accent) 34%, var(--page-text));
 }
 
+.page-content .saved-list-table__actions--compact {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: max-content;
+  margin-left: auto;
+}
+
+.page-content .saved-list-table__actions--compact > button {
+  flex: 0 0 auto;
+  min-height: 44px;
+}
+
+.page-content .saved-list-table__actions--compact > .saved-list-table__icon-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  min-width: 44px;
+  padding: 0;
+}
+
+.saved-list-table__icon-action svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 .page-content .saved-list-table--owner .saved-list-table__actions > button:last-child:not(.like-button) {
   border-color: color-mix(in srgb, var(--page-error) 64%, var(--page-line));
   background: color-mix(in srgb, var(--page-error) 12%, transparent);

@@ -420,7 +420,7 @@ button.topbar__brand:active:not(:disabled) {
   display: none;
 }
 
-.primary-nav__mobile summary {
+.primary-nav__mobile > summary {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -438,9 +438,9 @@ button.topbar__brand:active:not(:disabled) {
   text-transform: uppercase;
 }
 
-.primary-nav__mobile summary::-webkit-details-marker { display: none; }
-.primary-nav__mobile summary::after { content: '⌄'; margin-left: auto; font-size: 16px; }
-.primary-nav__mobile[open] summary::after { content: '⌃'; }
+.primary-nav__mobile > summary::-webkit-details-marker { display: none; }
+.primary-nav__mobile > summary::after { content: '⌄'; margin-left: auto; font-size: 16px; }
+.primary-nav__mobile[open] > summary::after { content: '⌃'; }
 
 .primary-nav__mobile-menu {
   position: absolute;

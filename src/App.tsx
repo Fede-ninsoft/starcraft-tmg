@@ -79,7 +79,7 @@ function NavigationIcon({ race, icon }: { race: Race; icon: string }) {
   />;
 }
 
-function ListsNavigation({ page, race, onNavigate, onCreate }: { page: PageId; race: Race; onNavigate: (page: PageId, label: string) => void; onCreate: () => void }) {
+function ListsNavigation({ page, onNavigate, onCreate }: { page: PageId; onNavigate: (page: PageId, label: string) => void; onCreate: () => void }) {
   const { t } = useTranslation('navigation');
   const ref = useRef<HTMLDetailsElement>(null);
   useEffect(() => {
@@ -90,7 +90,7 @@ function ListsNavigation({ page, race, onNavigate, onCreate }: { page: PageId; r
   return <details ref={ref} className="primary-nav__rules" onKeyDown={(event) => {
     if (event.key === 'Escape') { event.stopPropagation(); ref.current?.removeAttribute('open'); ref.current?.querySelector('summary')?.focus(); }
   }}>
-    <summary className={`primary-nav__item${page === 'lists' || page === 'builder' ? ' primary-nav__item--active' : ''}`}><NavigationIcon race={race} icon="mis-listas" />{t('lists')} <span aria-hidden="true">⌄</span></summary>
+    <summary className={`primary-nav__item${page === 'lists' || page === 'builder' ? ' primary-nav__item--active' : ''}`}>{t('lists')} <span className="primary-nav__chevron" aria-hidden="true">⌄</span></summary>
     <div className="primary-nav__rules-menu">
       {NAV_ITEMS.filter((item) => item.page === 'lists' || item.page === 'builder').map((item) => <button type="button" key={item.page} aria-current={page === item.page ? 'page' : undefined} onClick={() => {
         ref.current?.removeAttribute('open');
@@ -113,7 +113,7 @@ function RulesNavigation({ page, onNavigate }: { page: PageId; onNavigate: (page
   return <details ref={ref} className="primary-nav__rules" onKeyDown={(event) => {
     if (event.key === 'Escape') { event.stopPropagation(); ref.current?.removeAttribute('open'); ref.current?.querySelector('summary')?.focus(); }
   }}>
-    <summary className={`primary-nav__item${page === 'faqs' || page === 'organised-play' ? ' primary-nav__item--active' : ''}`}>{t('rules')} <span aria-hidden="true">⌄</span></summary>
+    <summary className={`primary-nav__item${page === 'faqs' || page === 'organised-play' ? ' primary-nav__item--active' : ''}`}>{t('rules')} <span className="primary-nav__chevron" aria-hidden="true">⌄</span></summary>
     <div className="primary-nav__rules-menu">
       {NAV_ITEMS.filter((item) => item.page === 'faqs' || item.page === 'organised-play').map((item) => <button type="button" key={item.page} aria-current={page === item.page ? 'page' : undefined} onClick={() => {
         ref.current?.removeAttribute('open');
@@ -137,7 +137,7 @@ function MobileNavigation({ page, race, onNavigate, onCreate }: { page: PageId; 
     <summary>{marker(current)}<span>{t(current.key)}</span></summary>
     <div className="primary-nav__mobile-menu">
       {NAV_ITEMS.filter((item) => item.page !== 'organised-play' && item.page !== 'builder').map((item) => item.page === 'lists'
-        ? <ListsNavigation key="lists" page={page} race={race} onNavigate={onNavigate} onCreate={onCreate} />
+        ? <ListsNavigation key="lists" page={page} onNavigate={onNavigate} onCreate={onCreate} />
         : item.page === 'faqs'
         ? <RulesNavigation key="rules" page={page} onNavigate={onNavigate} />
         : <button key={item.page} aria-current={item.page === page ? 'page' : undefined} className={item.page === page ? 'primary-nav__mobile-item--active' : ''} onClick={(event) => selectItem(item, event)}>{marker(item)}<span>{t(item.key)}</span></button>)}
@@ -711,7 +711,7 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
             <>
             <div className="primary-nav__buttons">
               <button aria-current={page === 'home' ? 'page' : undefined} className={`primary-nav__item${page === 'home' ? ' primary-nav__item--active' : ''}`} onClick={() => navigateToPage('home', tNavigation('home'))}><NavigationIcon race={list.race} icon="inicio" />{tNavigation('home')}</button>
-              <ListsNavigation page={page} race={list.race} onNavigate={navigateToPage} onCreate={() => createList()} />
+              <ListsNavigation page={page} onNavigate={navigateToPage} onCreate={() => createList()} />
               <button className={`primary-nav__item${page === 'tournaments' ? ' primary-nav__item--active' : ''}`} onClick={() => navigateToPage('tournaments', tNavigation('tournaments'))}>{tNavigation('tournaments')}</button>
               <button aria-current={page === 'games' ? 'page' : undefined} className={`primary-nav__item${page === 'games' ? ' primary-nav__item--active' : ''}`} onClick={() => navigateToPage('games', tNavigation('games'))}><NavigationIcon race={list.race} icon="partidas" />{tNavigation('games')}</button>
               <button aria-current={page === 'public-lists' ? 'page' : undefined} className={`primary-nav__item${page === 'public-lists' ? ' primary-nav__item--active' : ''}`} onClick={() => navigateToPage('public-lists', tNavigation('publicLists'))}><NavigationIcon race={list.race} icon="listas-publicas" />{tNavigation('publicLists')}</button>

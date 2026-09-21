@@ -3,7 +3,8 @@ import type { Response } from 'express';
 import type { ServerEnvironment } from '../../config/env.js';
 
 export const SESSION_COOKIE = 'sctmg_session';
-export const SESSION_TTL_SECONDS = 60 * 60;
+// La cookie y el token duran dos días, también al cerrar el navegador.
+export const SESSION_TTL_SECONDS = 2 * 24 * 60 * 60;
 export const SESSION_TTL_MS = SESSION_TTL_SECONDS * 1000;
 
 export interface SessionPayload {

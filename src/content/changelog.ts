@@ -18,6 +18,18 @@ export interface ChangelogEntry {
  */
 export const CHANGELOG_ENTRIES: readonly ChangelogEntry[] = [
   {
+    version: '2.06',
+    date: '2026-09-21',
+    title: { es: 'Nuevas cartas y mejoras de navegación', en: 'New cards and navigation improvements' },
+    changes: [
+      { es: 'Añadidos Ravager, Siege Tank, Immortal y Nerazim Watchers, con sus perfiles, costes e imágenes originales disponibles.', en: 'Added Ravager, Siege Tank, Immortal and Nerazim Watchers with profiles, costs and available original card images.' },
+      { es: 'Nuevas cartas Nerazim, Cocoon, Robotics Facility, Void Seeker y Factory (Tech Lab).', en: 'New Nerazim, Cocoon, Robotics Facility, Void Seeker and Factory (Tech Lab) cards.' },
+      { es: 'La sesión dura dos días y se conserva al cerrar y volver a abrir el navegador.', en: 'Sessions last two days and persist when closing and reopening the browser.' },
+      { es: 'Menú móvil con desplegables sin resaltados incorrectos, una sola flecha y submenús en mayúsculas.', en: 'Mobile dropdowns no longer show incorrect highlights and use a single arrow with uppercase submenu labels.' },
+      { es: 'Ver, clonar y dar me gusta a las listas públicas desde una sola fila de iconos.', en: 'View, clone and like public lists from a single row of icons.' },
+    ],
+  },
+  {
     version: '2.05',
     date: '2026-09-15',
     title: { es: 'Torneos más accesibles e iconos uniformes', en: 'More accessible tournaments and consistent icons' },
