@@ -79,7 +79,7 @@ describe('assets de cartas originales', () => {
     }
 
     const generated = manifestOutputs();
-    expect(generated).toHaveLength(109);
+    expect(generated).toHaveLength(117);
     expect(new Set(generated).size).toBe(generated.length);
     expect(new Set(catalogRefs)).toEqual(new Set(generated));
     for (const ref of generated) {

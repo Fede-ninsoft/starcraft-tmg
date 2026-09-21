@@ -152,6 +152,15 @@ async function writeCard(input, output, bounds, rotation = 0) {
 }
 
 async function generateAsset(asset) {
+  if (asset.layout === 'attachment') {
+    const source = manifest.sources[asset.source];
+    if (!source || source.format !== 'image') fail(`Fuente de imagen desconocida ${asset.source}`);
+    const output = path.resolve(publicDir, asset.output);
+    if (!isInside(publicDir, output)) fail(`Salida fuera de public/: ${asset.output}`);
+    await mkdir(path.dirname(output), { recursive: true });
+    await sharp(path.resolve(rootDir, source.path)).webp({ quality: Number(manifest.render.quality), effort: Number(manifest.render.effort) }).toFile(output);
+    return [asset.output];
+  }
   const input = await renderPage(asset.source, asset.page);
   const layout = manifest.layouts[asset.layout];
   if (!layout) fail(`Layout desconocido ${asset.layout}`);

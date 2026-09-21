@@ -152,15 +152,20 @@ exportación.
 
 | Raza | Estado |
 |---|---|
-| Zerg | 12 unidades, 2 facciones, 9 tácticas y 2 Creep Cards; fases revisadas |
-| Terran | 7 unidades, 2 facciones y 10 tácticas; fases revisadas |
-| Protoss | 7 unidades, 2 facciones y 10 tácticas; fases revisadas |
+| Zerg | 13 unidades, 2 facciones, 10 tácticas y 2 Creep Cards; fases revisadas |
+| Terran | 8 unidades, 2 facciones y 10 tácticas; fases revisadas |
+| Protoss | 8 unidades, 3 facciones y 10 tácticas; fases revisadas |
 
 Escenarios: 5 misiones × 2 escalas y 10 despliegues, comunes a las tres razas.
 
-**Los costes provienen del reglamento §12.10 y §12.11**, no de las hojas de
+**Los costes base provienen del reglamento §12.10 y §12.11**, no de las hojas de
 cartas, que no los incluyen. Están pendientes de una segunda verificación
 humana; ver `docs/00-PLAN-DE-TRABAJO.md`.
+
+La ampliación del 21 de septiembre incorpora Ravager, Siege Tank, Immortal,
+Nerazim y Cocoon, con costes contrastados con las capturas aportadas. Los
+adjuntos y los cinco elementos pendientes de datos están documentados en
+[`docs/catalog-import-2026-09-21.md`](docs/catalog-import-2026-09-21.md).
 
 La aplicación y la hoja PDF de lista muestran la fase de uso de habilidades y
 mejoras (Movimiento, Asalto, Combate o Cualquier fase). En las pantallas de

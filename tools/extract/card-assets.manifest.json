@@ -26,6 +26,46 @@
       "sha256": "4E8547B2DF8D545DF3D0EBB7D7821521A888DC0437D6F4DDE21D82145337A212",
       "pages": 14,
       "pageSizePt": [595.276, 841.89]
+    },
+    "attachment-unit-immortal-front": {
+      "path": "docs/sources/2026-09-21/unit-immortal-front.jpeg",
+      "sha256": "f03abdb10a42b1a1eb8c9f9607dacf7b93db664023f6e1ba7adcb736e606c92d",
+      "format": "image"
+    },
+    "attachment-unit-immortal-back": {
+      "path": "docs/sources/2026-09-21/unit-immortal-back.jpeg",
+      "sha256": "ca1caf88d251e6f7dd391b5e0a923c3609b94907360c6a4b96d036d15d419dce",
+      "format": "image"
+    },
+    "attachment-unit-siege-tank-front": {
+      "path": "docs/sources/2026-09-21/unit-siege-tank-front.jpeg",
+      "sha256": "322217fb80d6f043f8a2c9552616e30b93e713c7d8723063515e2fc359d5a161",
+      "format": "image"
+    },
+    "attachment-unit-siege-tank-back": {
+      "path": "docs/sources/2026-09-21/unit-siege-tank-back.jpeg",
+      "sha256": "893d606004a0b509f0a73bf4fb143b134d8d73e5e7f2ed284f8086412158f837",
+      "format": "image"
+    },
+    "attachment-unit-ravager-front": {
+      "path": "docs/sources/2026-09-21/unit-ravager-front.jpeg",
+      "sha256": "e3e7002570a0a4b50e084f97f5bde7c9c68596c567fbcedd330fce9dd1f5ea81",
+      "format": "image"
+    },
+    "attachment-unit-ravager-back": {
+      "path": "docs/sources/2026-09-21/unit-ravager-back.jpeg",
+      "sha256": "05222f305b53940837bf91286f60cda8846f9a2e5bbb107426f08fb1afe3f296",
+      "format": "image"
+    },
+    "attachment-faction-nerazim": {
+      "path": "docs/sources/2026-09-21/faction-nerazim.jpeg",
+      "sha256": "3a40921283d2c792f267d84ab4f47c343e2d438488d62625c692cd11d7443a43",
+      "format": "image"
+    },
+    "attachment-tactical-cocoon": {
+      "path": "docs/sources/2026-09-21/tactical-cocoon.jpeg",
+      "sha256": "ed0f98d6ad961b1000f61d787720b17b44eccfdd2093bdc8ba4a8697bd5e08e8",
+      "format": "image"
     }
   },
   "layouts": {
@@ -135,6 +175,54 @@
     { "id": "deployment.acropolis", "source": "zerg", "page": 20, "layout": "deployment", "slot": [0, 1], "rotation": 0, "output": "cards/scenarios/deployment-acropolis-original.webp" },
     { "id": "deployment.proving_grounds", "source": "zerg", "page": 20, "layout": "deployment", "slot": [1, 1], "rotation": 0, "output": "cards/scenarios/deployment-proving-grounds-original.webp" },
     { "id": "deployment.char_plains", "source": "zerg", "page": 20, "layout": "deployment", "slot": [0, 2], "rotation": 180, "output": "cards/scenarios/deployment-char-plains-original.webp" },
-    { "id": "deployment.breach", "source": "zerg", "page": 20, "layout": "deployment", "slot": [1, 2], "rotation": 0, "output": "cards/scenarios/deployment-breach-original.webp" }
+    { "id": "deployment.breach", "source": "zerg", "page": 20, "layout": "deployment", "slot": [1, 2], "rotation": 0, "output": "cards/scenarios/deployment-breach-original.webp" },
+    {
+      "id": "protoss.unit-immortal-front",
+      "source": "attachment-unit-immortal-front",
+      "layout": "attachment",
+      "output": "cards/protoss/unit-immortal-front.webp"
+    },
+    {
+      "id": "protoss.unit-immortal-back",
+      "source": "attachment-unit-immortal-back",
+      "layout": "attachment",
+      "output": "cards/protoss/unit-immortal-back.webp"
+    },
+    {
+      "id": "terran.unit-siege-tank-front",
+      "source": "attachment-unit-siege-tank-front",
+      "layout": "attachment",
+      "output": "cards/terran/unit-siege-tank-front.webp"
+    },
+    {
+      "id": "terran.unit-siege-tank-back",
+      "source": "attachment-unit-siege-tank-back",
+      "layout": "attachment",
+      "output": "cards/terran/unit-siege-tank-back.webp"
+    },
+    {
+      "id": "zerg.unit-ravager-front",
+      "source": "attachment-unit-ravager-front",
+      "layout": "attachment",
+      "output": "cards/zerg/unit-ravager-front.webp"
+    },
+    {
+      "id": "zerg.unit-ravager-back",
+      "source": "attachment-unit-ravager-back",
+      "layout": "attachment",
+      "output": "cards/zerg/unit-ravager-back.webp"
+    },
+    {
+      "id": "protoss.faction-nerazim",
+      "source": "attachment-faction-nerazim",
+      "layout": "attachment",
+      "output": "cards/protoss/faction-nerazim.webp"
+    },
+    {
+      "id": "zerg.tactical-cocoon",
+      "source": "attachment-tactical-cocoon",
+      "layout": "attachment",
+      "output": "cards/zerg/tactical-cocoon.webp"
+    }
   ]
 }

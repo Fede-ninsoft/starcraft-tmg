@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "contentVersion": "2026.05.1.2",
-  "sourceRef": "StarCraft-TMG_EN.pdf §12.10/§12.11 (costes) + StarCraft-Zerg-P2P-Card-Sheets-A4_EN.pdf (perfiles, etiquetas, espacios)",
+  "contentVersion": "2026.09.21.1",
+  "sourceRef": "StarCraft-TMG_EN.pdf §12.10/§12.11 (costes) + StarCraft-Zerg-P2P-Card-Sheets-A4_EN.pdf (perfiles, etiquetas, espacios) + cartas v1.06.26 y capturas de costes aportadas el 2026-09-21 (docs/catalog-import-2026-09-21.md)",
   "race": "ZERG",
 
   "upgradeGlossary": {
@@ -486,6 +486,47 @@
         }
       ],
       "imageRef": "cards/zerg/tactical-overseer.webp"
+    },
+    {
+      "id": "zerg.tactical.cocoon",
+      "seedId": 2110,
+      "race": "ZERG",
+      "name": "Cocoon",
+      "tags": [
+        "ZERG"
+      ],
+      "vespeneCost": 30,
+      "slotsGranted": {
+        "ELITE": 1
+      },
+      "unique": true,
+      "resource": null,
+      "resourcePerRound": 0,
+      "imageRef": "cards/zerg/tactical-cocoon.webp",
+      "abilities": [
+        {
+          "name": "Spawn Larva",
+          "phase": "MOVEMENT",
+          "type": "ACTIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "The active Friendly non-Unique Biological Unit with a Size Characteristic of 1 resolve the RESPAWN (2) effect.",
+            "es": "La unidad amiga Biológica activa, no Única y con Tamaño 1 resuelve el efecto RESPAWN (2)."
+          }
+        },
+        {
+          "name": "Ravager Morph",
+          "phase": "MOVEMENT",
+          "type": "ACTIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "Once per Game. The active Friendly Roach Unit performs MORPH (Ravager) 1.",
+            "es": "Una vez por partida. La unidad Roach amiga activa realiza MORPH (Ravager) 1."
+          }
+        }
+      ]
     }
   ],
 
@@ -1294,6 +1335,113 @@
       "supplyProfile": [{ "minModels": 1, "maxModels": 1, "supply": 0 }],
       "imageRefFront": "cards/zerg/unit-omega-worm-front.webp",
       "imageRefBack": "cards/zerg/unit-omega-worm-back.webp"
+    },
+    {
+      "id": "zerg.card.ravager",
+      "race": "ZERG",
+      "name": "Ravager",
+      "baseSize": "80mm",
+      "profile": {
+        "size": "3",
+        "hitPoints": "9",
+        "evade": "5+",
+        "armour": "5+",
+        "speed": "4/8",
+        "shield": null
+      },
+      "combatTags": [
+        "ARMOURED",
+        "BIOLOGICAL",
+        "GROUND"
+      ],
+      "supplyProfile": [
+        {
+          "minModels": 1,
+          "maxModels": 1,
+          "supply": 1
+        },
+        {
+          "minModels": 2,
+          "maxModels": 2,
+          "supply": 2
+        }
+      ],
+      "weapons": [
+        {
+          "name": "Plasma Discharge",
+          "phase": "ASSAULT",
+          "range": "12",
+          "target": "Ground",
+          "rateOfAttack": "4",
+          "hit": "3+",
+          "surgeType": "Light",
+          "surgeDice": "D3+1",
+          "damage": "1",
+          "keywords": []
+        },
+        {
+          "name": "Claws",
+          "phase": "COMBAT",
+          "range": "E",
+          "target": "Ground",
+          "rateOfAttack": "2",
+          "hit": "4+",
+          "surgeType": null,
+          "surgeDice": null,
+          "damage": "1",
+          "keywords": []
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Squadron",
+          "phase": "ANY",
+          "type": "PASSIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "This Unit’s Horizontal Coherency is 4\".",
+            "es": "La Coherencia Horizontal de esta unidad es de 4\"."
+          }
+        },
+        {
+          "name": "Corrosive Bile",
+          "phase": "MOVEMENT",
+          "type": "ACTIVE",
+          "cost": 1,
+          "fromUpgrade": false,
+          "text": {
+            "en": "For each model in this Unit, set one Corrosive Bile token on the battlefield Within 14\" of that model. These tokens are not removed if this Unit is Destroyed. At the End of the Assault Phase, each Unit suffers HITS 5 (1) effect for each of this Unit’s Corrosive Bile tokens it is Within 1\" of. Then, remove all of this Unit’s Corrosive Bile tokens from the battlefield.",
+            "es": "Por cada miniatura de esta unidad, coloca una ficha de Corrosive Bile a menos de 14\" de ella. Las fichas no se retiran si esta unidad es destruida. Al final de la Fase de Asalto, cada unidad sufre HITS 5 (1) por cada ficha de Corrosive Bile de esta unidad que tenga a menos de 1\". Después, retira todas las fichas de Corrosive Bile de esta unidad."
+          },
+          "resource": "BM"
+        },
+        {
+          "name": "Deep Tunnel",
+          "phase": "MOVEMENT",
+          "type": "ACTIVE",
+          "cost": 1,
+          "fromUpgrade": false,
+          "text": {
+            "en": "Set a Ravager Burrow token Wholly Within 12\" of any model in this Unit. At the End of the Round, the controlling player may set all models of this Unit in Coherency, treating the Ravager Burrow token as the Leading Model. The Ravager Burrow token has DISPLACEMENT.",
+            "es": "Coloca una ficha de Ravager Burrow completamente a menos de 12\" de cualquier miniatura de esta unidad. Al final de la ronda, el jugador que la controla puede colocar todas sus miniaturas en Coherencia, tratando la ficha como la Miniatura Líder. La ficha tiene DISPLACEMENT."
+          },
+          "resource": "BM"
+        },
+        {
+          "name": "Devastating Charge",
+          "phase": "ASSAULT",
+          "type": "PASSIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "Immediately after this Unit completes a successful Charge, resolve the IMPACT (2) 4+ effect.",
+            "es": "Inmediatamente después de que esta unidad complete una Carga con éxito, resuelve el efecto IMPACT (2) 4+."
+          }
+        }
+      ],
+      "imageRefFront": "cards/zerg/unit-ravager-front.webp",
+      "imageRefBack": "cards/zerg/unit-ravager-back.webp"
     }
   ],
 
@@ -1801,6 +1949,114 @@
         { "id": "1", "models": 1, "mineralCost": 0, "supplyValue": 0 }
       ],
       "upgrades": []
+    },
+    {
+      "id": "zerg.entry.ravager",
+      "seedId": 4113,
+      "cardId": "zerg.card.ravager",
+      "race": "ZERG",
+      "name": "Ravager",
+      "tags": [
+        "ZERG"
+      ],
+      "slotType": "CORE",
+      "combatRole": {
+        "en": "Tactician",
+        "es": "Táctico"
+      },
+      "unique": false,
+      "summoned": false,
+      "compositions": [
+        {
+          "id": "1",
+          "models": 1,
+          "mineralCost": 160,
+          "supplyValue": 1
+        },
+        {
+          "id": "2",
+          "models": 2,
+          "mineralCost": 270,
+          "supplyValue": 2
+        }
+      ],
+      "upgrades": [
+        {
+          "id": "bloated_bile_ducts",
+          "seedId": 5181,
+          "name": "Bloated Bile Ducts",
+          "specialist": false,
+          "replacesWeapon": null,
+          "costByComposition": {
+            "1": 20,
+            "2": 40
+          },
+          "grantsWeapons": [],
+          "grantsAbilities": [
+            {
+              "name": "Bloated Bile Ducts",
+              "phase": "ANY",
+              "type": "PASSIVE",
+              "cost": null,
+              "fromUpgrade": true,
+              "text": {
+                "en": "Increase the area of effect of this Unit’s Corrosive Bile ability to 2\".",
+                "es": "Aumenta a 2\" el área de efecto de Corrosive Bile de esta unidad."
+              }
+            }
+          ]
+        },
+        {
+          "id": "burrow_ambush",
+          "seedId": 5182,
+          "name": "Burrow Ambush",
+          "specialist": false,
+          "replacesWeapon": null,
+          "costByComposition": {
+            "1": 20,
+            "2": 40
+          },
+          "grantsWeapons": [],
+          "grantsAbilities": [
+            {
+              "name": "Burrow Ambush",
+              "phase": "MOVEMENT",
+              "type": "PASSIVE",
+              "cost": null,
+              "fromUpgrade": true,
+              "text": {
+                "es": "Cuando esta unidad es nominada para desplegar desde la Reserva, puede resolver el efecto PLACE (18) desde el Borde de Entrada del jugador que la controla. Ninguna miniatura puede colocarse a menos de 10\" de una miniatura enemiga. La activación de esta unidad termina.",
+                "en": "When this Unit is nominated to deploy from the Reserves, it may resolve the PLACE (18) effect from the controlling player's Entry Edge. No model may be set Within 10\" of any Enemy model. This Unit's Activation ends."
+              }
+            }
+          ]
+        },
+        {
+          "id": "potent_bile",
+          "seedId": 5183,
+          "name": "Potent Bile",
+          "specialist": false,
+          "replacesWeapon": null,
+          "costByComposition": {
+            "1": 20,
+            "2": 40
+          },
+          "grantsWeapons": [],
+          "grantsAbilities": [
+            {
+              "name": "Potent Bile",
+              "phase": "ASSAULT",
+              "type": "PASSIVE",
+              "cost": null,
+              "fromUpgrade": true,
+              "text": {
+                "en": "Before an Enemy Unit resolves an Armour Roll against the HITS effect generated by this Unit’s Corrosive Bile ability, that Unit suffers DEBUFF Armour (1).",
+                "es": "Antes de que una unidad enemiga resuelva una Tirada de Armadura contra el efecto HITS de Corrosive Bile de esta unidad, sufre DEBUFF Armadura (1)."
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

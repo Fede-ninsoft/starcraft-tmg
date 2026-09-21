@@ -19,10 +19,11 @@ function protossList(factionCardId: string) {
 }
 
 describe('Catálogo Protoss', () => {
-  it('tiene las 7 unidades del reglamento', () => {
+  it('tiene las unidades del reglamento y el Immortal de junio', () => {
     expect(index.catalog.unitEntries.map((e) => e.name).sort()).toEqual([
       'Adept',
       'Artanis',
+      'Immortal',
       'Praetor Guard (Zealot)',
       'Pylon',
       'Sentry',

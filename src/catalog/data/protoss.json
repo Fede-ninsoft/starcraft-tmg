@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "contentVersion": "2026.05.1.2",
-  "sourceRef": "StarCraft-TMG_EN.pdf §12.10/§12.11 (costes) + StarCraft-Protoss-P2P-Card-Sheets-A4_EN.pdf (perfiles, etiquetas, espacios)",
+  "contentVersion": "2026.09.21.1",
+  "sourceRef": "StarCraft-TMG_EN.pdf §12.10/§12.11 (costes) + StarCraft-Protoss-P2P-Card-Sheets-A4_EN.pdf (perfiles, etiquetas, espacios) + cartas v1.06.26 y capturas de costes aportadas el 2026-09-21 (docs/catalog-import-2026-09-21.md)",
   "race": "PROTOSS",
 
   "upgradeGlossary": {
@@ -165,6 +165,48 @@
         }
       ],
       "imageRef": "cards/protoss/faction-khalai.webp"
+    },
+    {
+      "id": "protoss.faction.nerazim",
+      "seedId": 1303,
+      "race": "PROTOSS",
+      "name": "Nerazim",
+      "tags": [
+        "PROTOSS",
+        "NERAZIM"
+      ],
+      "startingSlots": {
+        "CORE": 2,
+        "ELITE": 3,
+        "HERO": 1
+      },
+      "resource": "PE",
+      "resourcePerRound": 1,
+      "imageRef": "cards/protoss/faction-nerazim.webp",
+      "abilities": [
+        {
+          "name": "Might of the Nerazim",
+          "phase": "ANY",
+          "type": "REACTION",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "If a Friendly Unit loses the HIDDEN Status it gains Buff Speed (2) and its first Weapon used CRITICAL HIT (2).",
+            "es": "Si una unidad amiga pierde el estado HIDDEN, gana BUFF Velocidad (2) y su primera arma utilizada gana CRITICAL HIT (2)."
+          }
+        },
+        {
+          "name": "Darkness Descends",
+          "phase": "MOVEMENT",
+          "type": "ACTIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "The active Biological Unit gains the HIDDEN Status until the End of the Round.",
+            "es": "La unidad Biológica activa gana el estado HIDDEN hasta el final de la ronda."
+          }
+        }
+      ]
     }
   ],
 
@@ -701,6 +743,115 @@
       "supplyProfile": [{ "minModels": 1, "maxModels": 1, "supply": 0 }],
       "imageRefFront": "cards/protoss/unit-pylon-front.webp",
       "imageRefBack": "cards/protoss/unit-pylon-back.webp"
+    },
+    {
+      "id": "protoss.card.immortal",
+      "race": "PROTOSS",
+      "name": "Immortal",
+      "baseSize": "100mm",
+      "profile": {
+        "size": "3",
+        "hitPoints": "8",
+        "evade": "-",
+        "armour": "4+",
+        "speed": "7",
+        "shield": "6"
+      },
+      "combatTags": [
+        "ARMOURED",
+        "MECHANICAL",
+        "GROUND"
+      ],
+      "supplyProfile": [
+        {
+          "minModels": 1,
+          "maxModels": 1,
+          "supply": 2
+        }
+      ],
+      "weapons": [
+        {
+          "name": "Left Photon Disruptor",
+          "phase": "ASSAULT",
+          "range": "12",
+          "target": "Ground",
+          "rateOfAttack": "4",
+          "hit": "3+",
+          "surgeType": "Armoured",
+          "surgeDice": "D3",
+          "damage": "2",
+          "keywords": [
+            "CONCENTRATED FIRE (1)",
+            "LONG RANGE (16)"
+          ]
+        },
+        {
+          "name": "Right Photon Disruptor",
+          "phase": "ASSAULT",
+          "range": "12",
+          "target": "Ground",
+          "rateOfAttack": "4",
+          "hit": "3+",
+          "surgeType": "Armoured",
+          "surgeDice": "D3",
+          "damage": "2",
+          "keywords": [
+            "CONCENTRATED FIRE (1)",
+            "LONG RANGE (16)",
+            "SIDEARM"
+          ]
+        },
+        {
+          "name": "Stomp",
+          "phase": "COMBAT",
+          "range": "E",
+          "target": "Ground",
+          "rateOfAttack": "3",
+          "hit": "3+",
+          "surgeType": null,
+          "surgeDice": null,
+          "damage": "1",
+          "keywords": []
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Improved Barrier",
+          "phase": "ANY",
+          "type": "REACTION",
+          "cost": 0,
+          "fromUpgrade": false,
+          "text": {
+            "en": "Use when this Unit is selected as the target of an attack. If this Unit has the Shielded Status, the Damage characteristic of the attacking weapon is treated as a maximum of 1 for this attack.",
+            "es": "Úsala cuando esta unidad sea seleccionada como objetivo de un ataque. Si tiene el estado Shielded, el Daño del arma atacante se considera como máximo 1 para este ataque."
+          },
+          "resource": "PE"
+        },
+        {
+          "name": "Indomitable",
+          "phase": "ASSAULT",
+          "type": "PASSIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "While Engaged, this Unit may target and be targeted by Unengaged Enemy Units. In both cases, the defending Unit gains an Evade Roll against those attacks.",
+            "es": "Mientras está trabada, esta unidad puede atacar y ser atacada por unidades enemigas no trabadas. En ambos casos, la unidad defensora obtiene una Tirada de Evasión contra esos ataques."
+          }
+        },
+        {
+          "name": "Devastating Charge",
+          "phase": "ASSAULT",
+          "type": "PASSIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "Immediately after this Unit completes a successful Charge, resolve the IMPACT (4) 3+ effect.",
+            "es": "Inmediatamente después de que esta unidad complete una Carga con éxito, resuelve el efecto IMPACT (4) 3+."
+          }
+        }
+      ],
+      "imageRefFront": "cards/protoss/unit-immortal-front.webp",
+      "imageRefBack": "cards/protoss/unit-immortal-back.webp"
     }
   ],
 
@@ -931,6 +1082,169 @@
         { "id": "1", "models": 1, "mineralCost": 0, "supplyValue": 0 }
       ],
       "upgrades": []
+    },
+    {
+      "id": "protoss.entry.immortal",
+      "seedId": 4308,
+      "cardId": "protoss.card.immortal",
+      "race": "PROTOSS",
+      "name": "Immortal",
+      "tags": [
+        "PROTOSS"
+      ],
+      "slotType": "ELITE",
+      "combatRole": {
+        "en": "Tank",
+        "es": "Tanque"
+      },
+      "unique": false,
+      "summoned": false,
+      "compositions": [
+        {
+          "id": "1",
+          "models": 1,
+          "mineralCost": 280,
+          "supplyValue": 2
+        }
+      ],
+      "upgrades": [
+        {
+          "id": "shield_overcharge",
+          "seedId": 5341,
+          "name": "Shield Overcharge",
+          "specialist": false,
+          "replacesWeapon": null,
+          "costByComposition": {
+            "1": 20
+          },
+          "grantsWeapons": [],
+          "grantsAbilities": [
+            {
+              "name": "Shield Overcharge",
+              "phase": "ANY",
+              "type": "REACTION",
+              "cost": 1,
+              "fromUpgrade": true,
+              "text": {
+                "en": "Use before this Unit makes an Armour Roll. If this Unit has the Shielded Status, it gains TOUGH (2) for this roll.",
+                "es": "Úsala antes de que esta unidad haga una Tirada de Armadura. Si tiene el estado Shielded, gana TOUGH (2) para esta tirada."
+              },
+              "resource": "PE"
+            }
+          ]
+        },
+        {
+          "id": "left_phase_disruptor",
+          "seedId": 5342,
+          "name": "Left Phase Disruptor",
+          "specialist": false,
+          "replacesWeapon": "Left Photon Disruptor",
+          "costByComposition": {
+            "1": 20
+          },
+          "grantsWeapons": [
+            {
+              "name": "Left Phase Disruptor",
+              "phase": "ASSAULT",
+              "range": "12",
+              "target": "Ground",
+              "rateOfAttack": "4",
+              "hit": "3+",
+              "surgeType": "Armoured",
+              "surgeDice": "D3",
+              "damage": "1",
+              "keywords": [
+                "PIERCE Armoured (3)"
+              ]
+            }
+          ],
+          "grantsAbilities": [],
+          "text": {
+            "en": "Replaces Left Photon Disruptor with Left Phase Disruptor.",
+            "es": "Sustituye Left Photon Disruptor por Left Phase Disruptor."
+          }
+        },
+        {
+          "id": "right_phase_disruptor",
+          "seedId": 5343,
+          "name": "Right Phase Disruptor",
+          "specialist": false,
+          "replacesWeapon": "Right Photon Disruptor",
+          "costByComposition": {
+            "1": 20
+          },
+          "grantsWeapons": [
+            {
+              "name": "Right Phase Disruptor",
+              "phase": "ASSAULT",
+              "range": "12",
+              "target": "Ground",
+              "rateOfAttack": "4",
+              "hit": "3+",
+              "surgeType": "Armoured",
+              "surgeDice": "D3",
+              "damage": "1",
+              "keywords": [
+                "PIERCE Armoured (3)",
+                "SIDEARM"
+              ]
+            }
+          ],
+          "grantsAbilities": [],
+          "text": {
+            "en": "Replaces Right Photon Disruptor with Right Phase Disruptor.",
+            "es": "Sustituye Right Photon Disruptor por Right Phase Disruptor."
+          }
+        },
+        {
+          "id": "fury_unyielding",
+          "seedId": 5344,
+          "name": "Fury Unyielding",
+          "specialist": false,
+          "replacesWeapon": null,
+          "costByComposition": {
+            "1": 20
+          },
+          "grantsWeapons": [],
+          "grantsAbilities": [
+            {
+              "name": "Fury Unyielding",
+              "phase": "ASSAULT",
+              "type": "PASSIVE",
+              "cost": null,
+              "fromUpgrade": true,
+              "text": {
+                "en": "While this Unit is Within 3\" of a Mission Marker, its Ranged Weapons gain CRITICAL HIT (1) when targeting an Enemy Unit that is also Within 3\" of that same Mission Marker.",
+                "es": "Mientras esta unidad esté a menos de 3\" de un Marcador de Misión, sus armas a distancia ganan CRITICAL HIT (1) al atacar a una unidad enemiga que también esté a menos de 3\" de ese mismo marcador."
+              }
+            }
+          ]
+        },
+        {
+          "id": "for_the_ancients",
+          "seedId": 5345,
+          "name": "For the Ancients",
+          "specialist": false,
+          "replacesWeapon": null,
+          "costByComposition": {
+            "1": 20
+          },
+          "grantsWeapons": [],
+          "grantsAbilities": [
+            {
+              "name": "For the Ancients",
+              "phase": "ASSAULT",
+              "type": "PASSIVE",
+              "cost": null,
+              "fromUpgrade": true,
+              "text": {
+                "en": "When this Unit makes a Ranged Attack, if the target Unit is more than 8\" away, the attacking weapons gain PRECISION (1).",
+                "es": "Cuando esta unidad realiza un Ataque a Distancia, si el objetivo está a más de 8\", las armas atacantes ganan PRECISION (1)."
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

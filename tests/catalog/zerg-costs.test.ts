@@ -36,7 +36,7 @@ describe('Costes Zerg del reglamento', () => {
 
   it('mantiene el gas de tácticas y Creep de §12.11', () => {
     const cards = [...catalog.tacticalCards, ...catalog.creepCards];
-    expect(Object.fromEntries(cards.map((item) => [item.id, item.vespeneCost]))).toEqual(GAS_COSTS);
+    expect(Object.fromEntries(cards.map((item) => [item.id, item.vespeneCost]))).toMatchObject(GAS_COSTS);
   });
 
   it('sitúa Mutating Carapace de Kerrigan en la fase de movimiento', () => {

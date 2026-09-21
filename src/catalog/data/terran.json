@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "contentVersion": "2026.05.1.2",
-  "sourceRef": "StarCraft-TMG_EN.pdf §12.10/§12.11 + StarCraft-Terran-P2P-Card-Sheets-A4_EN.pdf",
+  "contentVersion": "2026.09.21.1",
+  "sourceRef": "StarCraft-TMG_EN.pdf §12.10/§12.11 + StarCraft-Terran-P2P-Card-Sheets-A4_EN.pdf + cartas v1.06.26 y capturas de costes aportadas el 2026-09-21 (docs/catalog-import-2026-09-21.md)",
   "race": "TERRAN",
 
   "upgradeGlossary": {
@@ -677,6 +677,144 @@
       "supplyProfile": [{ "minModels": 1, "maxModels": 1, "supply": 0 }],
       "imageRefFront": "cards/terran/unit-point-defense-drone-front.webp",
       "imageRefBack": "cards/terran/unit-point-defense-drone-back.webp"
+    },
+    {
+      "id": "terran.card.siege_tank",
+      "race": "TERRAN",
+      "name": "Siege Tank",
+      "baseSize": "150mm",
+      "profile": {
+        "size": "2",
+        "hitPoints": "14",
+        "evade": "-",
+        "armour": "5+",
+        "speed": "7",
+        "shield": null
+      },
+      "combatTags": [
+        "ARMOURED",
+        "MECHANICAL",
+        "GROUND"
+      ],
+      "supplyProfile": [
+        {
+          "minModels": 1,
+          "maxModels": 1,
+          "supply": 2
+        }
+      ],
+      "weapons": [
+        {
+          "name": "Twin Cannon",
+          "phase": "ASSAULT",
+          "range": "12",
+          "target": "Ground",
+          "rateOfAttack": "8",
+          "hit": "3+",
+          "surgeType": "Armoured",
+          "surgeDice": "D6",
+          "damage": "1",
+          "keywords": [
+            "PIERCE Armoured (2)"
+          ]
+        },
+        {
+          "name": "Shock Cannon",
+          "phase": "ASSAULT",
+          "range": "18",
+          "target": "Ground",
+          "rateOfAttack": "BT+4",
+          "hit": "4+",
+          "surgeType": "Light, Armoured",
+          "surgeDice": "BT",
+          "damage": "1",
+          "keywords": [
+            "SIEGE MODE Status"
+          ]
+        },
+        {
+          "name": "Rolling Over",
+          "phase": "COMBAT",
+          "range": "E",
+          "target": "Ground",
+          "rateOfAttack": "2",
+          "hit": "2+",
+          "surgeType": null,
+          "surgeDice": null,
+          "damage": "1",
+          "keywords": []
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Large",
+          "phase": "ANY",
+          "type": "PASSIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "When this Unit’s Leading Model moves, it cannot pass through physical gaps smaller than 3\" wide, regardless of its size. If the Leading Model’s path of travel passes through, or any model in this Unit ends its movement on a Size 0 or Size 1 Impassable Terrain piece during any movement action, that terrain piece is immediately removed from the game.",
+            "es": "Cuando la Miniatura Líder de esta unidad se mueve, no puede atravesar huecos físicos de menos de 3\" de ancho, independientemente de su tamaño. Si su recorrido atraviesa un Terreno Infranqueable de Tamaño 0 o 1, o cualquier miniatura de esta unidad termina su movimiento sobre él durante cualquier acción de movimiento, retira inmediatamente ese terreno de la partida."
+          }
+        },
+        {
+          "name": "Heavy Plating",
+          "phase": "ANY",
+          "type": "PASSIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "Whenever this Unit resolves an Armour Roll, it gains TOUGH (1), provided it does not currently have the SIEGE MODE Status.",
+            "es": "Cada vez que esta unidad resuelve una Tirada de Armadura, gana TOUGH (1) si no tiene el estado SIEGE MODE."
+          }
+        },
+        {
+          "name": "Indomitable",
+          "phase": "ASSAULT",
+          "type": "PASSIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "While Engaged, this Unit may target and be targeted by Unengaged Enemy Units. In both cases, the defending Unit gains an Evade Roll against those attacks.",
+            "es": "Mientras está trabada, esta unidad puede atacar y ser atacada por unidades enemigas no trabadas. En ambos casos, la unidad defensora obtiene una Tirada de Evasión contra esos ataques."
+          }
+        },
+        {
+          "name": "Point Blank",
+          "phase": "ASSAULT",
+          "type": "PASSIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "While this Unit has the SIEGE MODE Status, it cannot target Enemy Units it is Engaged with.",
+            "es": "Mientras tiene el estado SIEGE MODE, esta unidad no puede atacar a unidades enemigas con las que esté trabada."
+          }
+        },
+        {
+          "name": "Aftershock Rounds",
+          "phase": "ASSAULT",
+          "type": "PASSIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "When this Unit has the SIEGE MODE Status, its Damage characteristic is treated as equal to the Size characteristic of the current target Unit (to a minimum of 1).",
+            "es": "Cuando esta unidad tiene el estado SIEGE MODE, su Daño se considera igual al Tamaño de la unidad objetivo actual (mínimo 1)."
+          }
+        },
+        {
+          "name": "Devastating Charge",
+          "phase": "ASSAULT",
+          "type": "PASSIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "Immediately after this Unit completes a successful Charge, resolve the IMPACT (4) 3+ effect.",
+            "es": "Inmediatamente después de que esta unidad complete una Carga con éxito, resuelve el efecto IMPACT (4) 3+."
+          }
+        }
+      ],
+      "imageRefFront": "cards/terran/unit-siege-tank-front.webp",
+      "imageRefBack": "cards/terran/unit-siege-tank-back.webp"
     }
   ],
 
@@ -1070,6 +1208,133 @@
         { "id": "1", "models": 1, "mineralCost": 0, "supplyValue": 0 }
       ],
       "upgrades": []
+    },
+    {
+      "id": "terran.entry.siege_tank",
+      "seedId": 4208,
+      "cardId": "terran.card.siege_tank",
+      "race": "TERRAN",
+      "name": "Siege Tank",
+      "tags": [
+        "TERRAN"
+      ],
+      "slotType": "ELITE",
+      "combatRole": {
+        "en": "Damage Dealer",
+        "es": "Especialista en daño"
+      },
+      "unique": false,
+      "summoned": false,
+      "compositions": [
+        {
+          "id": "1",
+          "models": 1,
+          "mineralCost": 220,
+          "supplyValue": 2
+        }
+      ],
+      "upgrades": [
+        {
+          "id": "mode_transformation",
+          "seedId": 5251,
+          "name": "Mode Transformation",
+          "specialist": false,
+          "replacesWeapon": null,
+          "costByComposition": {
+            "1": 20
+          },
+          "grantsWeapons": [],
+          "grantsAbilities": [
+            {
+              "name": "Mode Transformation",
+              "phase": "MOVEMENT",
+              "type": "ACTIVE",
+              "cost": 1,
+              "fromUpgrade": true,
+              "text": {
+                "en": "The active Unit gains or loses the SIEGE MODE Status. While this Unit has the SIEGE MODE Status, its Size characteristic is treated as if it was 3.",
+                "es": "La unidad activa gana o pierde el estado SIEGE MODE. Mientras lo tenga, su Tamaño se considera 3."
+              },
+              "resource": "CP"
+            }
+          ]
+        },
+        {
+          "id": "coordinated_strike",
+          "seedId": 5252,
+          "name": "Coordinated Strike",
+          "specialist": false,
+          "replacesWeapon": null,
+          "costByComposition": {
+            "1": 20
+          },
+          "grantsWeapons": [],
+          "grantsAbilities": [
+            {
+              "name": "Coordinated Strike",
+              "phase": "MOVEMENT",
+              "type": "ACTIVE",
+              "cost": 0,
+              "fromUpgrade": true,
+              "text": {
+                "en": "Target a Friendly Non-Engaged Unit on the battlefield (Line of Sight is not required). When this Unit resolves a Ranged Attack using the Shock Cannon weapon profile this Round, it may choose to ignore the weapon’s standard Range characteristic. If it does, it may target an Enemy Unit that is Within 8\" of, and Visible to, a model of the selected Friendly Unit, treating that model as the acting model.",
+                "es": "Selecciona una unidad amiga no trabada en el campo de batalla (no requiere Línea de Visión). Cuando esta unidad resuelva un Ataque a Distancia con Shock Cannon esta ronda, puede ignorar el Alcance habitual del arma. Si lo hace, puede atacar a una unidad enemiga a menos de 8\" y visible para una miniatura de la unidad amiga seleccionada, tratando esa miniatura como la miniatura actuante."
+              },
+              "resource": "CP"
+            }
+          ]
+        },
+        {
+          "id": "shaped_blast",
+          "seedId": 5253,
+          "name": "Shaped Blast",
+          "specialist": false,
+          "replacesWeapon": null,
+          "costByComposition": {
+            "1": 10
+          },
+          "grantsWeapons": [],
+          "grantsAbilities": [
+            {
+              "name": "Shaped Blast",
+              "phase": "ASSAULT",
+              "type": "REACTION",
+              "cost": 0,
+              "fromUpgrade": true,
+              "text": {
+                "en": "Once per Game. When this Unit has SIEGE MODE Status, its weapon gains PINPOINT and LOCKED IN (4).",
+                "es": "Una vez por partida. Cuando esta unidad tiene el estado SIEGE MODE, su arma gana PINPOINT y LOCKED IN (4)."
+              },
+              "resource": "CP"
+            }
+          ]
+        },
+        {
+          "id": "smart_shells",
+          "seedId": 5254,
+          "name": "Smart Shells",
+          "specialist": false,
+          "replacesWeapon": null,
+          "costByComposition": {
+            "1": 10
+          },
+          "grantsWeapons": [],
+          "grantsAbilities": [
+            {
+              "name": "Smart Shells",
+              "phase": "ASSAULT",
+              "type": "REACTION",
+              "cost": 0,
+              "fromUpgrade": true,
+              "text": {
+                "en": "Once per Game. When this Unit has SIEGE MODE Status, its weapon gains INDIRECT FIRE and LONG RANGE (24).",
+                "es": "Una vez por partida. Cuando esta unidad tiene el estado SIEGE MODE, su arma gana INDIRECT FIRE y LONG RANGE (24)."
+              },
+              "resource": "CP"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
