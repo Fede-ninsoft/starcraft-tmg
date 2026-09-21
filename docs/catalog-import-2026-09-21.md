@@ -20,13 +20,15 @@ Las capturas de cartas de mando existentes coinciden con los costes guardados: F
 
 | Elemento | Falta |
 | --- | --- |
-| Zeratul | Coste en minerales y reverso (peana, rol y posibles mejoras). Anverso recibido: único; escudo 3, velocidad 7, armadura 5+, evasión 5+, HP 5, tamaño 2; una miniatura/1 suministro; BIOLOGICAL, PSIONIC, GROUND; etiqueta PROTOSS. |
-| Nerazim Watchers (Adept) | Coste y composición de compra, reverso (slot, rol, peana y posibles mejoras). Anverso recibido: escudo 2, velocidad 5/8, armadura/evasión 5+, HP 3, tamaño 2; suministro 0 para 1–2 miniaturas y 1 para 3–4; PROTOSS/NERAZIM. No debe confundirse la tabla de supervivientes/suministro con las composiciones reclutables. |
+| Zeratul | Reverso (slot, peana, rol y posibles mejoras). Coste confirmado por la captura adicional: **230 minerales, 1 miniatura, 1 suministro**, sin mejoras seleccionadas visibles. Anverso recibido: único; escudo 3, velocidad 7, armadura 5+, evasión 5+, HP 5, tamaño 2; BIOLOGICAL, PSIONIC, GROUND; etiqueta PROTOSS. |
+| Nerazim Watchers (Adept) | Reverso (slot, rol, peana y posibles mejoras). Coste y composición confirmados por la captura adicional: **210 minerales, 4 miniaturas, 1 suministro**, sin mejoras seleccionadas visibles. Anverso recibido: escudo 2, velocidad 5/8, armadura/evasión 5+, HP 3, tamaño 2; suministro 0 para 1–2 miniaturas y 1 para 3–4; PROTOSS/NERAZIM. No debe confundirse la tabla de supervivientes/suministro con las composiciones reclutables. |
 | Factory (Tech Lab) | Coste en gas. Se conocen UNIQUE, 2 ELITE, +1 CP, Field Repair (HEAL (2), Mechanical, Movimiento) y Pound 'Em Flat! (Mechanical Stationary, primera arma a distancia PRECISION (2), Asalto). |
 | Robotics Facility | Coste en gas. Se conocen 2 ELITE, +1 PE y Plasma Shields (reacción antes de armadura, Mechanical Ground Shielded: TOUGH (1) y DODGE (1)). No aparece UNIQUE. |
 | Void Seeker | Coste en gas. Se conocen UNIQUE, PROTOSS/NERAZIM, 1 CORE, +1 PE, Personal Transport y Anakh Su'n en Movimiento. |
 
 No se han asignado costes cero ni costes de unidades/cartas parecidas a los elementos pendientes. Los originales permiten completar la transcripción cuando se reciban los datos ausentes. No se han inventado imágenes de reversos.
+
+La captura adicional `zeratul-nerazim-watchers-costs.png` confirma ambos costes y coincide con las características de los anversos. Usa el nombre «Void Blink» para la habilidad que el anverso oficial de Zeratul denomina «Blink»; se conserva como referencia el nombre impreso en la carta. La etiqueta SMALL de la captura identifica la composición y no determina la peana, el rol o el slot. La ausencia de botones de mejoras en la captura no sustituye la comprobación de los reversos.
 
 ## Integridad y compatibilidad
 
