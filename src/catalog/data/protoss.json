@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "contentVersion": "2026.09.21.2",
+  "contentVersion": "2026.09.21.3",
   "sourceRef": "StarCraft-TMG_EN.pdf §12.10/§12.11 (costes) + StarCraft-Protoss-P2P-Card-Sheets-A4_EN.pdf (perfiles, etiquetas, espacios) + cartas v1.06.26 y capturas de costes aportadas el 2026-09-21 (docs/catalog-import-2026-09-21.md)",
   "race": "PROTOSS",
 
@@ -1020,6 +1020,133 @@
         }
       ],
       "imageRefFront": "cards/protoss/unit-nerazim-watchers-front.webp"
+    },
+    {
+      "id": "protoss.card.zeratul",
+      "race": "PROTOSS",
+      "name": "Zeratul",
+      "baseSize": "Ø 40MM",
+      "combatTags": [
+        "BIOLOGICAL",
+        "PSIONIC",
+        "GROUND"
+      ],
+      "profile": {
+        "shield": "3",
+        "speed": "7",
+        "armour": "5+",
+        "evade": "5+",
+        "hitPoints": "5",
+        "size": "2"
+      },
+      "supplyProfile": [
+        {
+          "minModels": 1,
+          "maxModels": 1,
+          "supply": 1
+        }
+      ],
+      "imageRefFront": "cards/protoss/unit-zeratul-front.webp",
+      "weapons": [
+        {
+          "name": "Master Warp Blade",
+          "phase": "COMBAT",
+          "range": "E",
+          "target": "Ground",
+          "rateOfAttack": "4",
+          "hit": "3+",
+          "surgeType": "Light, Armoured",
+          "surgeDice": "D3",
+          "damage": "2",
+          "keywords": [
+            "INSTANT"
+          ]
+        }
+      ],
+      "abilities": [
+        {
+          "name": "One with the Shadows",
+          "phase": "ANY",
+          "type": "PASSIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "After this Unit fully resolves an Action, it gains the HIDDEN Status.",
+            "es": "Después de que esta unidad resuelva por completo una Acción, gana el estado HIDDEN."
+          }
+        },
+        {
+          "name": "Prophetic Vision",
+          "phase": "ANY",
+          "type": "REACTION",
+          "cost": 1,
+          "fromUpgrade": false,
+          "resource": "PE",
+          "text": {
+            "en": "REPEATABLE. Use when this Unit is selected as the target of an attack. This Unit’s Evade characteristic is treated as 4+ against this attack.",
+            "es": "REPETIBLE. Úsala cuando esta unidad sea seleccionada como objetivo de un ataque. Su Evasión se considera 4+ contra este ataque."
+          }
+        },
+        {
+          "name": "Sentenced to Death",
+          "phase": "MOVEMENT",
+          "type": "ACTIVE",
+          "cost": 1,
+          "fromUpgrade": false,
+          "resource": "PE",
+          "text": {
+            "en": "Target Enemy Unit on the battlefield. Whenever Zeratul makes a Close Combat Attack targeting the selected Unit, its weapon gains CRITICAL HIT (2).",
+            "es": "Selecciona una unidad enemiga en el campo de batalla. Cada vez que Zeratul realice un Ataque de Combate Cuerpo a Cuerpo contra la unidad seleccionada, su arma gana CRITICAL HIT (2)."
+          }
+        },
+        {
+          "name": "Void Prison",
+          "phase": "MOVEMENT",
+          "type": "ACTIVE",
+          "cost": 1,
+          "fromUpgrade": false,
+          "resource": "PE",
+          "text": {
+            "en": "Set a Faction Indicator on the battlefield Within 8\" of this Unit. While Enemy Units are Within 2\" of this Faction Indicator they suffer DEBUFF Speed (2).",
+            "es": "Coloca un Indicador de Facción en el campo de batalla a menos de 8\" de esta unidad. Mientras las unidades enemigas estén a menos de 2\" de este indicador, sufren DEBUFF Velocidad (2)."
+          }
+        },
+        {
+          "name": "Blink",
+          "phase": "MOVEMENT",
+          "type": "ACTIVE",
+          "cost": 1,
+          "fromUpgrade": false,
+          "resource": "PE",
+          "text": {
+            "en": "Resolve the PLACE (6) effect. Models set by this effect cannot be set up Within the Engagement Range of any Enemy Unit.",
+            "es": "Resuelve el efecto PLACE (6). Las miniaturas colocadas mediante este efecto no pueden colocarse dentro del Alcance de Enfrentamiento de ninguna unidad enemiga."
+          }
+        },
+        {
+          "name": "Devastating Charge",
+          "phase": "ASSAULT",
+          "type": "PASSIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "Immediately after this Unit completes a successful Charge, resolve the IMPACT (4) 4+ effect.",
+            "es": "Inmediatamente después de que esta unidad complete una Carga con éxito, resuelve el efecto IMPACT (4) 4+."
+          }
+        },
+        {
+          "name": "Shadow Strike",
+          "phase": "COMBAT",
+          "type": "ACTIVE",
+          "cost": 1,
+          "fromUpgrade": false,
+          "resource": "PE",
+          "text": {
+            "en": "All Enemy Units Engaged with this Unit suffer HITS 4 (1).",
+            "es": "Todas las unidades enemigas trabadas con esta unidad sufren HITS 4 (1)."
+          }
+        }
+      ]
     }
   ],
 
@@ -1436,6 +1563,32 @@
           "id": "4",
           "models": 4,
           "mineralCost": 210,
+          "supplyValue": 1
+        }
+      ],
+      "upgrades": []
+    },
+    {
+      "id": "protoss.entry.zeratul",
+      "seedId": 4310,
+      "cardId": "protoss.card.zeratul",
+      "race": "PROTOSS",
+      "name": "Zeratul",
+      "tags": [
+        "PROTOSS"
+      ],
+      "slotType": "HERO",
+      "combatRole": {
+        "es": "Sin confirmar",
+        "en": "Unconfirmed"
+      },
+      "unique": true,
+      "summoned": false,
+      "compositions": [
+        {
+          "id": "1",
+          "models": 1,
+          "mineralCost": 230,
           "supplyValue": 1
         }
       ],

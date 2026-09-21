@@ -34,8 +34,8 @@ describe('tournament lifecycle and permissions', () => {
     await send({ type: 'START' }); await send({ type: 'GENERATE' });
     await send({ type: 'PUBLISH_ROUND', acceptWarning: false }); await send({ type: 'START_ROUND' });
     const matchId = t.rounds[0]!.matches[0]!.id;
-    await expect(send({ type: 'RESULT', matchId, vp: [12, 2], end: 'NORMAL', winner: null, rosterIds: [randomUUID(), null], reason: '' })).rejects.toMatchObject({ code: 'ROSTER_SELECTION' });
-    await send({ type: 'RESULT', matchId, vp: [12, 2], end: 'NORMAL', winner: null, rosterIds: [null, null], reason: '' });
+    await expect(send({ type: 'RESULT', missionId: t.catalogs.ZERG.missionCards.find((m) => m.scale === t.config.scale)!.id, matchId, vp: [12, 2], end: 'NORMAL', winner: null, rosterIds: [randomUUID(), null], reason: '' })).rejects.toMatchObject({ code: 'ROSTER_SELECTION' });
+    await send({ type: 'RESULT', missionId: t.catalogs.ZERG.missionCards.find((m) => m.scale === t.config.scale)!.id, matchId, vp: [12, 2], end: 'NORMAL', winner: null, rosterIds: [null, null], reason: '' });
     await send({ type: 'CLOSE_ROUND' }); await send({ type: 'COMPLETE' });
     expect(t.status).toBe('COMPLETED');
     expect(t.players.every((p) => p.rosters.length === 0)).toBe(true);
@@ -49,7 +49,7 @@ describe('tournament lifecycle and permissions', () => {
     await expect(send({ type: 'START' })).rejects.toMatchObject({ code: 'PLAYERS_NOT_READY' });
     t.status = 'IN_PROGRESS';
     await send({ type: 'GENERATE' }); await send({ type: 'PUBLISH_ROUND', acceptWarning: false }); await send({ type: 'START_ROUND' });
-    await expect(send({ type: 'RESULT', matchId: t.rounds[0]!.matches[0]!.id, vp: [12, 2], end: 'NORMAL', winner: null, rosterIds: [null, null], reason: '' })).rejects.toMatchObject({ code: 'ROSTER_SELECTION' });
+    await expect(send({ type: 'RESULT', missionId: t.catalogs.ZERG.missionCards.find((m) => m.scale === t.config.scale)!.id, matchId: t.rounds[0]!.matches[0]!.id, vp: [12, 2], end: 'NORMAL', winner: null, rosterIds: [null, null], reason: '' })).rejects.toMatchObject({ code: 'ROSTER_SELECTION' });
   });
   it('lets the owner run a tournament with guests who have no platform accounts', async () => {
     const t = createTournament({ ...tournamentConfig, capacity: 2, rounds: 1, registrationMode: 'INVITE_ONLY' }, owner, now);
@@ -72,7 +72,7 @@ describe('tournament lifecycle and permissions', () => {
     await expect(send({ type: 'ADD_GUEST', name: 'Late', race: 'TERRAN' })).rejects.toMatchObject({ code: 'TOURNAMENT_STATE' });
     await send({ type: 'PUBLISH_ROUND', acceptWarning: false }); await send({ type: 'START_ROUND' });
     const m = t.rounds[0]!.matches[0]!;
-    await send({ type: 'RESULT', matchId: m.id, vp: [12, 2], end: 'NORMAL', winner: null, reason: '', rosterIds: m.players.map((id) => t.players.find((p) => p.id === id)!.rosters[0]!.id) as [string, string] });
+    await send({ type: 'RESULT', missionId: t.catalogs.ZERG.missionCards.find((m) => m.scale === t.config.scale)!.id, matchId: m.id, vp: [12, 2], end: 'NORMAL', winner: null, reason: '', rosterIds: m.players.map((id) => t.players.find((p) => p.id === id)!.rosters[0]!.id) as [string, string] });
     await send({ type: 'CLOSE_ROUND' }); await send({ type: 'COMPLETE' });
     expect(t.status).toBe('COMPLETED');
   });
@@ -116,8 +116,8 @@ describe('tournament lifecycle and permissions', () => {
     expect(publicTournament(t, a.id, now).players.every((p) => p.rosters.length === 1)).toBe(true);
     const match = t.rounds[0]!.matches[0]!;
     const rosterIds = match.players.map((id) => t.players.find((p) => p.id === id)!.rosters[0]!.id) as [string, string];
-    await send({ type: 'RESULT', matchId: match.id, vp: [12, 10], end: 'NORMAL', winner: null, rosterIds, reason: '' }, a);
-    await expect(send({ type: 'RESULT', matchId: match.id, vp: [0, 10], end: 'NORMAL', winner: null, rosterIds, reason: '' }, b)).rejects.toMatchObject({ code: 'RESULT_EXISTS' });
+    await send({ type: 'RESULT', missionId: t.catalogs.ZERG.missionCards.find((m) => m.scale === t.config.scale)!.id, matchId: match.id, vp: [12, 10], end: 'NORMAL', winner: null, rosterIds, reason: '' }, a);
+    await expect(send({ type: 'RESULT', missionId: t.catalogs.ZERG.missionCards.find((m) => m.scale === t.config.scale)!.id, matchId: match.id, vp: [0, 10], end: 'NORMAL', winner: null, rosterIds, reason: '' }, b)).rejects.toMatchObject({ code: 'RESULT_EXISTS' });
     await send({ type: 'CLOSE_ROUND' }); await send({ type: 'COMPLETE' });
     expect(t.status).toBe('COMPLETED');
     await expect(send({ type: 'ROSTER', listId: randomUUID(), slot: 1 }, a)).rejects.toMatchObject({ code: 'TOURNAMENT_STATE' });
@@ -174,7 +174,7 @@ describe('tournament lifecycle and permissions', () => {
     for (const who of [owner, a]) { await send({ type: 'JOIN', race: 'TERRAN' }, who); await send({ type: 'CHECK_IN', playerId: who.id, checkedIn: true }); }
     await send({ type: 'START' }); await send({ type: 'GENERATE' }); await send({ type: 'PUBLISH_ROUND', acceptWarning: false }); await send({ type: 'START_ROUND' });
     const matchId = t.rounds[0]!.matches[0]!.id;
-    await send({ type: 'RESULT', matchId, vp: [10, 0], end: 'NORMAL', winner: null, rosterIds: [null, null], reason: '' });
+    await send({ type: 'RESULT', missionId: t.catalogs.ZERG.missionCards.find((m) => m.scale === t.config.scale)!.id, matchId, vp: [10, 0], end: 'NORMAL', winner: null, rosterIds: [null, null], reason: '' });
     await expect(send({ type: 'RESOLVE', matchId, vp: [10, 1], end: 'NORMAL', winner: null, reason: 'Score correction' }, a)).rejects.toMatchObject({ status: 403 });
     await send({ type: 'RESOLVE', matchId, vp: [10, 1], end: 'NORMAL', winner: null, reason: 'Score correction' });
     expect(t.rounds[0]!.matches[0]!.result?.vp).toEqual([10, 1]);

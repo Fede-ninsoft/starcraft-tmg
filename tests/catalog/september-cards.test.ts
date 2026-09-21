@@ -4,6 +4,21 @@ import { entryMineralCost, computeCosts } from '@/engine/costing';
 import { getEligibleUnits } from '@/engine/eligibility';
 
 describe('Cartas v1.06.26 y capturas recibidas el 21 de septiembre', () => {
+  it('incluye Zeratul como héroe único de 230 minerales sin mejoras', () => {
+    const index = indexFor('PROTOSS');
+    const unit = index.unitEntries.get('protoss.entry.zeratul')!;
+    expect(unit).toMatchObject({ slotType: 'HERO', unique: true, tags: ['PROTOSS'], upgrades: [], compositions: [{ id: '1', models: 1, mineralCost: 230, supplyValue: 1 }] });
+    const card = index.unitCards.get(unit.cardId)!;
+    expect(card.baseSize).toBe(index.unitCards.get('protoss.card.artanis')!.baseSize);
+    expect(card.imageRefFront).toBe('cards/protoss/unit-zeratul-front.webp');
+    expect(card.imageRefBack).toBeUndefined();
+    expect(card.weapons[0]).toMatchObject({ name: 'Master Warp Blade', rateOfAttack: '4', damage: '2', keywords: ['INSTANT'] });
+    expect(card.abilities).toHaveLength(7);
+    const list = emptyList({ race: 'PROTOSS', factionCardId: 'protoss.faction.nerazim' });
+    expect(getEligibleUnits(list, index).find(u => u.entry.id === unit.id)?.status).toBe('available');
+    expect(getEligibleUnits({ ...list, entries: [entry(unit.id, '1')] }, index).find(u => u.entry.id === unit.id)?.constraint).toBe('UNIQUE_ALREADY_INCLUDED');
+  });
+
   it('recluta Watchers como Core Nerazim sin heredar armas o mejoras de Adept', () => {
     const index = indexFor('PROTOSS');
     const unit = index.unitEntries.get('protoss.entry.nerazim_watchers')!;

@@ -20,11 +20,11 @@ El Ravager pequeño de la captura muestra **220 con las tres mejoras activadas**
 
 Las capturas de cartas de mando existentes coinciden con los costes guardados: Forge 30; Gate Chronoboosted 35; Gateway 25; Nexus 35; Observer 25; Academy 35; Armory 30; Barracks 25; Barracks (Proxy) 40; Barracks (Tech Lab) 45; Dropship 40. Las nuevas capturas `protoss-tactical-costs.png` y `terran-tactical-costs.png` confirman Robotics Facility 35, Void Seeker 40 y Factory (Tech Lab) 40. Las filas parcialmente cortadas no se han usado para inferir información ausente.
 
-## Pendiente: originales conservados, sin habilitar en el constructor
+## Zeratul incorporado tras confirmación del usuario
 
 | Elemento | Falta |
 | --- | --- |
-| Zeratul | Pendientes: rol, posibles mejoras e imagen del reverso. El usuario confirma que usa la misma peana que Artanis: **Ø 40 mm**, contrastado con `protoss.card.artanis`. La captura `zeratul-hero.png` confirma **HERO, UNIQUE, 230 minerales, 1 miniatura y 1 suministro**. Anverso recibido: escudo 3, velocidad 7, armadura 5+, evasión 5+, HP 5, tamaño 2; BIOLOGICAL, PSIONIC, GROUND; etiqueta PROTOSS. |
+| Zeratul | Habilitado como HERO y UNIQUE, sin mejoras por confirmación expresa del usuario. Pendientes solo el rol (registrado como «Sin confirmar») y la imagen del reverso; la lupa muestra el anverso original. El usuario confirma que usa la misma peana que Artanis: **Ø 40 mm**, contrastado con `protoss.card.artanis`. La captura `zeratul-hero.png` confirma **HERO, UNIQUE, 230 minerales, 1 miniatura y 1 suministro**. Anverso recibido: escudo 3, velocidad 7, armadura 5+, evasión 5+, HP 5, tamaño 2; BIOLOGICAL, PSIONIC, GROUND; etiqueta PROTOSS. |
 
 No se han asignado costes cero ni costes de unidades/cartas parecidas a los elementos pendientes. Los originales permiten completar la transcripción cuando se reciban los datos ausentes. No se han inventado imágenes de reversos.
 
@@ -34,6 +34,6 @@ Nerazim Watchers está habilitada tras recibir `nerazim-watchers-core.png` y la 
 
 ## Integridad y compatibilidad
 
-Se conservan todos los IDs y seedId anteriores. Nuevos IDs numéricos: Nerazim 1303; Cocoon 2110; Ravager 4113 y mejoras 5181–5183; Siege Tank 4208 y mejoras 5251–5254; Immortal 4308 y mejoras 5341–5345; Nerazim Watchers 4309; Robotics Facility 2311; Void Seeker 2312; Factory (Tech Lab) 2211. Versión de contenido: 2026.09.21.2.
+Se conservan todos los IDs y seedId anteriores. Nuevos IDs numéricos: Nerazim 1303; Cocoon 2110; Ravager 4113 y mejoras 5181–5183; Siege Tank 4208 y mejoras 5251–5254; Immortal 4308 y mejoras 5341–5345; Nerazim Watchers 4309; Robotics Facility 2311; Void Seeker 2312; Factory (Tech Lab) 2211. Zeratul: seedId 4310. Versión de contenido: 2026.09.21.3.
 
 Las imágenes activas se incluyen en el manifiesto de assets con SHA-256 del original. `cards:generate` admite los adjuntos de imagen además de los PDFs. Las pruebas verifican referencias, archivos, orientación, costes y reglas de disponibilidad.

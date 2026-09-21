@@ -86,6 +86,11 @@
       "path": "docs/sources/2026-09-21/WhatsApp Image 2026-09-21 at 16.11.20.jpeg",
       "sha256": "a8eec72d9de7dd5ead376ed6c842e942ed8f56b396bb2df5541bd67d89e6feda",
       "format": "image"
+    },
+    "attachment-unit-zeratul-front": {
+      "path": "docs/sources/2026-09-21/WhatsApp Image 2026-09-21 at 16.11.22.jpeg",
+      "sha256": "f1b658a9f33f5093fcdcc2050a88d51d70992b542ea972fb04d4dea39fdcae92",
+      "format": "image"
     }
   },
   "layouts": {
@@ -267,6 +272,12 @@
       "source": "attachment-tactical-factory-tech-lab",
       "layout": "attachment",
       "output": "cards/terran/tactical-factory-tech-lab.webp"
+    },
+    {
+      "id": "protoss.unit-zeratul-front",
+      "source": "attachment-unit-zeratul-front",
+      "layout": "attachment",
+      "output": "cards/protoss/unit-zeratul-front.webp"
     }
   ]
 }

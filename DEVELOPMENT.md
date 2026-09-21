@@ -13,6 +13,11 @@ el catálogo y la interfaz claramente separados y verificables.
 
 ## Puesta en marcha
 
+La base de datos es obligatoria en el entorno local. Siempre que se levante
+`localhost`, deben estar activos los tres servicios del entorno: MariaDB, la
+API y Vite. No se considera que el entorno local esté listo si solo responde
+la interfaz web.
+
 ```bash
 npm install  
 ```
@@ -26,8 +31,13 @@ npm run dev:server
 npm run dev
 ```
 
-Vite mostrará la URL local de desarrollo. Para probar una compilación de
-producción:
+Antes de empezar a trabajar, comprueba que MariaDB escucha en el puerto
+configurado por `DATABASE_URL`, que `http://localhost:3001/api/health` responde
+correctamente y que Vite muestra la aplicación en `http://localhost:5173`.
+Si la base de datos está vacía o hay migraciones nuevas, ejecuta
+`npm run db:migrate` antes de arrancar la API.
+
+Para probar una compilación de producción:
 
 ```bash
 npm run build

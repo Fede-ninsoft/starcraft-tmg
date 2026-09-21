@@ -154,7 +154,7 @@ exportación.
 |---|---|
 | Zerg | 13 unidades, 2 facciones, 10 tácticas y 2 Creep Cards; fases revisadas |
 | Terran | 8 unidades, 2 facciones y 11 tácticas; fases revisadas |
-| Protoss | 9 unidades, 3 facciones y 12 tácticas; fases revisadas |
+| Protoss | 10 unidades, 3 facciones y 12 tácticas; fases revisadas |
 
 Escenarios: 5 misiones × 2 escalas y 10 despliegues, comunes a las tres razas.
 

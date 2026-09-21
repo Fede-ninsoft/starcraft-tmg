@@ -30,6 +30,7 @@ describe('Catálogo Protoss', () => {
       'Sentry',
       'Stalker',
       'Zealot',
+      'Zeratul',
     ]);
   });
 

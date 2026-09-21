@@ -63,7 +63,7 @@ describe('assets de cartas originales', () => {
       }
       for (const card of catalog.unitCards) {
         expect(card.imageRefFront, card.id).toBeTruthy();
-        if (card.id !== 'protoss.card.nerazim_watchers') {
+        if (!['protoss.card.nerazim_watchers', 'protoss.card.zeratul'].includes(card.id)) {
           expect(card.imageRefBack, card.id).toBeTruthy();
         }
         catalogRefs.push(card.imageRefFront!);
@@ -82,7 +82,7 @@ describe('assets de cartas originales', () => {
     }
 
     const generated = manifestOutputs();
-    expect(generated).toHaveLength(121);
+    expect(generated).toHaveLength(122);
     expect(new Set(generated).size).toBe(generated.length);
     expect(new Set(catalogRefs)).toEqual(new Set(generated));
     for (const ref of generated) {

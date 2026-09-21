@@ -130,7 +130,7 @@ describe.skipIf(process.env.TEST_TOURNAMENT_DATABASE !== '1')('tournament HTTP +
     await send({ type: 'START' }); await send({ type: 'GENERATE' }); await send({ type: 'PUBLISH_ROUND', acceptWarning: false }); await send({ type: 'START_ROUND' });
     const m = t.rounds[0]!.matches[0]!;
     const rosterIds = m.players.map((id) => t.players.find((p) => p.id === id)!.rosters[0]!.id) as [string, string];
-    const result: TournamentCommand = { type: 'RESULT', matchId: m.id, vp: [10, 0], end: 'NORMAL', winner: null, rosterIds, reason: '' };
+    const result: TournamentCommand = { type: 'RESULT', missionId: t.availableMissions![0]!.id, matchId: m.id, vp: [10, 0], end: 'NORMAL', winner: null, rosterIds, reason: '' };
     const results = await Promise.all([command(t, result, 1), command(t, result, 2)]);
     expect(results.map((r) => r.status).sort()).toEqual([200, 409]);
     t = ((await (await fetch(`${base}/${t.id}`, { headers: headers(0) })).json()) as TournamentResponse).tournament;
