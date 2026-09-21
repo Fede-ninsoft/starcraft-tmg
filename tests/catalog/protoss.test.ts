@@ -24,6 +24,7 @@ describe('Catálogo Protoss', () => {
       'Adept',
       'Artanis',
       'Immortal',
+      'Nerazim Watchers (Adept)',
       'Praetor Guard (Zealot)',
       'Pylon',
       'Sentry',
@@ -174,7 +175,7 @@ describe('Catálogo Protoss', () => {
      * solo la carta de facción Khalai lo pone en mesa (Pylon Warp-In), así que
      * bajo Daelaam no hay forma de invocarlo ni siquiera como referencia.
      */
-    it('el resto de unidades es elegible con ambas facciones', () => {
+    it('las unidades con subfacción requieren la etiqueta correspondiente', () => {
       for (const faction of ['protoss.faction.khalai', 'protoss.faction.daelaam']) {
         const bloqueadasPorEtiqueta = getEligibleUnits(
           protossList(faction),
@@ -185,8 +186,8 @@ describe('Catálogo Protoss', () => {
 
         expect(bloqueadasPorEtiqueta).toEqual(
           faction === 'protoss.faction.daelaam'
-            ? ['protoss.entry.praetor_guard', 'protoss.entry.pylon']
-            : [],
+            ? ['protoss.entry.praetor_guard', 'protoss.entry.pylon', 'protoss.entry.nerazim_watchers']
+            : ['protoss.entry.nerazim_watchers'],
         );
       }
     });

@@ -153,8 +153,8 @@ exportación.
 | Raza | Estado |
 |---|---|
 | Zerg | 13 unidades, 2 facciones, 10 tácticas y 2 Creep Cards; fases revisadas |
-| Terran | 8 unidades, 2 facciones y 10 tácticas; fases revisadas |
-| Protoss | 8 unidades, 3 facciones y 10 tácticas; fases revisadas |
+| Terran | 8 unidades, 2 facciones y 11 tácticas; fases revisadas |
+| Protoss | 9 unidades, 3 facciones y 12 tácticas; fases revisadas |
 
 Escenarios: 5 misiones × 2 escalas y 10 despliegues, comunes a las tres razas.
 
@@ -163,8 +163,9 @@ cartas, que no los incluyen. Están pendientes de una segunda verificación
 humana; ver `docs/00-PLAN-DE-TRABAJO.md`.
 
 La ampliación del 21 de septiembre incorpora Ravager, Siege Tank, Immortal,
-Nerazim y Cocoon, con costes contrastados con las capturas aportadas. Los
-adjuntos y los cinco elementos pendientes de datos están documentados en
+Nerazim, Nerazim Watchers, Cocoon, Robotics Facility, Void Seeker y Factory
+(Tech Lab), con costes contrastados con las capturas aportadas. Los
+adjuntos y los datos pendientes de Zeratul y del reverso de Watchers están documentados en
 [`docs/catalog-import-2026-09-21.md`](docs/catalog-import-2026-09-21.md).
 
 La aplicación y la hoja PDF de lista muestran la fase de uso de habilidades y

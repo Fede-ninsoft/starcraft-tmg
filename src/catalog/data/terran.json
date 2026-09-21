@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "contentVersion": "2026.09.21.1",
+  "contentVersion": "2026.09.21.2",
   "sourceRef": "StarCraft-TMG_EN.pdf §12.10/§12.11 + StarCraft-Terran-P2P-Card-Sheets-A4_EN.pdf + cartas v1.06.26 y capturas de costes aportadas el 2026-09-21 (docs/catalog-import-2026-09-21.md)",
   "race": "TERRAN",
 
@@ -351,6 +351,47 @@
       "resourcePerRound": 1,
       "abilities": [{ "name": "Strap In!", "phase": "MOVEMENT", "type": "ACTIVE", "cost": 1, "fromUpgrade": false, "text": { "es": "La unidad terrestre activa y no trabada vuelve a Reservas en vez de realizar una acción.", "en": "The active, Unengaged Ground Unit is returned to Reserves instead of performing an action." } }, { "name": "Ready for Dust-Off", "phase": "MOVEMENT", "type": "ACTIVE", "cost": 1, "fromUpgrade": false, "text": { "es": "Coloca un indicador a más de 10\" de enemigos; al final de la ronda puedes desplegar una unidad terrestre desde Reservas en contacto con él.", "en": "Set a Faction Indicator more than 10\" from Enemy models. At the End of the Round, you may Deploy one Ground Unit from Reserves in base-to-base contact with it." } }],
       "imageRef": "cards/terran/tactical-dropship.webp"
+    },
+    {
+      "id": "terran.tactical.factory_tech_lab",
+      "seedId": 2211,
+      "race": "TERRAN",
+      "name": "Factory (Tech Lab)",
+      "tags": [
+        "TERRAN"
+      ],
+      "vespeneCost": 40,
+      "slotsGranted": {
+        "ELITE": 2
+      },
+      "unique": true,
+      "resource": "CP",
+      "resourcePerRound": 1,
+      "abilities": [
+        {
+          "name": "Field Repair",
+          "phase": "MOVEMENT",
+          "type": "ACTIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "The active Mechanical Unit resolves the HEAL (2) effect.",
+            "es": "La unidad Mecánica activa resuelve el efecto HEAL (2)."
+          }
+        },
+        {
+          "name": "Pound 'Em Flat!",
+          "phase": "ASSAULT",
+          "type": "ACTIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "If the active Mechanical Unit has the Stationary Status, its first Ranged Weapon used gains PRECISION (2).",
+            "es": "Si la unidad Mecánica activa tiene el estado Stationary, su primera arma a distancia utilizada gana PRECISION (2)."
+          }
+        }
+      ],
+      "imageRef": "cards/terran/tactical-factory-tech-lab.webp"
     }
   ],
 

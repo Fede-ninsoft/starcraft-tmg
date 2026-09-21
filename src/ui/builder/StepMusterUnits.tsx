@@ -68,7 +68,7 @@ export function StepMusterUnits() {
                   <span className="card__name">
                     <span className="card__name-with-preview">
                       {entry.name} <UniqueChip unique={entry.unique} />
-                      {card?.imageRefFront && card.imageRefBack && (
+                      {card?.imageRefFront && (
                         <CardPreviewButton
                           cardName={card.name}
                           onOpen={() => setPreviewCard(card)}
@@ -136,7 +136,7 @@ export function StepMusterUnits() {
                     <span className="card__name">
                       <span className="card__name-with-preview">
                         {entry.name}
-                        {card?.imageRefFront && card.imageRefBack && (
+                        {card?.imageRefFront && (
                           <CardPreviewButton
                             cardName={card.name}
                             onOpen={() => setPreviewCard(card)}
@@ -165,7 +165,7 @@ export function StepMusterUnits() {
       </div>
 
       <Roster />
-      {previewCard?.imageRefFront && previewCard.imageRefBack && (
+      {previewCard?.imageRefFront && (
         <CardImageModal
           title={previewCard.name}
           images={[
@@ -174,10 +174,10 @@ export function StepMusterUnits() {
               alt: t('cardFront', { name: previewCard.name }),
             },
             {
-              src: previewCard.imageRefBack,
+              src: previewCard.imageRefBack ?? '',
               alt: t('cardBack', { name: previewCard.name }),
             },
-          ]}
+          ].filter((image) => image.src)}
           onClose={() => setPreviewCard(null)}
         />
       )}

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "contentVersion": "2026.09.21.1",
+  "contentVersion": "2026.09.21.2",
   "sourceRef": "StarCraft-TMG_EN.pdf §12.10/§12.11 (costes) + StarCraft-Protoss-P2P-Card-Sheets-A4_EN.pdf (perfiles, etiquetas, espacios) + cartas v1.06.26 y capturas de costes aportadas el 2026-09-21 (docs/catalog-import-2026-09-21.md)",
   "race": "PROTOSS",
 
@@ -373,6 +373,78 @@
       "resourcePerRound": 1,
       "abilities": [{ "name": "Weapons of the Firstborn", "phase": "ASSAULT", "type": "ACTIVE", "cost": 1, "fromUpgrade": false, "text": { "es": "La primera arma a distancia que use la unidad terrestre activa gana BUFF Range (4).", "en": "The active Ground Unit's first Ranged Weapon used gains BUFF Range (4)." } }, { "name": "Veil of Shadows", "phase": "ANY", "type": "REACTION", "cost": 1, "fromUpgrade": false, "text": { "es": "Después de que una unidad amiga resuelva PLACE, esa unidad resuelve HEAL (2).", "en": "Use after a Friendly Unit resolves a PLACE effect. That Unit resolves HEAL (2)." } }],
       "imageRef": "cards/protoss/tactical-twilight-council.webp"
+    },
+    {
+      "id": "protoss.tactical.robotics_facility",
+      "seedId": 2311,
+      "race": "PROTOSS",
+      "name": "Robotics Facility",
+      "tags": [
+        "PROTOSS"
+      ],
+      "vespeneCost": 35,
+      "slotsGranted": {
+        "ELITE": 2
+      },
+      "unique": false,
+      "resource": "PE",
+      "resourcePerRound": 1,
+      "abilities": [
+        {
+          "name": "Plasma Shields",
+          "phase": "ANY",
+          "type": "REACTION",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "Use before a Friendly Mechanical Ground Unit makes an Armour Roll. If this Unit has the Shielded Status, it gains TOUGH (1) and DODGE (1) for this roll.",
+            "es": "Úsala antes de que una unidad amiga Mecánica Terrestre haga una Tirada de Armadura. Si tiene el estado Shielded, gana TOUGH (1) y DODGE (1) para esta tirada."
+          }
+        }
+      ],
+      "imageRef": "cards/protoss/tactical-robotics-facility.webp"
+    },
+    {
+      "id": "protoss.tactical.void_seeker",
+      "seedId": 2312,
+      "race": "PROTOSS",
+      "name": "Void Seeker",
+      "tags": [
+        "PROTOSS",
+        "NERAZIM"
+      ],
+      "vespeneCost": 40,
+      "slotsGranted": {
+        "CORE": 1
+      },
+      "unique": true,
+      "resource": "PE",
+      "resourcePerRound": 1,
+      "abilities": [
+        {
+          "name": "Personal Transport",
+          "phase": "MOVEMENT",
+          "type": "ACTIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "Instead of performing an action, the active, Unengaged Ground Unit is returned to Reserves. Then, it performs a Deploy action.",
+            "es": "En lugar de realizar una acción, la unidad Terrestre activa y no trabada vuelve a Reservas. Después realiza una acción de Despliegue."
+          }
+        },
+        {
+          "name": "Anakh Su'n",
+          "phase": "MOVEMENT",
+          "type": "ACTIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "This Unit gains the HIDDEN Status until it performs another action.",
+            "es": "Esta unidad gana el estado HIDDEN hasta que realice otra acción."
+          }
+        }
+      ],
+      "imageRef": "cards/protoss/tactical-void-seeker.webp"
     }
   ],
 
@@ -852,6 +924,102 @@
       ],
       "imageRefFront": "cards/protoss/unit-immortal-front.webp",
       "imageRefBack": "cards/protoss/unit-immortal-back.webp"
+    },
+    {
+      "id": "protoss.card.nerazim_watchers",
+      "race": "PROTOSS",
+      "name": "Nerazim Watchers (Adept)",
+      "baseSize": "Ø 40MM",
+      "combatTags": [
+        "BIOLOGICAL",
+        "LIGHT",
+        "GROUND"
+      ],
+      "profile": {
+        "size": "2",
+        "hitPoints": "3",
+        "evade": "5+",
+        "armour": "5+",
+        "speed": "5/8",
+        "shield": "2"
+      },
+      "weapons": [
+        {
+          "name": "Glaive Cannon",
+          "phase": "ASSAULT",
+          "range": "8",
+          "target": "All",
+          "rateOfAttack": "3",
+          "hit": "3+",
+          "surgeType": "Light",
+          "surgeDice": "D3+1",
+          "damage": "1",
+          "keywords": [
+            "ANTI-EVADE (1)",
+            "PINPOINT"
+          ]
+        },
+        {
+          "name": "Strike",
+          "phase": "COMBAT",
+          "range": "E",
+          "target": "Ground",
+          "rateOfAttack": "1",
+          "hit": "5+",
+          "surgeType": null,
+          "surgeDice": null,
+          "damage": "1",
+          "keywords": []
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Path of Shadows",
+          "phase": "ANY",
+          "type": "ACTIVE",
+          "cost": 1,
+          "fromUpgrade": false,
+          "text": {
+            "en": "This Unit gains HIDDEN Status until it performs another action.",
+            "es": "Esta unidad gana el estado HIDDEN hasta que realice otra acción."
+          }
+        },
+        {
+          "name": "Nerazim Farsight",
+          "phase": "ANY",
+          "type": "PASSIVE",
+          "cost": null,
+          "fromUpgrade": false,
+          "text": {
+            "en": "While Enemy Units are Within 6\" of a Shade token, they lose HIDDEN Status.",
+            "es": "Mientras las unidades enemigas estén a menos de 6\" de una ficha Shade, pierden el estado HIDDEN."
+          }
+        },
+        {
+          "name": "Psionic Transfer",
+          "phase": "MOVEMENT",
+          "type": "ACTIVE",
+          "cost": 1,
+          "fromUpgrade": false,
+          "text": {
+            "es": "Coloca una ficha Shade completamente a menos de 12\" de cualquier miniatura de esta unidad. Al final de la ronda, el jugador que la controla puede colocar todas las miniaturas de esta unidad en coherencia, tratando la ficha Shade como la miniatura líder. La ficha Shade tiene DISPLACEMENT.",
+            "en": "Set a Shade token Wholly Within 12\" of any model in this Unit. At the End of the Round, the controlling player may set all models of this Unit in Coherency, treating the Shade token as the Leading Model. The Shade token has DISPLACEMENT."
+          }
+        }
+      ],
+      "supplyProfile": [
+        {
+          "minModels": 1,
+          "maxModels": 2,
+          "supply": 0
+        },
+        {
+          "minModels": 3,
+          "maxModels": 4,
+          "supply": 1
+        }
+      ],
+      "imageRefFront": "cards/protoss/unit-nerazim-watchers-front.webp"
     }
   ],
 
@@ -1245,6 +1413,33 @@
           ]
         }
       ]
+    },
+    {
+      "id": "protoss.entry.nerazim_watchers",
+      "seedId": 4309,
+      "cardId": "protoss.card.nerazim_watchers",
+      "race": "PROTOSS",
+      "name": "Nerazim Watchers (Adept)",
+      "tags": [
+        "PROTOSS",
+        "NERAZIM"
+      ],
+      "slotType": "CORE",
+      "combatRole": {
+        "es": "Sin confirmar",
+        "en": "Unconfirmed"
+      },
+      "unique": false,
+      "summoned": false,
+      "compositions": [
+        {
+          "id": "4",
+          "models": 4,
+          "mineralCost": 210,
+          "supplyValue": 1
+        }
+      ],
+      "upgrades": []
     }
   ]
 }

@@ -11,27 +11,29 @@ Fuente: 13 imágenes de cartas v1.06.26 y 8 adjuntos de portapapeles aportados p
 | Immortal | Ambos lados, perfil, armas, habilidades y cinco mejoras. ELITE, Tank, peana 100 mm. 280 minerales, 2 suministro. Cada mejora: 20. Los Phase Disruptors sustituyen por separado al Photon Disruptor correspondiente y el derecho conserva SIDEARM. |
 | Nerazim | Carta de facción, etiquetas PROTOSS/NERAZIM, 2 CORE, 3 ELITE, 1 HERO, +1 PE y sus dos habilidades. |
 | Cocoon | Táctica única, 30 gas, 1 ELITE, sin generación de BM. Spawn Larva y Ravager Morph en Movimiento. |
+| Nerazim Watchers (Adept) | CORE, 4 miniaturas, 210 minerales, 1 suministro. Sin mejoras y peana igual a Adept (40 mm), por confirmación expresa del usuario. Perfil, armas y habilidades del anverso. Rol pendiente, registrado como «Sin confirmar». La lupa muestra el anverso real disponible. |
+| Robotics Facility | 35 gas, 2 ELITE, +1 PE, no única. Plasma Shields: reacción antes de armadura de una unidad Mechanical Ground; si tiene Shielded, gana TOUGH (1) y DODGE (1). Imagen original completa. |
+| Void Seeker | 40 gas, 1 CORE, +1 PE, única, PROTOSS/NERAZIM. Personal Transport y Anakh Su'n en Movimiento. Imagen original completa. |
+| Factory (Tech Lab) | 40 gas, 2 ELITE, +1 CP, única. Field Repair en Movimiento y Pound 'Em Flat! en Asalto. Imagen original completa. |
 
 El Ravager pequeño de la captura muestra **220 con las tres mejoras activadas**: 220 − 20 − 20 − 20 = **160 de base**. El grande muestra 270 sin mejoras. No se ha interpretado el total mejorado como coste base.
 
-Las capturas de cartas de mando existentes coinciden con los costes guardados: Forge 30; Gate Chronoboosted 35; Gateway 25; Nexus 35; Observer 25; Academy 35; Armory 30; Barracks 25; Barracks (Proxy) 40; Barracks (Tech Lab) 45; Dropship 40. No muestran las nuevas tácticas Factory (Tech Lab), Robotics Facility o Void Seeker. Las filas parcialmente cortadas no se han usado para inferir información ausente.
+Las capturas de cartas de mando existentes coinciden con los costes guardados: Forge 30; Gate Chronoboosted 35; Gateway 25; Nexus 35; Observer 25; Academy 35; Armory 30; Barracks 25; Barracks (Proxy) 40; Barracks (Tech Lab) 45; Dropship 40. Las nuevas capturas `protoss-tactical-costs.png` y `terran-tactical-costs.png` confirman Robotics Facility 35, Void Seeker 40 y Factory (Tech Lab) 40. Las filas parcialmente cortadas no se han usado para inferir información ausente.
 
 ## Pendiente: originales conservados, sin habilitar en el constructor
 
 | Elemento | Falta |
 | --- | --- |
 | Zeratul | Reverso (slot, peana, rol y posibles mejoras). Coste confirmado por la captura adicional: **230 minerales, 1 miniatura, 1 suministro**, sin mejoras seleccionadas visibles. Anverso recibido: único; escudo 3, velocidad 7, armadura 5+, evasión 5+, HP 5, tamaño 2; BIOLOGICAL, PSIONIC, GROUND; etiqueta PROTOSS. |
-| Nerazim Watchers (Adept) | Reverso (slot, rol, peana y posibles mejoras). Coste y composición confirmados por la captura adicional: **210 minerales, 4 miniaturas, 1 suministro**, sin mejoras seleccionadas visibles. Anverso recibido: escudo 2, velocidad 5/8, armadura/evasión 5+, HP 3, tamaño 2; suministro 0 para 1–2 miniaturas y 1 para 3–4; PROTOSS/NERAZIM. No debe confundirse la tabla de supervivientes/suministro con las composiciones reclutables. |
-| Factory (Tech Lab) | Coste en gas. Se conocen UNIQUE, 2 ELITE, +1 CP, Field Repair (HEAL (2), Mechanical, Movimiento) y Pound 'Em Flat! (Mechanical Stationary, primera arma a distancia PRECISION (2), Asalto). |
-| Robotics Facility | Coste en gas. Se conocen 2 ELITE, +1 PE y Plasma Shields (reacción antes de armadura, Mechanical Ground Shielded: TOUGH (1) y DODGE (1)). No aparece UNIQUE. |
-| Void Seeker | Coste en gas. Se conocen UNIQUE, PROTOSS/NERAZIM, 1 CORE, +1 PE, Personal Transport y Anakh Su'n en Movimiento. |
 
 No se han asignado costes cero ni costes de unidades/cartas parecidas a los elementos pendientes. Los originales permiten completar la transcripción cuando se reciban los datos ausentes. No se han inventado imágenes de reversos.
 
 La captura adicional `zeratul-nerazim-watchers-costs.png` confirma ambos costes y coincide con las características de los anversos. Usa el nombre «Void Blink» para la habilidad que el anverso oficial de Zeratul denomina «Blink»; se conserva como referencia el nombre impreso en la carta. La etiqueta SMALL de la captura identifica la composición y no determina la peana, el rol o el slot. La ausencia de botones de mejoras en la captura no sustituye la comprobación de los reversos.
 
+Nerazim Watchers está habilitada tras recibir `nerazim-watchers-core.png` y la confirmación del usuario de que no tiene mejoras y usa la misma peana que Adept. Solo quedan por aportar su rol y la imagen de reverso; no afectan al cálculo de costes o a su disponibilidad. No se atribuye el rol de Adept a Watchers ni se reutiliza su reverso. Glaive Cannon tiene RoA 3 y PINPOINT, y Strike impacta a 5+, a diferencia de Adept. El suministro 0 para 1–2 supervivientes no se ofrece como una composición reclutable.
+
 ## Integridad y compatibilidad
 
-Se conservan todos los IDs y seedId anteriores. Nuevos IDs numéricos: Nerazim 1303; Cocoon 2110; Ravager 4113 y mejoras 5181–5183; Siege Tank 4208 y mejoras 5251–5254; Immortal 4308 y mejoras 5341–5345. Versión de contenido: 2026.09.21.1.
+Se conservan todos los IDs y seedId anteriores. Nuevos IDs numéricos: Nerazim 1303; Cocoon 2110; Ravager 4113 y mejoras 5181–5183; Siege Tank 4208 y mejoras 5251–5254; Immortal 4308 y mejoras 5341–5345; Nerazim Watchers 4309; Robotics Facility 2311; Void Seeker 2312; Factory (Tech Lab) 2211. Versión de contenido: 2026.09.21.2.
 
 Las imágenes activas se incluyen en el manifiesto de assets con SHA-256 del original. `cards:generate` admite los adjuntos de imagen además de los PDFs. Las pruebas verifican referencias, archivos, orientación, costes y reglas de disponibilidad.

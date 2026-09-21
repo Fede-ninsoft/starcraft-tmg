@@ -4,6 +4,29 @@ import { entryMineralCost, computeCosts } from '@/engine/costing';
 import { getEligibleUnits } from '@/engine/eligibility';
 
 describe('Cartas v1.06.26 y capturas recibidas el 21 de septiembre', () => {
+  it('recluta Watchers como Core Nerazim sin heredar armas o mejoras de Adept', () => {
+    const index = indexFor('PROTOSS');
+    const unit = index.unitEntries.get('protoss.entry.nerazim_watchers')!;
+    expect(unit).toMatchObject({ slotType: 'CORE', unique: false, upgrades: [], compositions: [{ id: '4', models: 4, mineralCost: 210, supplyValue: 1 }] });
+    const card = index.unitCards.get(unit.cardId)!;
+    expect(card.baseSize).toBe(index.unitCards.get('protoss.card.adept')!.baseSize);
+    expect(card.imageRefFront).toBe('cards/protoss/unit-nerazim-watchers-front.webp');
+    expect(card.imageRefBack).toBeUndefined();
+    expect(card.weapons[0]).toMatchObject({ rateOfAttack: '3', keywords: ['ANTI-EVADE (1)', 'PINPOINT'] });
+    expect(card.weapons[1]).toMatchObject({ hit: '5+' });
+    expect(card.abilities.map(a => a.name)).toEqual(['Path of Shadows', 'Nerazim Farsight', 'Psionic Transfer']);
+    const status = (factionCardId: string) => getEligibleUnits(emptyList({ race: 'PROTOSS', factionCardId }), index).find(u => u.entry.id === unit.id)?.status;
+    expect(status('protoss.faction.nerazim')).toBe('available');
+    expect(status('protoss.faction.khalai')).toBe('impossible');
+  });
+
+  it('incorpora costes, recursos, espacios y unicidad de las tres tácticas', () => {
+    const protoss = indexFor('PROTOSS');
+    expect(protoss.tacticalCards.get('protoss.tactical.robotics_facility')).toMatchObject({ vespeneCost: 35, slotsGranted: { ELITE: 2 }, unique: false, resource: 'PE', resourcePerRound: 1 });
+    expect(protoss.tacticalCards.get('protoss.tactical.void_seeker')).toMatchObject({ vespeneCost: 40, slotsGranted: { CORE: 1 }, unique: true, tags: ['PROTOSS', 'NERAZIM'], resource: 'PE', resourcePerRound: 1 });
+    expect(indexFor('TERRAN').tacticalCards.get('terran.tactical.factory_tech_lab')).toMatchObject({ vespeneCost: 40, slotsGranted: { ELITE: 2 }, unique: true, resource: 'CP', resourcePerRound: 1 });
+  });
+
   it('reproduce ambos Ravager de la captura sin contar dos veces las mejoras', () => {
     const index = indexFor('ZERG');
     const upgrades = ['bloated_bile_ducts', 'burrow_ambush', 'potent_bile'].map(upgradeId => ({ upgradeId, modelIndex: null }));

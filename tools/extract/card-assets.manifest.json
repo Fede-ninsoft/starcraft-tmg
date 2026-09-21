@@ -66,6 +66,26 @@
       "path": "docs/sources/2026-09-21/tactical-cocoon.jpeg",
       "sha256": "ed0f98d6ad961b1000f61d787720b17b44eccfdd2093bdc8ba4a8697bd5e08e8",
       "format": "image"
+    },
+    "attachment-unit-nerazim-watchers-front": {
+      "path": "docs/sources/2026-09-21/WhatsApp Image 2026-09-21 at 16.11.20 (2).jpeg",
+      "sha256": "62c16d78b63e609eb48a982c94dd1d8edd4954428fd45f2fbf7548a9aa7eeacc",
+      "format": "image"
+    },
+    "attachment-tactical-robotics-facility": {
+      "path": "docs/sources/2026-09-21/WhatsApp Image 2026-09-21 at 16.11.21 (1).jpeg",
+      "sha256": "1b4a02f88c672860ea47048aba7a08e2878b6ece2a09cbd657670b9995ff4bd2",
+      "format": "image"
+    },
+    "attachment-tactical-void-seeker": {
+      "path": "docs/sources/2026-09-21/WhatsApp Image 2026-09-21 at 16.11.21 (2).jpeg",
+      "sha256": "5b29baef8917aaa3e7f8fd7eda8a6621e1b6802ce8491337c49678d8b41c1925",
+      "format": "image"
+    },
+    "attachment-tactical-factory-tech-lab": {
+      "path": "docs/sources/2026-09-21/WhatsApp Image 2026-09-21 at 16.11.20.jpeg",
+      "sha256": "a8eec72d9de7dd5ead376ed6c842e942ed8f56b396bb2df5541bd67d89e6feda",
+      "format": "image"
     }
   },
   "layouts": {
@@ -223,6 +243,30 @@
       "source": "attachment-tactical-cocoon",
       "layout": "attachment",
       "output": "cards/zerg/tactical-cocoon.webp"
+    },
+    {
+      "id": "protoss.unit-nerazim-watchers-front",
+      "source": "attachment-unit-nerazim-watchers-front",
+      "layout": "attachment",
+      "output": "cards/protoss/unit-nerazim-watchers-front.webp"
+    },
+    {
+      "id": "protoss.tactical-robotics-facility",
+      "source": "attachment-tactical-robotics-facility",
+      "layout": "attachment",
+      "output": "cards/protoss/tactical-robotics-facility.webp"
+    },
+    {
+      "id": "protoss.tactical-void-seeker",
+      "source": "attachment-tactical-void-seeker",
+      "layout": "attachment",
+      "output": "cards/protoss/tactical-void-seeker.webp"
+    },
+    {
+      "id": "terran.tactical-factory-tech-lab",
+      "source": "attachment-tactical-factory-tech-lab",
+      "layout": "attachment",
+      "output": "cards/terran/tactical-factory-tech-lab.webp"
     }
   ]
 }

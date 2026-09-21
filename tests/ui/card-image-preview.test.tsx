@@ -1,9 +1,28 @@
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import '@/i18n/config';
 import { CardImageModal, CardPreviewButton } from '@/ui/common/CardImagePreview';
+import { StepMusterUnits } from '@/ui/builder/StepMusterUnits';
+import { useListStore } from '@/store/listStore';
+
+vi.mock('@/store/listStore', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/store/listStore')>();
+  const useStore = actual.useListStore;
+  return { ...actual, useListStore: Object.assign(
+    (selector?: (state: ReturnType<typeof useStore.getState>) => unknown) => selector ? selector(useStore.getState()) : useStore.getState(),
+    useStore,
+  ) };
+});
 
 describe('visor de carta original', () => {
+  it('ofrece la lupa de Watchers aunque solo exista el anverso', () => {
+    useListStore.getState().resetForRace('PROTOSS');
+    useListStore.getState().selectFactionCard('protoss.faction.nerazim');
+    const html = renderToStaticMarkup(<StepMusterUnits />);
+    expect(html).toContain('aria-label="Ver carta original de Nerazim Watchers (Adept)"');
+    useListStore.getState().resetForRace('ZERG');
+  });
+
   it('renderiza una lupa accesible como botón independiente', () => {
     const html = renderToStaticMarkup(
       <CardPreviewButton cardName="Zergling" onOpen={() => undefined} />,
