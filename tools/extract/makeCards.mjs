@@ -152,8 +152,21 @@ async function writeCard(input, output, bounds, rotation = 0) {
 }
 
 async function generateAsset(asset) {
+  const source = manifest.sources[asset.source];
+  if (source?.format === 'image' && asset.crop) {
+    const output = path.resolve(publicDir, asset.output);
+    if (!isInside(publicDir, output)) fail(`Salida fuera de public/: ${asset.output}`);
+    await mkdir(path.dirname(output), { recursive: true });
+    const pipeline = sharp(path.resolve(rootDir, source.path)).extract(asset.crop);
+    if (asset.rotation) pipeline.rotate(asset.rotation);
+    await pipeline.webp({
+      quality: Number(manifest.render.quality),
+      smartSubsample: Boolean(manifest.render.smartSubsample),
+      effort: Number(manifest.render.effort),
+    }).toFile(output);
+    return [asset.output];
+  }
   if (asset.layout === 'attachment') {
-    const source = manifest.sources[asset.source];
     if (!source || source.format !== 'image') fail(`Fuente de imagen desconocida ${asset.source}`);
     const output = path.resolve(publicDir, asset.output);
     if (!isInside(publicDir, output)) fail(`Salida fuera de public/: ${asset.output}`);

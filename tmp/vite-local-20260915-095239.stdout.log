@@ -1,0 +1,57 @@
+
+  VITE v6.4.3  ready in 578 ms
+
+  ➜  Local:   http://127.0.0.1:5173/
+  ➜  press h + enter to show help
+9:57:06 [vite] (client) hmr update /src/ui/tournaments/TournamentsPage.tsx
+9:57:07 [vite] (client) hmr update /src/ui/tournaments/tournaments.css
+9:57:07 [vite] (client) hmr update /src/ui/tournaments/tournaments.css
+9:59:32 [vite] (client) hmr update /src/ui/tournaments/TournamentsPage.tsx
+9:59:33 [vite] (client) hmr update /src/ui/tournaments/TournamentsPage.tsx
+10:01:17 [vite] (client) hmr update /src/ui/tournaments/TournamentsPage.tsx
+10:01:19 [vite] (client) hmr update /src/ui/tournaments/tournaments.css
+10:01:19 [vite] (client) hmr update /src/ui/tournaments/tournaments.css
+10:02:36 [vite] (client) hmr update /src/App.tsx
+10:02:37 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:02:37 [vite] (client) page reload src/App.tsx
+10:03:46 [vite] (client) hmr update /src/ui/tournaments/TournamentsPage.tsx
+10:03:47 [vite] (client) hmr update /src/ui/tournaments/tournaments.css
+10:05:36 [vite] (client) hmr update /src/ui/tournaments/TournamentsPage.tsx
+10:05:38 [vite] (client) hmr update /src/ui/tournaments/tournaments.css
+10:17:32 [vite] (client) hmr update /src/ui/tournaments/TournamentsPage.tsx
+10:17:34 [vite] (client) hmr update /src/ui/tournaments/tournaments.css
+10:25:03 [vite] (client) hmr update /src/ui/tournaments/TournamentDisplay.tsx
+10:25:04 [vite] (client) hmr update /src/ui/tournaments/TournamentsPage.tsx
+10:25:07 [vite] (client) hmr update /src/ui/tournaments/tournaments.css
+10:25:41 [vite] (client) hmr update /src/ui/tournaments/tournaments.css
+10:26:57 [vite] (client) hmr update /src/ui/tournaments/TournamentsPage.tsx
+10:26:59 [vite] (client) hmr update /src/ui/tournaments/TournamentDisplay.tsx
+10:27:51 [vite] (client) hmr update /src/ui/tournaments/TournamentsPage.tsx
+10:27:52 [vite] (client) hmr update /src/ui/tournaments/tournaments.css
+10:29:10 [vite] (client) hmr update /src/ui/tournaments/TournamentsPage.tsx
+10:30:38 [vite] (client) hmr update /src/ui/tournaments/TournamentsPage.tsx
+10:31:30 [vite] (client) hmr update /src/ui/tournaments/tournaments.css
+10:32:18 [vite] (client) hmr update /src/ui/tournaments/TournamentRegistration.tsx
+10:33:34 [vite] (client) hmr update /src/ui/tournaments/TournamentDisplay.tsx
+10:33:37 [vite] (client) hmr update /src/ui/tournaments/TournamentsPage.tsx
+10:33:39 [vite] (client) hmr update /src/ui/tournaments/tournaments.css
+10:39:49 [vite] (client) hmr update /src/ui/tournaments/TournamentRegistration.tsx
+10:39:50 [vite] (client) hmr update /src/ui/tournaments/TournamentDisplay.tsx
+10:39:52 [vite] (client) hmr update /src/ui/home/HomePage.tsx
+10:39:53 [vite] (client) hmr update /src/ui/lists/ListTable.tsx
+10:39:55 [vite] (client) hmr update /src/ui/lists/SavedListsPage.tsx
+10:39:56 [vite] (client) hmr update /src/ui/game/GamePage.tsx
+10:39:56 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:39:56 [vite] (client) hmr update /src/App.tsx
+10:39:56 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:39:56 [vite] (client) page reload src/App.tsx
+10:40:34 [vite] (client) hmr update /src/ui/home/HomePage.tsx
+10:40:36 [vite] (client) hmr update /src/ui/lists/ListTable.tsx
+10:40:38 [vite] (client) hmr update /src/ui/lists/SavedListsPage.tsx
+10:40:40 [vite] (client) hmr update /src/ui/common/FactionIcon.css
+10:44:42 [vite] (client) hmr update /src/ui/tournaments/TournamentRegistration.tsx
+10:44:44 [vite] (client) hmr update /src/ui/tournaments/tournaments.css
+10:46:31 [vite] (client) hmr update /src/ui/tournaments/TournamentsPage.tsx
+11:10:46 [vite] (client) hmr update /src/ui/tournaments/TournamentsPage.tsx
+11:12:01 [vite] package.json changed, restarting server...
+11:12:01 [vite] server restarted.

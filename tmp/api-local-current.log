@@ -1,0 +1,23 @@
+
+> starcraft-tmg-army-builder@0.1.10 dev:server
+> tsx watch server/src/index.ts
+
+API disponible en http://localhost:3001/api
+Error: connect ECONNREFUSED 127.0.0.1:3306
+    at <anonymous> (E:\Starcraft\server\src\app.ts:78:16)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (E:\Starcraft\node_modules\router\lib\route.js:117:3)
+    at handle (E:\Starcraft\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at E:\Starcraft\node_modules\router\index.js:295:15
+    at processParams (E:\Starcraft\node_modules\router\index.js:582:12)
+    at next (E:\Starcraft\node_modules\router\index.js:291:5)
+    at cookieParser (E:\Starcraft\node_modules\cookie-parser\index.js:57:14) {
+  errno: -4078,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 3306,
+  fatal: true
+}

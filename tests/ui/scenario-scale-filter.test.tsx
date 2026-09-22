@@ -12,8 +12,8 @@ describe('filtro de escenarios por escala', () => {
       'standard',
     );
 
-    expect(missions).toHaveLength(5);
-    expect(deployments).toHaveLength(5);
+    expect(missions).toHaveLength(6);
+    expect(deployments).toHaveLength(6);
     expect(missions.every((mission) => mission.scale === 'standard')).toBe(true);
     expect(deployments.every((deployment) => deployment.scale === 'standard')).toBe(true);
     expect(deployments.map((deployment) => deployment.name)).toContain('Gauntlet');
@@ -26,8 +26,8 @@ describe('filtro de escenarios por escala', () => {
       'skirmish',
     );
 
-    expect(missions).toHaveLength(5);
-    expect(deployments).toHaveLength(5);
+    expect(missions).toHaveLength(6);
+    expect(deployments).toHaveLength(6);
     expect(missions.every((mission) => mission.scale === 'skirmish')).toBe(true);
     expect(deployments.every((deployment) => deployment.scale === 'skirmish')).toBe(true);
     expect(deployments.map((deployment) => deployment.name)).toContain('Abandoned Camp');
