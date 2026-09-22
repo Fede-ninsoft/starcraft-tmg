@@ -91,6 +91,16 @@
       "path": "docs/sources/2026-09-21/WhatsApp Image 2026-09-21 at 16.11.22.jpeg",
       "sha256": "f1b658a9f33f5093fcdcc2050a88d51d70992b542ea972fb04d4dea39fdcae92",
       "format": "image"
+    },
+    "attachment-artefact-hunt-sheet": {
+      "path": "docs/sources/2026-09-22/artefact-hunt-sheet.png",
+      "sha256": "5FD2A5AD85179194080D3593844B3471D54EDE2157BC848CC5AFCBA9516CD3FC",
+      "format": "image"
+    },
+    "attachment-new-deployments-sheet": {
+      "path": "docs/sources/2026-09-22/meeting-engagement-green-valleys-sheet.png",
+      "sha256": "D8812DDADDE9F94149BBAE9C2E2089577B1228AB5CCFC6EC3BA96DBC91A77462",
+      "format": "image"
     }
   },
   "layouts": {
@@ -190,6 +200,8 @@
     { "id": "mission.gather_the_resources.skirmish", "source": "zerg", "page": 18, "layout": "mission", "slot": [1, 1], "output": "cards/scenarios/gather-the-resources-skirmish.webp" },
     { "id": "mission.divide_and_conquer.standard", "source": "zerg", "page": 19, "layout": "mission", "slot": [0, 0], "output": "cards/scenarios/divide-and-conquer-standard.webp" },
     { "id": "mission.divide_and_conquer.skirmish", "source": "zerg", "page": 19, "layout": "mission", "slot": [1, 0], "output": "cards/scenarios/divide-and-conquer-skirmish.webp" },
+    { "id": "mission.artefact_hunt.standard", "source": "attachment-artefact-hunt-sheet", "layout": "mission", "crop": { "left": 20, "top": 17, "width": 261, "height": 451 }, "output": "cards/scenarios/artefact-hunt-standard.webp" },
+    { "id": "mission.artefact_hunt.skirmish", "source": "attachment-artefact-hunt-sheet", "layout": "mission", "crop": { "left": 285, "top": 17, "width": 267, "height": 451 }, "output": "cards/scenarios/artefact-hunt-skirmish.webp" },
 
     { "id": "deployment.abandoned_camp", "source": "zerg", "page": 19, "layout": "deployment", "slot": [0, 2], "rotation": 180, "output": "cards/scenarios/deployment-abandoned-camp-original.webp" },
     { "id": "deployment.agria_valley", "source": "zerg", "page": 19, "layout": "deployment", "slot": [1, 2], "rotation": 180, "output": "cards/scenarios/deployment-agria-valley-original.webp" },
@@ -201,6 +213,8 @@
     { "id": "deployment.proving_grounds", "source": "zerg", "page": 20, "layout": "deployment", "slot": [1, 1], "rotation": 0, "output": "cards/scenarios/deployment-proving-grounds-original.webp" },
     { "id": "deployment.char_plains", "source": "zerg", "page": 20, "layout": "deployment", "slot": [0, 2], "rotation": 180, "output": "cards/scenarios/deployment-char-plains-original.webp" },
     { "id": "deployment.breach", "source": "zerg", "page": 20, "layout": "deployment", "slot": [1, 2], "rotation": 0, "output": "cards/scenarios/deployment-breach-original.webp" },
+    { "id": "deployment.green_valleys", "source": "attachment-new-deployments-sheet", "layout": "deployment", "crop": { "left": 0, "top": 0, "width": 333, "height": 238 }, "rotation": 180, "output": "cards/scenarios/deployment-green-valleys-original.webp" },
+    { "id": "deployment.meeting_engagement", "source": "attachment-new-deployments-sheet", "layout": "deployment", "crop": { "left": 0, "top": 240, "width": 333, "height": 238 }, "output": "cards/scenarios/deployment-meeting-engagement-original.webp" },
     {
       "id": "protoss.unit-immortal-front",
       "source": "attachment-unit-immortal-front",

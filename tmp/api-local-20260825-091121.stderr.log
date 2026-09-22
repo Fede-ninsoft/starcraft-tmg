@@ -1,0 +1,103 @@
+Error: connect ECONNREFUSED 127.0.0.1:3306
+    at AuthRepository.findByEmail (E:\Starcraft\server\src\modules\auth\auth.repository.ts:57:36)
+    at <anonymous> (E:\Starcraft\server\src\modules\auth\auth.routes.ts:187:35)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13)
+    at <anonymous> (E:\Starcraft\server\src\middleware\rate-limit.ts:50:5)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13)
+    at <anonymous> (E:\Starcraft\server\src\middleware\rate-limit.ts:50:5)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13) {
+  errno: -4078,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 3306,
+  fatal: true
+}
+Error: Unknown column 'p.locale' in 'field list'
+    at AuthRepository.findByEmail (E:\Starcraft\server\src\modules\auth\auth.repository.ts:57:36)
+    at <anonymous> (E:\Starcraft\server\src\modules\auth\auth.routes.ts:187:35)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13)
+    at <anonymous> (E:\Starcraft\server\src\middleware\rate-limit.ts:50:5)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13)
+    at <anonymous> (E:\Starcraft\server\src\middleware\rate-limit.ts:50:5)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13) {
+  code: 'ER_BAD_FIELD_ERROR',
+  errno: 1054,
+  sqlState: '42S22',
+  sqlMessage: "Unknown column 'p.locale' in 'field list'",
+  sql: 'SELECT u.id, u.email, u.password_hash, u.google_sub, u.email_verified_at, u.deleted_at, u.is_active, u.session_version, u.last_login_at, p.default_race, p.locale, p.nickname, p.avatar FROM users u JOIN profiles p ON p.user_id = u.id WHERE u.email_normalized = ?'
+}
+Error: Unknown column 'p.locale' in 'field list'
+    at AuthRepository.findByEmail (E:\Starcraft\server\src\modules\auth\auth.repository.ts:57:36)
+    at <anonymous> (E:\Starcraft\server\src\modules\auth\auth.routes.ts:187:35)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13)
+    at <anonymous> (E:\Starcraft\server\src\middleware\rate-limit.ts:50:5)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13)
+    at <anonymous> (E:\Starcraft\server\src\middleware\rate-limit.ts:50:5)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13) {
+  code: 'ER_BAD_FIELD_ERROR',
+  errno: 1054,
+  sqlState: '42S22',
+  sqlMessage: "Unknown column 'p.locale' in 'field list'",
+  sql: 'SELECT u.id, u.email, u.password_hash, u.google_sub, u.email_verified_at, u.deleted_at, u.is_active, u.session_version, u.last_login_at, p.default_race, p.locale, p.nickname, p.avatar FROM users u JOIN profiles p ON p.user_id = u.id WHERE u.email_normalized = ?'
+}
+Error: Unknown column 'p.locale' in 'field list'
+    at AuthRepository.findByEmail (E:\Starcraft\server\src\modules\auth\auth.repository.ts:57:36)
+    at <anonymous> (E:\Starcraft\server\src\modules\auth\auth.routes.ts:187:35)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13)
+    at <anonymous> (E:\Starcraft\server\src\middleware\rate-limit.ts:50:5)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13)
+    at <anonymous> (E:\Starcraft\server\src\middleware\rate-limit.ts:50:5)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13) {
+  code: 'ER_BAD_FIELD_ERROR',
+  errno: 1054,
+  sqlState: '42S22',
+  sqlMessage: "Unknown column 'p.locale' in 'field list'",
+  sql: 'SELECT u.id, u.email, u.password_hash, u.google_sub, u.email_verified_at, u.deleted_at, u.is_active, u.session_version, u.last_login_at, p.default_race, p.locale, p.nickname, p.avatar FROM users u JOIN profiles p ON p.user_id = u.id WHERE u.email_normalized = ?'
+}
+Error: Unknown column 'p.locale' in 'field list'
+    at AuthRepository.findByEmail (E:\Starcraft\server\src\modules\auth\auth.repository.ts:57:36)
+    at <anonymous> (E:\Starcraft\server\src\modules\auth\auth.routes.ts:187:35)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13)
+    at <anonymous> (E:\Starcraft\server\src\middleware\rate-limit.ts:50:5)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13)
+    at <anonymous> (E:\Starcraft\server\src\middleware\rate-limit.ts:50:5)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13) {
+  code: 'ER_BAD_FIELD_ERROR',
+  errno: 1054,
+  sqlState: '42S22',
+  sqlMessage: "Unknown column 'p.locale' in 'field list'",
+  sql: 'SELECT u.id, u.email, u.password_hash, u.google_sub, u.email_verified_at, u.deleted_at, u.is_active, u.session_version, u.last_login_at, p.default_race, p.locale, p.nickname, p.avatar FROM users u JOIN profiles p ON p.user_id = u.id WHERE u.email_normalized = ?'
+}
+Error: Unknown column 'p.locale' in 'field list'
+    at AuthRepository.findByEmail (E:\Starcraft\server\src\modules\auth\auth.repository.ts:57:36)
+    at <anonymous> (E:\Starcraft\server\src\modules\auth\auth.routes.ts:187:35)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13)
+    at <anonymous> (E:\Starcraft\server\src\middleware\rate-limit.ts:50:5)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13)
+    at <anonymous> (E:\Starcraft\server\src\middleware\rate-limit.ts:50:5)
+    at Layer.handleRequest (E:\Starcraft\node_modules\router\lib\layer.js:152:17)
+    at next (E:\Starcraft\node_modules\router\lib\route.js:157:13) {
+  code: 'ER_BAD_FIELD_ERROR',
+  errno: 1054,
+  sqlState: '42S22',
+  sqlMessage: "Unknown column 'p.locale' in 'field list'",
+  sql: 'SELECT u.id, u.email, u.password_hash, u.google_sub, u.email_verified_at, u.deleted_at, u.is_active, u.session_version, u.last_login_at, p.default_race, p.locale, p.nickname, p.avatar FROM users u JOIN profiles p ON p.user_id = u.id WHERE u.email_normalized = ?'
+}

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "contentVersion": "2026.09.21.3",
-  "sourceRef": "Hojas de cartas P2P, sección SCENARIO CARDS — idénticas en las tres razas (hallazgo M1)",
+  "contentVersion": "2026.09.22.1",
+  "sourceRef": "Hojas de cartas P2P y fuentes adjuntas de 2026-09-22, sección SCENARIO CARDS — idénticas en las tres razas (hallazgo M1)",
   "missionCards": [
   {
     "id": "mission.hold_position.standard",
@@ -178,6 +178,52 @@
     "additionalConditions": { "es": "VICTORIA ESPECIAL: la partida termina de inmediato si un jugador aventaja por 8 o más PV.", "en": "SPECIAL WINNING CONDITIONS: The game ends immediately if a Player leads by 8+ VPs." },
       "instantWinLead": 8,
       "imageRef": "cards/scenarios/supply-drop-skirmish.webp"
+    },
+    {
+      "id": "mission.artefact_hunt.standard",
+      "seedId": 6011,
+      "name": "Artefact Hunt",
+      "scale": "standard",
+      "startingSupply": 6,
+      "supplyEscalation": 2,
+      "gameLength": 5,
+      "missionParameters": {
+        "es": "Todos los Marcadores de Misión están Activados.",
+        "en": "All Mission Markers are Activated."
+      },
+      "scoringConditions": {
+        "es": "Puntúa PV igual al Suministro enemigo destruido esta ronda. FINAL DE LA RONDA 5: gana 4 PV por cada unidad amiga que RECLAME un Marcador de Misión y esté completamente dentro de la zona de influencia amiga. Gana 2 PV por cada Marcador de Misión asociado a tu color que no esté controlado ni RECLAMADO por una unidad enemiga.",
+        "en": "Score VPs equal to Enemy Supply destroyed this Round. END OF ROUND 5: Gain 4 VP for each Friendly Unit that CLAIM Mission Marker and it is Wholly Within Friendly Zone of Influence. Gain 2 VP for each Mission Marker associated with your colour that is not currently CLAIM by an Enemy Unit."
+      },
+      "additionalConditions": {
+        "es": "FASE DE PUNTUACIÓN — Desde el inicio de la segunda ronda, si una unidad está a menos de 3\" de un Marcador de Misión controlado neutral o asociado al color del oponente, esa unidad puede RECLAMARLO. RECLAMAR: coloca el Marcador de Misión en la carta de Unidad. Una unidad que lleve un Marcador de Misión debe SOLTARLO si: reduce su Suministro Actual; resuelve un efecto PLACE; queda trabada con enemigos que tengan un Suministro Actual combinado mayor; o es destruida, retirada del campo de batalla o devuelta a las Reservas. Cuando una unidad SUELTA un Marcador de Misión, el oponente lo coloca a menos de 2\" de la última posición de la unidad. Una unidad solo puede RECLAMAR un Marcador de Misión cada vez.",
+        "en": "SCORING PHASE: From the Start of the Second Round, if a Unit is Within 3\" of a Controlled Mission Marker that is Neutral or associated with the Opponent colour, that Unit may CLAIM it. CLAIM: Place the Mission Marker on the Unit Card. A Unit carrying a Mission Marker must DROP it if: it has its Current Supply Value reduced; before it resolves a PLACE effect; it is Engaged with Enemies having a greater combined Current Supply Value; or it is Destroyed, removed from the battlefield, or returned to Reserves. When a Unit DROP a Mission Marker, the Opponent places the Mission Marker Within 2\" of the Unit or its last model removed. Unit may CLAIM only one Mission Marker at a time."
+      },
+      "instantWinLead": null,
+      "imageRef": "cards/scenarios/artefact-hunt-standard.webp"
+    },
+    {
+      "id": "mission.artefact_hunt.skirmish",
+      "seedId": 6012,
+      "name": "Artefact Hunt",
+      "scale": "skirmish",
+      "startingSupply": 3,
+      "supplyEscalation": 1,
+      "gameLength": 5,
+      "missionParameters": {
+        "es": "Todos los Marcadores de Misión están Activados.",
+        "en": "All Mission Markers are Activated."
+      },
+      "scoringConditions": {
+        "es": "Puntúa PV igual al Suministro enemigo destruido esta ronda. FINAL DE LA RONDA 5: gana 3 PV por cada unidad amiga que RECLAME un Marcador de Misión y esté completamente dentro de la zona de influencia amiga. Gana 1 PV por cada Marcador de Misión asociado a tu color que no esté controlado ni RECLAMADO por una unidad enemiga.",
+        "en": "Score VPs equal to Enemy Supply destroyed this Round. END OF ROUND 5: Gain 3 VP for each Friendly Unit that CLAIM Mission Marker and it is Wholly Within Friendly Zone of Influence. Gain 1 VP for each Mission Marker associated with your colour that is not currently CLAIM by an Enemy Unit."
+      },
+      "additionalConditions": {
+        "es": "FASE DE PUNTUACIÓN — Desde el inicio de la segunda ronda, si una unidad está a menos de 3\" de un Marcador de Misión controlado neutral o asociado al color del oponente, esa unidad puede RECLAMARLO. RECLAMAR: coloca el Marcador de Misión en la carta de Unidad. Una unidad que lleve un Marcador de Misión debe SOLTARLO si: reduce su Suministro Actual; resuelve un efecto PLACE; queda trabada con enemigos que tengan un Suministro Actual combinado mayor; o es destruida, retirada del campo de batalla o devuelta a las Reservas. Cuando una unidad SUELTA un Marcador de Misión, el oponente lo coloca a menos de 2\" de la última posición de la unidad. Una unidad solo puede RECLAMAR un Marcador de Misión cada vez.",
+        "en": "SCORING PHASE: From the Start of the Second Round, if a Unit is Within 3\" of a Controlled Mission Marker that is Neutral or associated with the Opponent colour, that Unit may CLAIM it. CLAIM: Place the Mission Marker on the Unit Card. A Unit carrying a Mission Marker must DROP it if: it has its Current Supply Value reduced; before it resolves a PLACE effect; it is Engaged with Enemies having a greater combined Current Supply Value; or it is Destroyed, removed from the battlefield, or returned to Reserves. When a Unit DROP a Mission Marker, the Opponent places the Mission Marker Within 2\" of the Unit or its last model removed. Unit may CLAIM only one Mission Marker at a time."
+      },
+      "instantWinLead": null,
+      "imageRef": "cards/scenarios/artefact-hunt-skirmish.webp"
     }
   ],
   "deploymentCards": [
@@ -270,6 +316,24 @@
       "battlefield": { "width": 54, "height": 36 },
       "imageRef": "cards/scenarios/deployment-breach.png",
       "originalImageRef": "cards/scenarios/deployment-breach-original.webp"
+    },
+    {
+      "id": "deployment.green_valleys",
+      "seedId": 7011,
+      "name": "Green Valleys",
+      "scale": "skirmish",
+      "battlefield": { "width": 36, "height": 36 },
+      "imageRef": "cards/scenarios/deployment-green-valleys.png",
+      "originalImageRef": "cards/scenarios/deployment-green-valleys-original.webp"
+    },
+    {
+      "id": "deployment.meeting_engagement",
+      "seedId": 7012,
+      "name": "Meeting Engagement",
+      "scale": "standard",
+      "battlefield": { "width": 54, "height": 36 },
+      "imageRef": "cards/scenarios/deployment-meeting-engagement.png",
+      "originalImageRef": "cards/scenarios/deployment-meeting-engagement-original.webp"
     }
   ]
 }

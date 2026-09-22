@@ -228,4 +228,15 @@ describe('Escenarios (comunes a las tres razas)', () => {
       gameLength: 4,
     });
   });
+
+  it('mantiene los valores impresos de Artefact Hunt en ambas escalas', () => {
+    const standard = catalog.missionCards.find(
+      (mission) => mission.id === 'mission.artefact_hunt.standard',
+    );
+    const skirmish = catalog.missionCards.find(
+      (mission) => mission.id === 'mission.artefact_hunt.skirmish',
+    );
+    expect(standard).toMatchObject({ startingSupply: 6, supplyEscalation: 2, gameLength: 5 });
+    expect(skirmish).toMatchObject({ startingSupply: 3, supplyEscalation: 1, gameLength: 5 });
+  });
 });

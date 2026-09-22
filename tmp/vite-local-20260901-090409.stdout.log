@@ -1,0 +1,134 @@
+
+> starcraft-tmg-army-builder@1.06 dev
+> vite
+
+9:04:11 [vite] (client) Re-optimizing dependencies because lockfile has changed
+
+  VITE v6.4.3  ready in 979 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+9:35:29 [vite] package.json changed, restarting server...
+9:35:29 [vite] server restarted.
+9:38:08 [vite] (client) hmr update /src/ui/common/ResourceBar.tsx, /src/App.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/lists/ListTable.tsx, /src/ui/common/Chips.tsx
+9:38:09 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:38:09 [vite] (client) page reload src/App.tsx
+9:38:09 [vite] (client) hmr invalidate /src/ui/builder/StepScenario.tsx Could not Fast Refresh ("playableScenarioCards" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:38:09 [vite] (client) hmr update /src/App.tsx
+9:38:09 [vite] (client) hmr invalidate /src/ui/common/Chips.tsx Could not Fast Refresh ("slotLabel" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:38:09 [vite] (client) hmr update /src/ui/common/ResourceBar.tsx, /src/App.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/builder/StepReview.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/ListTable.tsx
+9:38:11 [vite] (client) hmr update /src/App.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/ListTable.tsx
+9:38:13 [vite] (client) hmr update /src/App.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/ListTable.tsx
+9:38:13 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:38:13 [vite] (client) page reload src/App.tsx
+9:38:13 [vite] (client) hmr invalidate /src/ui/builder/StepScenario.tsx Could not Fast Refresh ("playableScenarioCards" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:38:13 [vite] (client) hmr update /src/App.tsx
+9:38:13 [vite] (client) hmr invalidate /src/ui/builder/StepStatistics.tsx Could not Fast Refresh ("formatPlayedOn" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:38:13 [vite] (client) hmr update /src/App.tsx
+9:38:13 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:38:13 [vite] (client) hmr update /src/App.tsx
+9:40:10 [vite] (client) hmr update /src/App.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/ListTable.tsx
+9:40:11 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:40:11 [vite] (client) page reload src/App.tsx
+9:40:11 [vite] (client) hmr invalidate /src/ui/builder/StepScenario.tsx Could not Fast Refresh ("playableScenarioCards" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:40:11 [vite] (client) hmr update /src/App.tsx
+9:40:11 [vite] (client) hmr invalidate /src/ui/builder/StepStatistics.tsx Could not Fast Refresh ("formatPlayedOn" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:40:11 [vite] (client) hmr update /src/App.tsx
+9:40:11 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:40:11 [vite] (client) hmr update /src/App.tsx
+9:40:12 [vite] (client) hmr update /src/App.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/ListTable.tsx
+9:40:15 [vite] (client) hmr update /src/ui/common/ResourceBar.tsx, /src/App.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/lists/ListTable.tsx, /src/ui/common/Chips.tsx
+9:40:15 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:40:15 [vite] (client) page reload src/App.tsx
+9:40:15 [vite] (client) hmr invalidate /src/ui/builder/StepScenario.tsx Could not Fast Refresh ("playableScenarioCards" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:40:15 [vite] (client) hmr update /src/App.tsx
+9:40:15 [vite] (client) hmr invalidate /src/ui/common/Chips.tsx Could not Fast Refresh ("slotLabel" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:40:15 [vite] (client) hmr update /src/ui/common/ResourceBar.tsx, /src/App.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/builder/StepReview.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/ListTable.tsx
+9:40:22 [vite] package.json changed, restarting server...
+9:40:22 [vite] (client) Re-optimizing dependencies because lockfile has changed
+9:40:22 [vite] server restarted.
+9:40:25 [vite] (client) ✨ optimized dependencies changed. reloading
+9:42:58 [vite] package.json changed, restarting server...
+9:42:58 [vite] server restarted.
+9:47:25 [vite] package.json changed, restarting server...
+9:47:25 [vite] (client) Re-optimizing dependencies because lockfile has changed
+9:47:25 [vite] server restarted.
+9:57:09 [vite] (client) page reload src/i18n/locales.ts
+9:57:26 [vite] (client) hmr update /src/ui/builder/StepReview.tsx, /src/ui/common/ResourceBar.tsx, /src/App.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/lists/ListTable.tsx, /src/ui/common/Chips.tsx
+9:57:28 [vite] (client) hmr update /src/App.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/ListTable.tsx
+9:57:28 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:57:28 [vite] (client) page reload src/App.tsx
+9:57:28 [vite] (client) hmr invalidate /src/ui/builder/StepScenario.tsx Could not Fast Refresh ("playableScenarioCards" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:57:28 [vite] (client) hmr update /src/App.tsx
+9:57:28 [vite] (client) hmr invalidate /src/ui/common/Chips.tsx Could not Fast Refresh ("slotLabel" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:57:28 [vite] (client) hmr update /src/ui/builder/StepReview.tsx, /src/ui/common/ResourceBar.tsx, /src/App.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/ListTable.tsx
+9:57:42 [vite] (client) hmr update /src/App.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/ListTable.tsx
+9:57:42 [vite] (client) hmr update /src/App.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/ListTable.tsx
+9:57:42 [vite] (client) hmr update /src/App.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/ListTable.tsx
+9:57:42 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:57:42 [vite] (client) page reload src/App.tsx
+9:57:42 [vite] (client) hmr invalidate /src/ui/builder/StepScenario.tsx Could not Fast Refresh ("playableScenarioCards" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:57:42 [vite] (client) hmr update /src/App.tsx
+9:57:42 [vite] (client) hmr invalidate /src/ui/builder/StepStatistics.tsx Could not Fast Refresh ("formatPlayedOn" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:57:42 [vite] (client) hmr update /src/App.tsx
+9:57:42 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:57:42 [vite] (client) hmr update /src/App.tsx
+9:57:52 [vite] (client) hmr update /src/App.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/ListTable.tsx
+9:57:52 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:57:52 [vite] (client) page reload src/App.tsx
+9:57:52 [vite] (client) hmr invalidate /src/ui/builder/StepScenario.tsx Could not Fast Refresh ("playableScenarioCards" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:57:52 [vite] (client) hmr update /src/App.tsx
+9:57:52 [vite] (client) hmr invalidate /src/ui/builder/StepStatistics.tsx Could not Fast Refresh ("formatPlayedOn" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:57:52 [vite] (client) hmr update /src/App.tsx
+9:57:52 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:57:52 [vite] (client) hmr update /src/App.tsx
+9:57:59 [vite] (client) hmr update /src/App.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/ListTable.tsx
+9:57:59 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:57:59 [vite] (client) page reload src/App.tsx
+9:57:59 [vite] (client) hmr invalidate /src/ui/builder/StepScenario.tsx Could not Fast Refresh ("playableScenarioCards" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:57:59 [vite] (client) hmr update /src/App.tsx
+9:57:59 [vite] (client) hmr invalidate /src/ui/builder/StepStatistics.tsx Could not Fast Refresh ("formatPlayedOn" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:57:59 [vite] (client) hmr update /src/App.tsx
+9:57:59 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:57:59 [vite] (client) hmr update /src/App.tsx
+9:58:17 [vite] (client) hmr update /src/App.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/ListTable.tsx
+9:58:17 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:58:17 [vite] (client) page reload src/App.tsx
+9:58:17 [vite] (client) hmr invalidate /src/ui/builder/StepScenario.tsx Could not Fast Refresh ("playableScenarioCards" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:58:17 [vite] (client) hmr update /src/App.tsx
+9:58:17 [vite] (client) hmr invalidate /src/ui/builder/StepStatistics.tsx Could not Fast Refresh ("formatPlayedOn" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:58:17 [vite] (client) hmr update /src/App.tsx
+9:58:17 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:58:17 [vite] (client) hmr update /src/App.tsx
+9:58:34 [vite] (client) hmr update /src/App.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/ListTable.tsx
+9:58:34 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:58:34 [vite] (client) page reload src/App.tsx
+9:58:34 [vite] (client) hmr invalidate /src/ui/builder/StepScenario.tsx Could not Fast Refresh ("playableScenarioCards" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:58:34 [vite] (client) hmr update /src/App.tsx
+9:58:34 [vite] (client) hmr invalidate /src/ui/builder/StepStatistics.tsx Could not Fast Refresh ("formatPlayedOn" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:58:34 [vite] (client) hmr update /src/App.tsx
+9:58:34 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:58:34 [vite] (client) hmr update /src/App.tsx
+10:00:02 [vite] (client) hmr update /src/ui/builder/StepCommandCards.tsx
+10:00:51 [vite] (client) hmr update /src/ui/builder/StepMusterUnits.tsx
+10:01:35 [vite] (client) hmr update /src/ui/builder/StepScenario.tsx
+10:01:35 [vite] (client) hmr invalidate /src/ui/builder/StepScenario.tsx Could not Fast Refresh ("playableScenarioCards" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:01:35 [vite] (client) hmr update /src/App.tsx
+10:01:35 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:01:35 [vite] (client) page reload src/App.tsx
+10:01:57 [vite] (client) hmr update /src/ui/common/CardImagePreview.css
+10:02:07 [vite] (client) hmr update /src/ui/common/CardImagePreview.css
+10:02:33 [vite] (client) hmr update /src/ui/builder/StepCommandCards.tsx
+10:03:11 [vite] (client) hmr update /src/ui/builder/StepCommandCards.tsx
+10:03:31 [vite] (client) hmr update /src/ui/builder/StepCommandCards.tsx
+10:04:02 [vite] (client) hmr update /src/ui/common/CardImagePreview.tsx
+10:11:42 [vite] (client) hmr update /src/ui/common/CardImagePreview.css
+10:21:35 [vite] (client) hmr update /src/ui/builder/StepCommandCards.tsx
+10:21:48 [vite] (client) hmr update /src/ui/common/CardImagePreview.css
+10:25:29 [vite] (client) hmr update /src/ui/builder/StepCommandCards.tsx
+10:25:42 [vite] (client) hmr update /src/ui/common/CardImagePreview.css
+10:32:00 [vite] (client) hmr update /src/ui/common/CardImagePreview.css
+10:34:38 [vite] package.json changed, restarting server...
+10:34:38 [vite] server restarted.
+10:34:42 [vite] (client) hmr update /src/ui/common/ChangelogLink.tsx

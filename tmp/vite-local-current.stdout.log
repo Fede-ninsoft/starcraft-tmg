@@ -1,0 +1,60 @@
+
+> starcraft-tmg-army-builder@0.1.10 dev
+> vite
+
+[2m8:50:27[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m Re-optimizing dependencies because lockfile has changed
+
+  [32m[1mVITE[22m v6.4.3[39m  [2mready in [0m[1m895[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
+[2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[2m8:52:39[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/account/AccountPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/lists/ListTable.tsx[22m
+[2m9:01:53[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/ui/builder/builder-design.css[22m
+[2m9:03:59[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/ui/builder/builder-design.css[22m
+[2m9:06:50[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/ui/builder/StepCommandCards.tsx[22m
+[2m9:06:51[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/ui/builder/builder-design.css[22m
+[2m9:08:06[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/ui/builder/StepScenario.tsx[22m
+[2m9:08:06[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/src/ui/builder/StepScenario.tsx[22m Could not Fast Refresh ("playableScenarioCards" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m9:08:06[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m9:08:07[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [33mhmr invalidate [39m[2m/src/App.tsx[22m Could not Fast Refresh ("initialPageFor" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m9:08:07[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/App.tsx[22m
+[2m9:08:08[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/ui/builder/builder-design.css[22m
+[2m9:09:34[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/ui/builder/StepCommandCards.tsx[22m
+[2m9:11:27[22m [36m[1m[vite][22m[39m [32mpackage.json changed, restarting server...[39m
+[2m9:11:27[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/account/AccountPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/lists/ListTable.tsx[22m
+[2m9:11:27[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/builder/StepMusterUnits.tsx[22m
+[2m9:11:27[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/styles/global.css[22m
+[2m9:11:27[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/ui/builder/StepCommandCards.tsx[22m
+[2m9:11:27[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/ui/common/KeywordText.tsx[22m
+[2m9:11:27[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/account/AccountPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/lists/ListTable.tsx[22m
+[2m9:11:27[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/account/AccountPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/lists/ListTable.tsx[22m
+[2m9:11:27[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/account/AccountPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/lists/ListTable.tsx[22m
+[2m9:11:27[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/account/AccountPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/lists/ListTable.tsx[22m
+[2m9:11:27[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/ui/builder/StepMusterUnits.tsx[22m
+[2m9:11:27[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/ui/builder/StepScenario.tsx[22m
+[2m9:11:27[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/ui/builder/builder-design.css[22m
+[2m9:11:27[22m [36m[1m[vite][22m[39m server restarted.
+[2m9:14:06[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.commit-worktree/design/Biblioteca.dc.html[22m
+[2m9:14:06[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.commit-worktree/design/Creador de listas.dc.html[22m
+[2m9:14:06[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.commit-worktree/design/Inicio de sesión.dc.html[22m
+[2m9:14:06[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.commit-worktree/design/Soporte.dc.html[22m
+[2m9:14:07[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.commit-worktree/index.html[22m
+[2m9:14:08[22m [36m[1m[vite][22m[39m changed tsconfig file detected: E:/Starcraft/.commit-worktree/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+[2m9:14:32[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.commit-worktree/design/Biblioteca.dc.html[22m
+[2m9:14:32[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.commit-worktree/design/Creador de listas.dc.html[22m
+[2m9:14:32[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.commit-worktree/design/Inicio de sesión.dc.html[22m
+[2m9:14:32[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.commit-worktree/design/Soporte.dc.html[22m
+[2m9:14:32[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.commit-worktree/index.html[22m
+[2m9:14:32[22m [36m[1m[vite][22m[39m changed tsconfig file detected: E:/Starcraft/.commit-worktree/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+[2m9:19:36[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.pr-resolve/design/Biblioteca.dc.html[22m
+[2m9:19:36[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.pr-resolve/design/Creador de listas.dc.html[22m
+[2m9:19:36[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.pr-resolve/design/Inicio de sesión.dc.html[22m
+[2m9:19:36[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.pr-resolve/design/Soporte.dc.html[22m
+[2m9:19:36[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.pr-resolve/index.html[22m
+[2m9:19:36[22m [36m[1m[vite][22m[39m changed tsconfig file detected: E:/Starcraft/.pr-resolve/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.
+[2m9:20:31[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.pr-resolve/design/Biblioteca.dc.html[22m
+[2m9:20:31[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.pr-resolve/design/Creador de listas.dc.html[22m
+[2m9:20:31[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.pr-resolve/design/Inicio de sesión.dc.html[22m
+[2m9:20:31[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.pr-resolve/design/Soporte.dc.html[22m
+[2m9:20:31[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2m.pr-resolve/index.html[22m
+[2m9:20:31[22m [36m[1m[vite][22m[39m changed tsconfig file detected: E:/Starcraft/.pr-resolve/tsconfig.json - Clearing cache and forcing full-reload to ensure TypeScript is compiled with updated config values.

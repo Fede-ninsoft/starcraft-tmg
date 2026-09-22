@@ -76,7 +76,7 @@ export function ListTable({
                 <span className="saved-list-table__cost">{row.summary.mineralsSpent}/{row.summary.mineralLimit} {t('minerals')}</span>
                 <span className="saved-list-table__cost">{row.summary.vespeneSpent}/{row.summary.vespeneLimit} {t('gas')}</span>
               </td>
-              <td><time dateTime={row.list.remoteUpdatedAt}>{new Date(row.list.remoteUpdatedAt).toLocaleString(locale)}</time></td>
+              <td><time className="saved-list-table__updated" dateTime={row.list.remoteUpdatedAt}>{new Date(row.list.remoteUpdatedAt).toLocaleString(locale)}</time></td>
               <td>
                 <div className="row saved-list-table__actions saved-list-table__actions--compact">
                   {onOpen && <button type="button" onClick={() => onOpen(row.list)}>{openLabel}</button>}

@@ -1,0 +1,125 @@
+
+> starcraft-tmg-army-builder@1.05 dev
+> vite
+
+
+  VITE v6.4.3  ready in 2950 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+9:25:09 [vite] (client) hmr update /src/App.tsx
+9:25:10 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("initialPageFor" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:25:10 [vite] (client) page reload src/App.tsx
+9:25:25 [vite] (client) page reload src/i18n/locales.ts
+9:25:27 [vite] (client) hmr update /src/i18n/LocaleBootstrap.tsx, /src/App.tsx, /src/ui/common/LanguageSelector.tsx, /src/ui/support/SupportPage.tsx, /src/ui/auth/AuthGate.tsx, /src/ui/game/GamePage.tsx, /src/ui/auth/TermsPage.tsx, /src/ui/account/AccountPage.tsx
+9:25:28 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("initialPageFor" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:25:28 [vite] (client) page reload src/App.tsx
+9:25:28 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:25:28 [vite] (client) hmr update /src/App.tsx
+9:25:28 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("initialPageFor" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:25:28 [vite] (client) page reload src/App.tsx
+9:25:32 [vite] (client) page reload index.html
+9:37:10 [vite] (client) hmr update /src/styles/global.css
+9:37:38 [vite] (client) hmr update /src/styles/global.css
+9:38:02 [vite] (client) hmr update /src/styles/global.css
+9:38:27 [vite] (client) hmr update /src/App.tsx
+9:38:27 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("initialPageFor" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:38:27 [vite] (client) page reload src/App.tsx
+9:38:29 [vite] (client) hmr update /src/App.tsx
+9:38:29 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("initialPageFor" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:38:29 [vite] (client) page reload src/App.tsx
+9:38:31 [vite] (client) hmr update /src/App.tsx
+9:38:31 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("initialPageFor" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:38:31 [vite] (client) page reload src/App.tsx
+9:38:50 [vite] (client) hmr update /src/App.tsx
+9:38:51 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("initialPageFor" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:38:51 [vite] (client) page reload src/App.tsx
+9:41:53 [vite] (client) page reload public/__menu-preview.html
+9:42:35 [vite] (client) hmr update /src/styles/global.css, /src/styles/global.css?direct
+9:43:29 [vite] (client) page reload public/__menu-preview.html
+9:44:47 [vite] (client) page reload index.html
+9:44:48 [vite] vite.config.ts changed, restarting server...
+9:44:49 [vite] server restarted.
+9:55:56 [vite] (client) page reload src/i18n/locales.ts
+9:55:57 [vite] (client) hmr update /src/App.tsx
+9:55:58 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("initialPageFor" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+9:55:58 [vite] (client) page reload src/App.tsx
+9:55:59 [vite] (client) hmr update /src/ui/auth/AuthGate.tsx
+9:56:00 [vite] (client) hmr update /src/ui/auth/TermsPage.tsx
+9:56:01 [vite] (client) hmr update /src/styles/global.css
+10:01:04 [vite] (client) hmr update /src/ui/auth/auth-design.css
+10:06:36 [vite] (client) hmr update /src/App.tsx
+10:06:37 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("initialPageFor" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:06:37 [vite] (client) page reload src/App.tsx
+10:06:37 [vite] (client) hmr update /src/ui/game/GamePage.tsx
+10:06:40 [vite] (client) hmr update /src/ui/game/game.css
+10:06:41 [vite] (client) hmr update /src/i18n/LocaleBootstrap.tsx, /src/App.tsx, /src/ui/support/SupportPage.tsx, /src/ui/auth/AuthGate.tsx, /src/ui/common/LanguageSelector.tsx, /src/ui/game/GamePage.tsx, /src/ui/auth/TermsPage.tsx
+10:06:41 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("initialPageFor" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:06:41 [vite] (client) page reload src/App.tsx
+10:06:41 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:06:41 [vite] (client) hmr update /src/App.tsx
+10:06:42 [vite] (client) hmr update /src/ui/common/ChangelogLink.tsx
+10:08:33 [vite] (client) hmr update /src/App.tsx
+10:08:33 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh (new export)
+10:08:33 [vite] (client) page reload src/App.tsx
+10:12:13 [vite] (client) hmr update /src/App.tsx
+10:12:13 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:12:13 [vite] (client) page reload src/App.tsx
+10:13:16 [vite] (client) hmr update /src/App.tsx
+10:13:17 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:13:17 [vite] (client) page reload src/App.tsx
+10:19:02 [vite] (client) hmr update /src/ui/game/GamePage.tsx
+10:19:02 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:19:02 [vite] (client) hmr update /src/App.tsx
+10:19:02 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:19:02 [vite] (client) page reload src/App.tsx
+10:19:03 [vite] (client) hmr update /src/ui/common/ChangelogLink.tsx
+10:21:05 [vite] (client) hmr update /src/ui/game/game.css
+10:21:39 [vite] (client) hmr update /src/ui/game/game.css
+10:22:40 [vite] (client) hmr update /src/ui/game/game.css
+11:19:43 [vite] (client) hmr update /src/ui/game/GamePage.tsx
+11:19:43 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+11:19:43 [vite] (client) hmr update /src/App.tsx
+11:19:43 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+11:19:43 [vite] (client) page reload src/App.tsx
+11:19:44 [vite] (client) hmr update /src/ui/common/ChangelogLink.tsx
+11:21:22 [vite] (client) hmr update /src/ui/game/game.css
+11:21:49 [vite] (client) hmr update /src/ui/game/game.css
+11:28:10 [vite] package.json changed, restarting server...
+11:28:10 [vite] server restarted.
+11:28:14 [vite] (client) hmr update /src/ui/common/ChangelogLink.tsx
+12:01:38 [vite] (client) hmr update /src/ui/game/game.css
+12:21:43 [vite] (client) hmr update /src/App.tsx
+12:21:44 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:21:44 [vite] (client) page reload src/App.tsx
+12:21:53 [vite] (client) hmr update /src/i18n/LocaleBootstrap.tsx, /src/App.tsx, /src/ui/common/LanguageSelector.tsx, /src/ui/auth/AuthGate.tsx, /src/ui/support/SupportPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/auth/TermsPage.tsx, /src/seo/SeoMetadata.tsx, /src/ui/account/AccountPage.tsx
+12:21:54 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:21:54 [vite] (client) page reload src/App.tsx
+12:21:54 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:21:54 [vite] (client) hmr update /src/App.tsx
+12:22:10 [vite] (client) page reload index.html
+12:24:03 [vite] (client) hmr update /src/seo/SeoMetadata.tsx
+12:24:04 [vite] (client) hmr update /src/App.tsx
+12:24:04 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:24:04 [vite] (client) page reload src/App.tsx
+12:28:58 [vite] (client) page reload src/i18n/config.ts
+12:29:00 [vite] (client) hmr update /src/App.tsx
+12:29:04 [vite] (client) hmr update /src/ui/app.css
+12:29:32 [vite] (client) hmr update /src/analytics/AnalyticsConsent.tsx
+12:29:33 [vite] (client) hmr update /src/analytics/AnalyticsConsent.tsx
+12:34:11 [vite] (client) page reload src/i18n/analytics.ts
+12:34:13 [vite] (client) hmr update /src/analytics/AnalyticsConsent.tsx
+12:36:03 [vite] (client) hmr update /src/analytics/AnalyticsConsent.tsx
+12:38:44 [vite] (client) hmr update /src/App.tsx
+12:38:44 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:38:44 [vite] (client) page reload src/App.tsx
+12:38:46 [vite] (client) page reload src/i18n/config.ts
+12:38:47 [vite] (client) hmr update /src/ui/app.css
+12:38:54 [vite] (client) hmr update /src/analytics/AnalyticsConsent.tsx
+12:38:56 [vite] (client) page reload src/i18n/analytics.ts
+12:40:28 [vite] (client) page reload src/i18n/cookies.ts
+12:40:30 [vite] (client) hmr update /src/ui/auth/TermsPage.tsx
+12:43:03 [vite] (client) hmr update /src/ui/common/ChangelogLink.css
+12:53:06 [vite] (client) hmr update /src/seo/SeoMetadata.tsx
+12:53:07 [vite] (client) page reload index.html

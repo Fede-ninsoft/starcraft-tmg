@@ -156,7 +156,7 @@ exportación.
 | Terran | 8 unidades, 2 facciones y 11 tácticas; fases revisadas |
 | Protoss | 10 unidades, 3 facciones y 12 tácticas; fases revisadas |
 
-Escenarios: 5 misiones × 2 escalas y 10 despliegues, comunes a las tres razas.
+Escenarios: 6 misiones × 2 escalas y 12 despliegues, comunes a las tres razas.
 
 **Los costes base provienen del reglamento §12.10 y §12.11**, no de las hojas de
 cartas, que no los incluyen. Están pendientes de una segunda verificación

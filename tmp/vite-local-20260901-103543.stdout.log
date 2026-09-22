@@ -1,0 +1,76 @@
+
+> starcraft-tmg-army-builder@2.0 dev
+> vite --host 127.0.0.1 --port 5173
+
+
+  VITE v6.4.3  ready in 371 ms
+
+  ➜  Local:   http://127.0.0.1:5173/
+  ➜  press h + enter to show help
+10:38:21 [vite] package.json changed, restarting server...
+10:38:21 [vite] (client) hmr update /src/App.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/lists/ListTable.tsx
+10:38:21 [vite] (client) hmr update /src/ui/common/CardImagePreview.css
+10:38:21 [vite] (client) hmr update /src/ui/common/CardImagePreview.tsx
+10:38:21 [vite] (client) hmr update /src/ui/common/ChangelogLink.tsx
+10:38:21 [vite] (client) hmr update /src/ui/common/ResourceBar.tsx, /src/ui/builder/StepReview.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/print/PrintSheet.tsx, /src/App.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/lists/ListTable.tsx, /src/ui/common/Chips.tsx
+10:38:21 [vite] (client) page reload src/i18n/locales.ts
+10:38:21 [vite] (client) hmr update /src/ui/builder/StepCommandCards.tsx
+10:38:21 [vite] (client) hmr update /src/App.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/lists/ListTable.tsx
+10:38:21 [vite] (client) hmr update /src/App.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/lists/ListTable.tsx
+10:38:21 [vite] (client) hmr update /src/App.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/lists/ListTable.tsx
+10:38:21 [vite] (client) hmr update /src/App.tsx, /src/ui/builder/StepScenario.tsx, /src/ui/builder/StepReview.tsx, /src/ui/builder/StepCommandCards.tsx, /src/ui/print/PrintSheet.tsx, /src/ui/common/SeedPanel.tsx, /src/ui/builder/StepMusterUnits.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/lists/SavedListsPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/account/AccountPage.tsx, /src/ui/lists/ListTable.tsx
+10:38:21 [vite] (client) hmr update /src/ui/builder/StepMusterUnits.tsx
+10:38:21 [vite] (client) hmr update /src/ui/builder/StepScenario.tsx
+10:38:21 [vite] server restarted.
+10:38:21 [vite] package.json changed, restarting server...
+10:38:23 [vite] server restarted.
+10:43:14 [vite] (client) hmr update /src/ui/account/AccountPage.tsx, /src/ui/account/ProfileAvatar.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/lists/SavedListsPage.tsx, /src/App.tsx, /src/ui/home/HomePage.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/account/SuperAdminPanel.tsx, /src/ui/common/LanguageSelector.tsx, /src/ui/auth/AuthGate.tsx, /src/i18n/LocaleBootstrap.tsx, /src/ui/support/SupportPage.tsx
+10:43:14 [vite] (client) hmr invalidate /src/ui/account/ProfileAvatar.tsx Could not Fast Refresh ("AVATAR_OPTIONS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:43:14 [vite] (client) hmr update /src/ui/account/AccountPage.tsx, /src/ui/lists/ListTable.tsx, /src/App.tsx
+10:43:14 [vite] (client) hmr invalidate /src/ui/builder/StepStatistics.tsx Could not Fast Refresh ("formatPlayedOn" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:43:14 [vite] (client) hmr update /src/App.tsx
+10:43:14 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:43:14 [vite] (client) page reload src/App.tsx
+10:43:14 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:43:14 [vite] (client) hmr update /src/App.tsx
+10:43:14 [vite] (client) hmr invalidate /src/ui/account/SuperAdminPanel.tsx Could not Fast Refresh ("AUTH_PROVIDER_LABEL" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:43:14 [vite] (client) hmr update /src/ui/account/AccountPage.tsx
+10:43:27 [vite] (client) hmr update /src/ui/account/SuperAdminPanel.tsx
+10:43:28 [vite] (client) hmr invalidate /src/ui/account/SuperAdminPanel.tsx Could not Fast Refresh ("AUTH_PROVIDER_LABEL" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:43:28 [vite] (client) hmr update /src/ui/account/AccountPage.tsx
+10:43:50 [vite] (client) hmr update /src/ui/account/SuperAdminPanel.tsx
+10:43:50 [vite] (client) hmr invalidate /src/ui/account/SuperAdminPanel.tsx Could not Fast Refresh ("AUTH_PROVIDER_LABEL" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+10:43:50 [vite] (client) hmr update /src/ui/account/AccountPage.tsx
+10:44:16 [vite] (client) hmr update /src/ui/page-design.css
+10:44:30 [vite] (client) hmr update /src/ui/page-design.css
+10:44:57 [vite] (client) page reload src/i18n/locales.ts
+12:16:42 [vite] (client) hmr update /src/ui/account/AccountPage.tsx, /src/ui/account/ProfileAvatar.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/lists/SavedListsPage.tsx, /src/App.tsx, /src/ui/home/HomePage.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/account/SuperAdminPanel.tsx, /src/ui/common/LanguageSelector.tsx, /src/ui/auth/AuthGate.tsx, /src/i18n/LocaleBootstrap.tsx, /src/ui/support/SupportPage.tsx
+12:16:42 [vite] (client) hmr invalidate /src/ui/account/ProfileAvatar.tsx Could not Fast Refresh ("AVATAR_OPTIONS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:16:42 [vite] (client) hmr update /src/ui/account/AccountPage.tsx, /src/ui/lists/ListTable.tsx, /src/App.tsx
+12:16:42 [vite] (client) hmr invalidate /src/ui/builder/StepStatistics.tsx Could not Fast Refresh ("formatPlayedOn" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:16:42 [vite] (client) hmr update /src/App.tsx
+12:16:42 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:16:42 [vite] (client) page reload src/App.tsx
+12:16:42 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:16:42 [vite] (client) hmr update /src/App.tsx
+12:16:42 [vite] (client) hmr invalidate /src/ui/account/SuperAdminPanel.tsx Could not Fast Refresh ("AUTH_PROVIDER_LABEL" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:16:42 [vite] (client) hmr update /src/ui/account/AccountPage.tsx
+12:17:04 [vite] (client) hmr update /src/ui/account/SuperAdminPanel.tsx
+12:17:04 [vite] (client) hmr invalidate /src/ui/account/SuperAdminPanel.tsx Could not Fast Refresh ("AUTH_PROVIDER_LABEL" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:17:04 [vite] (client) hmr update /src/ui/account/AccountPage.tsx
+12:17:29 [vite] (client) page reload src/i18n/locales.ts
+12:17:37 [vite] (client) hmr update /src/ui/page-design.css
+12:18:44 [vite] (client) hmr update /src/ui/account/AccountPage.tsx, /src/ui/account/ProfileAvatar.tsx, /src/ui/lists/PublicListsPage.tsx, /src/ui/builder/StepStatistics.tsx, /src/ui/lists/SavedListsPage.tsx, /src/App.tsx, /src/ui/home/HomePage.tsx, /src/ui/lists/PublicListPage.tsx, /src/ui/game/GamePage.tsx, /src/ui/account/SuperAdminPanel.tsx, /src/ui/common/LanguageSelector.tsx, /src/ui/auth/AuthGate.tsx, /src/i18n/LocaleBootstrap.tsx, /src/ui/support/SupportPage.tsx
+12:18:44 [vite] (client) hmr invalidate /src/ui/account/ProfileAvatar.tsx Could not Fast Refresh ("AVATAR_OPTIONS" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:18:44 [vite] (client) hmr update /src/ui/account/AccountPage.tsx, /src/ui/lists/ListTable.tsx, /src/App.tsx
+12:18:44 [vite] (client) hmr invalidate /src/ui/builder/StepStatistics.tsx Could not Fast Refresh ("formatPlayedOn" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:18:44 [vite] (client) hmr update /src/App.tsx
+12:18:44 [vite] (client) hmr invalidate /src/App.tsx Could not Fast Refresh ("gameRouteSurface" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:18:44 [vite] (client) page reload src/App.tsx
+12:18:44 [vite] (client) hmr invalidate /src/ui/game/GamePage.tsx Could not Fast Refresh ("initialGameView" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:18:44 [vite] (client) hmr update /src/App.tsx
+12:18:44 [vite] (client) hmr invalidate /src/ui/account/SuperAdminPanel.tsx Could not Fast Refresh ("AUTH_PROVIDER_LABEL" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:18:44 [vite] (client) hmr update /src/ui/account/AccountPage.tsx
+12:18:51 [vite] (client) hmr update /src/ui/account/SuperAdminPanel.tsx
+12:18:51 [vite] (client) hmr invalidate /src/ui/account/SuperAdminPanel.tsx Could not Fast Refresh ("AUTH_PROVIDER_LABEL" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+12:18:51 [vite] (client) hmr update /src/ui/account/AccountPage.tsx
