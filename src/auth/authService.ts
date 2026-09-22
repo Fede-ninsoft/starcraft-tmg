@@ -28,6 +28,20 @@ export interface AdminUser {
   lastLoginAt: string | null;
   savedLists: number;
 }
+export interface AdminPagination {
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+}
+export interface AdminPaginationOptions {
+  page?: number;
+  pageSize?: number;
+}
+export interface AdminUsersPage {
+  users: AdminUser[];
+  pagination: AdminPagination;
+}
 export interface AdminGameUserSummary {
   userId: string;
   email: string;
@@ -42,6 +56,7 @@ export interface AdminGameUserSummary {
 }
 export interface AdminGameStats {
   users: AdminGameUserSummary[];
+  pagination: AdminPagination;
   totals: {
     users: number;
     sessions: number;
@@ -63,6 +78,11 @@ export interface EmailDeliveryLog {
   errorMessage: string | null;
   locale: SupportedLocale;
   createdAt: string;
+}
+export interface AdminEmailDeliveryLogsPage {
+  logs: EmailDeliveryLog[];
+  failedCount: number;
+  pagination: AdminPagination;
 }
 
 export type SupportStatus = 'OPEN' | 'ANSWERED' | 'CLOSED';
@@ -90,6 +110,11 @@ export interface SupportTicket {
   createdAt: string;
   updatedAt: string;
   messages?: SupportMessage[];
+}
+export interface AdminSupportTicketsPage {
+  tickets: SupportTicket[];
+  openCount: number;
+  pagination: AdminPagination;
 }
 
 export interface RegistrationResult {
@@ -268,12 +293,16 @@ export async function deleteAccount(reauthentication: { password: string } | { c
   await request('/auth/account', { method: 'DELETE', body: JSON.stringify(reauthentication) });
 }
 
-export async function listAdminUsers(): Promise<AdminUser[]> {
-  return (await request<{ users: AdminUser[] }>('/admin/users')).users;
+function adminPaginationQuery({ page = 1, pageSize = 20 }: AdminPaginationOptions = {}): string {
+  return new URLSearchParams({ page: String(page), pageSize: String(pageSize) }).toString();
 }
 
-export async function getAdminGameStats(): Promise<AdminGameStats> {
-  return request<AdminGameStats>('/admin/match-stats');
+export async function listAdminUsers(options: AdminPaginationOptions = {}): Promise<AdminUsersPage> {
+  return request<AdminUsersPage>(`/admin/users?${adminPaginationQuery(options)}`);
+}
+
+export async function getAdminGameStats(options: AdminPaginationOptions = {}): Promise<AdminGameStats> {
+  return request<AdminGameStats>(`/admin/match-stats?${adminPaginationQuery(options)}`);
 }
 
 export async function setAdminUserActive(id: string, isActive: boolean): Promise<void> {
@@ -295,8 +324,8 @@ export async function testSmtpSettings(recipient: string): Promise<SmtpTestResul
     method: 'POST', body: JSON.stringify({ recipient }),
   }, 40_000)).result;
 }
-export async function getEmailDeliveryLogs(limit = 100): Promise<EmailDeliveryLog[]> {
-  return (await request<{ logs: EmailDeliveryLog[] }>(`/admin/smtp/logs?limit=${limit}`)).logs;
+export async function getEmailDeliveryLogs(options: AdminPaginationOptions = {}): Promise<AdminEmailDeliveryLogsPage> {
+  return request<AdminEmailDeliveryLogsPage>(`/admin/smtp/logs?${adminPaginationQuery(options)}`);
 }
 
 export async function updateLocale(locale: SupportedLocale): Promise<AuthenticatedUser> {
@@ -309,9 +338,10 @@ export interface SupportCreationResult { ticketId: string; emailDeliveryWarning:
 export async function createSupport(input: { subject: string; contactEmail: string; message: string; termsAccepted: boolean; locale?: SupportedLocale }): Promise<SupportCreationResult> {
   return request<SupportCreationResult>('/support', { method: 'POST', body: JSON.stringify(input) });
 }
-export async function listSupportTickets(status?: SupportStatus): Promise<{ tickets: SupportTicket[]; openCount: number }> {
-  const query = status ? `?status=${encodeURIComponent(status)}` : '';
-  return request<{ tickets: SupportTicket[]; openCount: number }>(`/admin/support${query}`);
+export async function listSupportTickets(options: AdminPaginationOptions & { status?: SupportStatus } = {}): Promise<AdminSupportTicketsPage> {
+  const query = new URLSearchParams(adminPaginationQuery(options));
+  if (options.status) query.set('status', options.status);
+  return request<AdminSupportTicketsPage>(`/admin/support?${query.toString()}`);
 }
 export async function getSupportTicket(id: string): Promise<SupportTicket> {
   return (await request<{ ticket: SupportTicket }>(`/admin/support/${encodeURIComponent(id)}`)).ticket;

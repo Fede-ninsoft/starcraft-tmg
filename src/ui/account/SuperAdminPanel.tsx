@@ -1,7 +1,8 @@
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as auth from '@/auth/authService';
 import { normalizeLocale } from '@/i18n/types';
+import { AdminPagination } from './AdminPagination';
 
 export const AUTH_PROVIDER_LABEL: Record<auth.AuthProvider, string> = {
   PASSWORD: 'Correo y contraseña',
@@ -17,18 +18,28 @@ export function authProviderLabel(provider: auth.AuthProvider, locale: 'es' | 'e
 }
 
 type AdminSection = 'users' | 'support' | 'smtp' | 'email-logs' | 'match-stats';
+const ADMIN_PAGE_SIZE = 20;
+const INITIAL_PAGINATION: auth.AdminPagination = { page: 1, pageSize: ADMIN_PAGE_SIZE, total: 0, totalPages: 0 };
+
 export function SuperAdminPanel() {
   const { t, i18n } = useTranslation('admin');
   const locale = normalizeLocale(i18n.language) ?? 'es';
   const supportStatusLabel: Record<auth.SupportStatus, string> = { OPEN: t('open'), ANSWERED: t('answered'), CLOSED: t('closed') };
   const [users, setUsers] = useState<auth.AdminUser[]>([]);
+  const [usersPagination, setUsersPagination] = useState<auth.AdminPagination>(INITIAL_PAGINATION);
+  const [usersPending, setUsersPending] = useState(false);
   const [message, setMessage] = useState(t('loadingUsers'));
   const [smtp, setSmtp] = useState({ host: '', port: 587, secure: false, username: '', from: '', password: '' });
   const [smtpConfigured, setSmtpConfigured] = useState(false);
   const [testRecipient, setTestRecipient] = useState('');
   const [smtpPending, setSmtpPending] = useState(false);
   const [emailLogs, setEmailLogs] = useState<auth.EmailDeliveryLog[]>([]);
+  const [emailLogsPagination, setEmailLogsPagination] = useState<auth.AdminPagination>(INITIAL_PAGINATION);
+  const [failedEmailCount, setFailedEmailCount] = useState(0);
+  const [emailLogsPending, setEmailLogsPending] = useState(false);
   const [supportTickets, setSupportTickets] = useState<auth.SupportTicket[]>([]);
+  const [supportPagination, setSupportPagination] = useState<auth.AdminPagination>(INITIAL_PAGINATION);
+  const [supportListPending, setSupportListPending] = useState(false);
   const [supportOpenCount, setSupportOpenCount] = useState(0);
   const [supportStatusFilter, setSupportStatusFilter] = useState<auth.SupportStatus | ''>('');
   const [selectedSupportId, setSelectedSupportId] = useState<string | null>(null);
@@ -39,31 +50,70 @@ export function SuperAdminPanel() {
   const [matchStatsPending, setMatchStatsPending] = useState(false);
   const [activeSection, setActiveSection] = useState<AdminSection>('users');
 
-  const refreshUsers = async () => {
+  const usersRequest = useRef(0);
+  const emailLogsRequest = useRef(0);
+  const supportRequest = useRef(0);
+  const matchStatsRequest = useRef(0);
+
+  const refreshUsers = async (page = usersPagination.page) => {
+    const requestId = ++usersRequest.current;
+    setUsersPending(true);
     try {
-      const loaded = await auth.listAdminUsers();
-      setUsers(loaded);
-      setMessage(loaded.length ? '' : t('noUsers'));
+      let result = await auth.listAdminUsers({ page, pageSize: ADMIN_PAGE_SIZE });
+      if (result.pagination.totalPages > 0 && page > result.pagination.totalPages && result.pagination.page !== result.pagination.totalPages) {
+        result = await auth.listAdminUsers({ page: result.pagination.totalPages, pageSize: ADMIN_PAGE_SIZE });
+      }
+      if (requestId !== usersRequest.current) return;
+      setUsers(result.users);
+      setUsersPagination(result.pagination);
+      setMessage(result.pagination.total ? '' : t('noUsers'));
     } catch (error) {
+      if (requestId !== usersRequest.current) return;
       setMessage(error instanceof Error ? error.message : t('usersLoadError'));
+    } finally {
+      if (requestId === usersRequest.current) setUsersPending(false);
     }
   };
 
-  const refreshEmailLogs = async (reportError = true) => {
-    try { setEmailLogs(await auth.getEmailDeliveryLogs()); }
-    catch (error) {
-      if (reportError) setMessage(error instanceof Error ? error.message : t('emailHistoryError'));
-    }
-  };
-
-  const refreshSupport = async (reportError = true) => {
+  const refreshEmailLogs = async (page = emailLogsPagination.page, reportError = true) => {
+    const requestId = ++emailLogsRequest.current;
+    setEmailLogsPending(true);
     try {
-      const result = await auth.listSupportTickets(supportStatusFilter || undefined);
+      let result = await auth.getEmailDeliveryLogs({ page, pageSize: ADMIN_PAGE_SIZE });
+      if (result.pagination.totalPages > 0 && page > result.pagination.totalPages && result.pagination.page !== result.pagination.totalPages) {
+        result = await auth.getEmailDeliveryLogs({ page: result.pagination.totalPages, pageSize: ADMIN_PAGE_SIZE });
+      }
+      if (requestId !== emailLogsRequest.current) return;
+      setEmailLogs(result.logs);
+      setFailedEmailCount(result.failedCount);
+      setEmailLogsPagination(result.pagination);
+    }
+    catch (error) {
+      if (requestId !== emailLogsRequest.current) return;
+      if (reportError) setMessage(error instanceof Error ? error.message : t('emailHistoryError'));
+    } finally {
+      if (requestId === emailLogsRequest.current) setEmailLogsPending(false);
+    }
+  };
+
+  const refreshSupport = async (page = supportPagination.page, reportError = true, status = supportStatusFilter) => {
+    const requestId = ++supportRequest.current;
+    setSupportListPending(true);
+    try {
+      let result = await auth.listSupportTickets({ page, pageSize: ADMIN_PAGE_SIZE, status: status || undefined });
+      if (result.pagination.totalPages > 0 && page > result.pagination.totalPages && result.pagination.page !== result.pagination.totalPages) {
+        result = await auth.listSupportTickets({ page: result.pagination.totalPages, pageSize: ADMIN_PAGE_SIZE, status: status || undefined });
+      }
+      if (requestId !== supportRequest.current) return;
       setSupportTickets(result.tickets);
       setSupportOpenCount(result.openCount);
+      setSupportPagination(result.pagination);
       setSelectedSupportId((current) => current && result.tickets.some((ticket) => ticket.id === current) ? current : result.tickets[0]?.id ?? null);
     } catch (error) {
+      if (requestId !== supportRequest.current) return;
       if (reportError) setMessage(error instanceof Error ? error.message : t('supportLoadError'));
+    } finally {
+      if (requestId === supportRequest.current) setSupportListPending(false);
     }
   };
 
@@ -72,14 +122,21 @@ export function SuperAdminPanel() {
     catch (error) { setMessage(error instanceof Error ? error.message : t('supportTicketError')); }
   };
 
-  const refreshMatchStats = async (reportError = true) => {
+  const refreshMatchStats = async (page = matchStats?.pagination.page ?? 1, reportError = true) => {
+    const requestId = ++matchStatsRequest.current;
     setMatchStatsPending(true);
     try {
-      setMatchStats(await auth.getAdminGameStats());
+      let result = await auth.getAdminGameStats({ page, pageSize: ADMIN_PAGE_SIZE });
+      if (result.pagination.totalPages > 0 && page > result.pagination.totalPages && result.pagination.page !== result.pagination.totalPages) {
+        result = await auth.getAdminGameStats({ page: result.pagination.totalPages, pageSize: ADMIN_PAGE_SIZE });
+      }
+      if (requestId !== matchStatsRequest.current) return;
+      setMatchStats(result);
     } catch (error) {
+      if (requestId !== matchStatsRequest.current) return;
       if (reportError) setMessage(error instanceof Error ? error.message : t('matchStatsLoadError'));
     } finally {
-      setMatchStatsPending(false);
+      if (requestId === matchStatsRequest.current) setMatchStatsPending(false);
     }
   };
 
@@ -100,7 +157,6 @@ export function SuperAdminPanel() {
     void refreshSelectedSupport(selectedSupportId);
   }, [selectedSupportId]);
 
-  useEffect(() => { if (activeSection === 'support') void refreshSupport(false); }, [activeSection, supportStatusFilter]);
   useEffect(() => {
     if (activeSection === 'match-stats' && !matchStats) void refreshMatchStats();
   }, [activeSection, matchStats]);
@@ -116,7 +172,7 @@ export function SuperAdminPanel() {
     try {
       const { emailDeliveryWarning } = await auth.setAdminUserVerified(user.id, verify);
       await refreshUsers();
-      void refreshEmailLogs(false);
+      void refreshEmailLogs(1, false);
       if (!verify) setMessage(t('verificationRemoved', { email: user.email }));
       else setMessage(emailDeliveryWarning ?? t('manuallyVerified', { email: user.email }));
     } catch (error) { setMessage(error instanceof Error ? error.message : t('verificationUpdateError')); }
@@ -171,13 +227,20 @@ export function SuperAdminPanel() {
       setMessage(error instanceof Error ? error.message : t('smtpTestFailed'));
     } finally {
       setSmtpPending(false);
-      void refreshEmailLogs(false);
+      void refreshEmailLogs(1, false);
     }
   };
 
-  const failedEmailCount = emailLogs.filter((entry) => entry.status === 'FAILED').length;
+  const changeSupportFilter = (status: auth.SupportStatus | '') => {
+    setSupportStatusFilter(status);
+    setSelectedSupportId(null);
+    setSelectedSupport(null);
+    setSupportReply('');
+    void refreshSupport(1, true, status);
+  };
+
   const tabs: Array<{ id: AdminSection; label: string; count?: number }> = [
-    { id: 'users', label: t('sections.users'), count: users.length },
+    { id: 'users', label: t('sections.users'), count: usersPagination.total },
     { id: 'support', label: t('sections.support'), count: supportOpenCount || undefined },
     { id: 'match-stats', label: t('sections.matchStats'), count: matchStats?.totals.users || undefined },
     { id: 'smtp', label: t('sections.smtp') },
@@ -205,25 +268,29 @@ export function SuperAdminPanel() {
 
     {activeSection === 'users' && <section className="admin-section stack" id="admin-panel-users" role="tabpanel" aria-labelledby="admin-tab-users">
       <header className="admin-section__heading"><div><h3>{t('usersTitle')}</h3><p className="muted small">{t('usersDescription')}</p></div></header>
-      <div className="admin-user-list">
+      <div className="admin-user-list" aria-busy={usersPending}>
         {users.map((user) => <article className="admin-user" key={user.id}>
           <div><strong>{user.nickname || user.email}</strong><span>{user.email}</span><small>{t('access', { provider: authProviderLabel(user.authProvider, locale) })} · {t('lastAccess', { date: user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleString(locale) : t('never') })} · {t('savedLists', { count: user.savedLists })}{user.emailVerifiedAt && ` · ${t('verifiedAt', { date: new Date(user.emailVerifiedAt).toLocaleString(locale) })}`}</small></div>
           <div className="row"><span className={`chip ${user.isActive ? '' : 'chip--unique'}`}>{user.isActive ? t('active') : t('inactive')}</span><span className="chip">{authProviderLabel(user.authProvider, locale)}</span><span className={`chip ${user.emailVerifiedAt ? '' : 'chip--unique'}`}>{user.emailVerifiedAt ? t('verified') : t('unverified')}</span><button onClick={() => { void toggleVerified(user); }}>{user.emailVerifiedAt ? t('removeVerification') : t('verify')}</button><button onClick={() => { void toggleActive(user); }}>{user.isActive ? t('deactivate') : t('activate')}</button><button onClick={() => { void resetPassword(user); }}>{t('changePassword')}</button></div>
         </article>)}
       </div>
+      <AdminPagination pagination={usersPagination} sectionLabel={t('sections.users')} disabled={usersPending} onPageChange={(page) => { void refreshUsers(page); }} />
     </section>}
 
     {activeSection === 'support' && <section className="admin-section admin-support stack" id="admin-panel-support" role="tabpanel" aria-labelledby="admin-tab-support">
-      <div className="row email-log-heading"><div><h3>{t('supportRequests')}</h3><p className="muted small">{t('supportDescription', { count: supportOpenCount })}</p></div><div className="row"><select aria-label={t('filterStatus')} value={supportStatusFilter} onChange={(event) => setSupportStatusFilter(event.target.value as auth.SupportStatus | '')}><option value="">{t('allStatuses')}</option><option value="OPEN">{t('open')}</option><option value="ANSWERED">{t('answered')}</option><option value="CLOSED">{t('closed')}</option></select><button type="button" onClick={() => { void refreshSupport(); }}>{t('refresh')}</button></div></div>
+      <div className="row email-log-heading"><div><h3>{t('supportRequests')}</h3><p className="muted small">{t('supportDescription', { count: supportOpenCount })}</p></div><div className="row"><select aria-label={t('filterStatus')} value={supportStatusFilter} onChange={(event) => changeSupportFilter(event.target.value as auth.SupportStatus | '')}><option value="">{t('allStatuses')}</option><option value="OPEN">{t('open')}</option><option value="ANSWERED">{t('answered')}</option><option value="CLOSED">{t('closed')}</option></select><button type="button" disabled={supportListPending} onClick={() => { void refreshSupport(); }}>{t('refresh')}</button></div></div>
       <div className="admin-support-layout">
-        <div className="admin-support-list">
-          {supportTickets.length === 0 ? <p className="muted">{t('noSupport')}</p> : supportTickets.map((ticket) => <button type="button" className={`admin-support-ticket${ticket.id === selectedSupportId ? ' admin-support-ticket--active' : ''}`} key={ticket.id} onClick={() => setSelectedSupportId(ticket.id)}><strong>{ticket.subject}</strong><span>{ticket.contactEmail}</span><small>{supportStatusLabel[ticket.status]} · {new Date(ticket.updatedAt).toLocaleString(locale)}</small></button>)}
+        <div className="admin-support-list-column">
+          <div className="admin-support-list" aria-busy={supportListPending}>
+            {supportTickets.length === 0 ? <p className="muted">{t('noSupport')}</p> : supportTickets.map((ticket) => <button type="button" className={`admin-support-ticket${ticket.id === selectedSupportId ? ' admin-support-ticket--active' : ''}`} key={ticket.id} onClick={() => setSelectedSupportId(ticket.id)}><strong>{ticket.subject}</strong><span>{ticket.contactEmail}</span><small>{supportStatusLabel[ticket.status]} · {new Date(ticket.updatedAt).toLocaleString(locale)}</small></button>)}
+          </div>
+          <AdminPagination pagination={supportPagination} sectionLabel={t('sections.support')} disabled={supportListPending} onPageChange={(page) => { void refreshSupport(page); }} />
         </div>
         <article className="admin-support-detail">
           {!selectedSupport ? <p className="muted">{t('selectSupport')}</p> : <>
-            <header className="admin-support-detail__heading"><div><p className="eyebrow">{t('ticket', { id: selectedSupport.id })}</p><h4>{selectedSupport.subject}</h4><p className="muted small">{selectedSupport.contactEmail} · {t('created', { date: new Date(selectedSupport.createdAt).toLocaleString(locale) })}</p></div><select aria-label={t('status')} value={selectedSupport.status} onChange={async (event) => { const status = event.target.value as auth.SupportStatus; try { await auth.setSupportStatus(selectedSupport.id, status); setSelectedSupport({ ...selectedSupport, status }); await refreshSupport(false); } catch (error) { setMessage(error instanceof Error ? error.message : t('statusUpdateError')); } }}><option value="OPEN">{t('open')}</option><option value="ANSWERED">{t('answered')}</option><option value="CLOSED">{t('closed')}</option></select></header>
+            <header className="admin-support-detail__heading"><div><p className="eyebrow">{t('ticket', { id: selectedSupport.id })}</p><h4>{selectedSupport.subject}</h4><p className="muted small">{selectedSupport.contactEmail} · {t('created', { date: new Date(selectedSupport.createdAt).toLocaleString(locale) })}</p></div><select aria-label={t('status')} value={selectedSupport.status} onChange={async (event) => { const status = event.target.value as auth.SupportStatus; try { await auth.setSupportStatus(selectedSupport.id, status); setSelectedSupport({ ...selectedSupport, status }); await refreshSupport(supportPagination.page, false); } catch (error) { setMessage(error instanceof Error ? error.message : t('statusUpdateError')); } }}><option value="OPEN">{t('open')}</option><option value="ANSWERED">{t('answered')}</option><option value="CLOSED">{t('closed')}</option></select></header>
             <div className="admin-support-thread">{selectedSupport.messages?.map((item) => <div className={`admin-support-message admin-support-message--${item.authorType.toLowerCase()}`} key={item.id}><div className="admin-support-message__meta"><strong>{item.authorType === 'ADMIN' ? t('administrator') : selectedSupport.contactEmail}</strong><span>{new Date(item.createdAt).toLocaleString(locale)}</span>{item.authorType === 'ADMIN' && <span className={`chip ${item.deliveryStatus === 'FAILED' ? 'chip--unique' : ''}`}>{item.deliveryStatus === 'SENT' ? t('emailSent') : item.deliveryStatus === 'FAILED' ? t('emailFailed') : t('pending')}</span>}</div><p>{item.body}</p>{item.deliveryError && <small className="email-log-error">{item.deliveryError}</small>}</div>)}</div>
-            <form className="admin-support-reply stack" onSubmit={async (event) => { event.preventDefault(); if (!supportReply.trim()) return; setSupportPending(true); try { const result = await auth.replyToSupport(selectedSupport.id, supportReply.trim()); setSupportReply(''); await refreshSelectedSupport(selectedSupport.id); await refreshSupport(false); setMessage(result.emailDeliveryWarning ?? t('replySaved')); } catch (error) { setMessage(error instanceof Error ? error.message : t('replySaveError')); } finally { setSupportPending(false); } }}><label className="field">{t('reply')}<textarea value={supportReply} onChange={(event) => setSupportReply(event.target.value)} required maxLength={10000} rows={5} placeholder={t('replyPlaceholder')} /></label><div className="row"><button type="submit" disabled={supportPending}>{supportPending ? t('sending') : t('sendReply')}</button></div></form>
+            <form className="admin-support-reply stack" onSubmit={async (event) => { event.preventDefault(); if (!supportReply.trim()) return; setSupportPending(true); try { const result = await auth.replyToSupport(selectedSupport.id, supportReply.trim()); setSupportReply(''); await refreshSelectedSupport(selectedSupport.id); await refreshSupport(supportPagination.page, false); setMessage(result.emailDeliveryWarning ?? t('replySaved')); } catch (error) { setMessage(error instanceof Error ? error.message : t('replySaveError')); } finally { setSupportPending(false); } }}><label className="field">{t('reply')}<textarea value={supportReply} onChange={(event) => setSupportReply(event.target.value)} required maxLength={10000} rows={5} placeholder={t('replyPlaceholder')} /></label><div className="row"><button type="submit" disabled={supportPending}>{supportPending ? t('sending') : t('sendReply')}</button></div></form>
           </>}
         </article>
       </div>
@@ -240,7 +307,7 @@ export function SuperAdminPanel() {
           <div className="admin-match-stat"><span>{t('matchStatsAbandoned')}</span><strong>{matchStats.totals.abandoned}</strong></div>
           <div className="admin-match-stat"><span>{t('matchStatsGuests')}</span><strong>{matchStats.totals.guestSessions}</strong></div>
         </div>
-        {matchStats.users.length === 0 ? <p className="muted">{t('matchStatsNoUsers')}</p> : <div className="admin-match-stats-table-wrap">
+        {matchStats.users.length === 0 ? <p className="muted">{t('matchStatsNoUsers')}</p> : <div className="admin-match-stats-table-wrap" aria-busy={matchStatsPending}>
           <table className="admin-match-stats-table">
             <caption className="sr-only">{t('matchStatsTitle')}</caption>
             <thead><tr><th scope="col">{t('matchStatsUser')}</th><th scope="col">{t('matchStatsGames')}</th><th scope="col">{t('matchStatsConfiguration')}</th><th scope="col">{t('matchStatsActive')}</th><th scope="col">{t('matchStatsFinished')}</th><th scope="col">{t('matchStatsAbandoned')}</th><th scope="col">{t('matchStatsLastActivity')}</th></tr></thead>
@@ -251,6 +318,7 @@ export function SuperAdminPanel() {
             </tr>)}</tbody>
           </table>
         </div>}
+        <AdminPagination pagination={matchStats.pagination} sectionLabel={t('sections.matchStats')} disabled={matchStatsPending} onPageChange={(page) => { void refreshMatchStats(page); }} />
       </>}
     </section>}
 
@@ -271,13 +339,14 @@ export function SuperAdminPanel() {
     </form>}
 
     {activeSection === 'email-logs' && <section className="admin-section email-log-section stack" id="admin-panel-email-logs" role="tabpanel" aria-labelledby="admin-tab-email-logs">
-      <div className="row email-log-heading"><div><h3>{t('emailHistory')}</h3><p className="muted small">{t('emailHistoryDescription')}</p></div><button onClick={() => { void refreshEmailLogs(); }}>{t('refresh')}</button></div>
+      <div className="row email-log-heading"><div><h3>{t('emailHistory')}</h3><p className="muted small">{t('emailHistoryDescription')}</p></div><button disabled={emailLogsPending} onClick={() => { void refreshEmailLogs(); }}>{t('refresh')}</button></div>
       {emailLogs.length === 0
         ? <p className="muted">{t('noEmails')}</p>
-        : <div className="email-log-list">{emailLogs.map((entry) => <article className="email-log-item" key={entry.id}>
+        : <div className="email-log-list" aria-busy={emailLogsPending}>{emailLogs.map((entry) => <article className="email-log-item" key={entry.id}>
           <div><strong>{entry.subject}</strong><span>{entry.recipient}</span><small>{new Date(entry.createdAt).toLocaleString(locale)} · {t(`messageType.${entry.messageType}`)}</small></div>
           <div className="email-log-result"><span className={`chip ${entry.status === 'FAILED' ? 'chip--unique' : ''}`}>{entry.status === 'SENT' ? t('sent') : t('failed')}</span>{entry.errorMessage && <small className="email-log-error">{entry.errorMessage}</small>}{entry.providerMessageId && <small>{t('id', { id: entry.providerMessageId })}</small>}</div>
         </article>)}</div>}
+      <AdminPagination pagination={emailLogsPagination} sectionLabel={t('sections.logs')} disabled={emailLogsPending} onPageChange={(page) => { void refreshEmailLogs(page); }} />
     </section>}
   </section>;
 }

@@ -12,6 +12,22 @@ import { SupportRepository, type SupportStatus } from '../support/support.reposi
 import { GameRepository } from '../game-sessions/game.repository.js';
 
 const SUPER_ADMIN_EMAIL = 'malkivian@gmail.com';
+const paginationQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).max(100_000).default(1),
+  pageSize: z.coerce.number().int().min(1).max(100).default(20),
+});
+
+export function parseAdminPagination(query: unknown): { page: number; pageSize: number } {
+  const result = paginationQuerySchema.safeParse(query);
+  if (!result.success) throw new HttpError(400, 'INVALID_INPUT', 'La paginación indicada no es válida.');
+  return result.data;
+}
+
+function paginationMeta(total: number, requestedPage: number, pageSize: number) {
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const page = Math.min(requestedPage, totalPages);
+  return { page, pageSize, total, totalPages };
+}
 
 function requireSuperAdmin(repository: AuthRepository, env: ServerEnvironment) {
   const authenticated = requireUser(repository, env);
@@ -33,8 +49,17 @@ export function createAdminRouter(
 ): Router {
   const router = Router();
   router.use(...requireSuperAdmin(repository, env));
-  router.get('/users', async (_request, response) => response.json({ users: await repository.listUsersForAdmin() }));
-  router.get('/match-stats', async (_request, response) => response.json(await games.adminSummaryByUser()));
+  router.get('/users', async (request, response) => {
+    const requested = parseAdminPagination(request.query);
+    const total = await repository.countUsersForAdmin();
+    const pagination = paginationMeta(total, requested.page, requested.pageSize);
+    const users = await repository.listUsersForAdmin(pagination.pageSize, (pagination.page - 1) * pagination.pageSize);
+    response.json({ users, pagination });
+  });
+  router.get('/match-stats', async (request, response) => {
+    const pagination = parseAdminPagination(request.query);
+    response.json(await games.adminSummaryByUser(pagination.page, pagination.pageSize));
+  });
   router.put('/users/:id/active', async (request, response) => {
     const { isActive } = z.object({ isActive: z.boolean() }).parse(request.body);
     if (request.params.id === request.authenticatedUser!.id && !isActive) throw new HttpError(400, 'INVALID_INPUT', 'No puedes desactivar tu propia cuenta de superadministrador.');
@@ -78,12 +103,20 @@ export function createAdminRouter(
     }
   });
   router.get('/smtp/logs', async (request, response) => {
-    const { limit } = z.object({ limit: z.coerce.number().int().min(1).max(250).default(100) }).parse(request.query);
-    response.json({ logs: await emailLogs.list(limit) });
+    const requested = parseAdminPagination(request.query);
+    const summary = await emailLogs.countSummary();
+    const pagination = paginationMeta(summary.total, requested.page, requested.pageSize);
+    const logs = await emailLogs.list(pagination.pageSize, (pagination.page - 1) * pagination.pageSize);
+    response.json({ logs, failedCount: summary.failed, pagination });
   });
   router.get('/support', async (request, response) => {
-    const value = z.object({ status: z.enum(['OPEN', 'ANSWERED', 'CLOSED']).optional() }).parse(request.query);
-    response.json({ tickets: await support.listTickets(value.status as SupportStatus | undefined), openCount: await support.countOpenTickets() });
+    const parsed = paginationQuerySchema.extend({ status: z.enum(['OPEN', 'ANSWERED', 'CLOSED']).optional() }).safeParse(request.query);
+    if (!parsed.success) throw new HttpError(400, 'INVALID_INPUT', 'Los filtros de soporte no son válidos.');
+    const status = parsed.data.status as SupportStatus | undefined;
+    const [total, openCount] = await Promise.all([support.countTickets(status), support.countOpenTickets()]);
+    const pagination = paginationMeta(total, parsed.data.page, parsed.data.pageSize);
+    const tickets = await support.listTickets(status, pagination.pageSize, (pagination.page - 1) * pagination.pageSize);
+    response.json({ tickets, openCount, pagination });
   });
   router.get('/support/:id', async (request, response) => {
     const ticket = await support.findTicket(request.params.id);

@@ -35,6 +35,12 @@ export interface AdminGameStats {
     abandoned: number;
     guestSessions: number;
   };
+  pagination: {
+    page: number;
+    pageSize: number;
+    total: number;
+    totalPages: number;
+  };
 }
 
 interface GameRow extends RowDataPacket {
@@ -66,7 +72,6 @@ interface GameRow extends RowDataPacket {
 }
 
 interface AdminGameSummaryRow extends RowDataPacket {
-  owner_type: GamePrincipal['type'];
   user_id: string | null;
   email: string | null;
   nickname: string | null;
@@ -77,6 +82,16 @@ interface AdminGameSummaryRow extends RowDataPacket {
   finished_count: number | string | null;
   abandoned_count: number | string | null;
   last_activity_at: string | null;
+}
+
+interface AdminGameTotalsRow extends RowDataPacket {
+  total_users: number | string | null;
+  total_sessions: number | string | null;
+  configuration_count: number | string | null;
+  active_count: number | string | null;
+  finished_count: number | string | null;
+  abandoned_count: number | string | null;
+  guest_sessions: number | string | null;
 }
 
 const columns = `
@@ -148,9 +163,26 @@ export class GameRepository {
     return rows.map(map);
   }
 
-  async adminSummaryByUser(): Promise<AdminGameStats> {
+  async adminSummaryByUser(requestedPage = 1, requestedPageSize = 20): Promise<AdminGameStats> {
+    const pageSize = Math.max(1, Math.min(100, Math.trunc(requestedPageSize)));
+    const [totalRows] = await this.pool.execute<AdminGameTotalsRow[]>(
+      `SELECT COUNT(DISTINCT CASE WHEN owner_type = 'ACCOUNT' THEN owner_account_id END) AS total_users,
+              COUNT(*) AS total_sessions,
+              COALESCE(SUM(CASE WHEN status = 'CONFIGURATION' THEN 1 ELSE 0 END), 0) AS configuration_count,
+              COALESCE(SUM(CASE WHEN status = 'ACTIVE' THEN 1 ELSE 0 END), 0) AS active_count,
+              COALESCE(SUM(CASE WHEN status = 'FINISHED' THEN 1 ELSE 0 END), 0) AS finished_count,
+              COALESCE(SUM(CASE WHEN status = 'ABANDONED' THEN 1 ELSE 0 END), 0) AS abandoned_count,
+              COALESCE(SUM(CASE WHEN owner_type = 'GUEST' THEN 1 ELSE 0 END), 0) AS guest_sessions
+         FROM game_sessions`,
+    );
+    const totalRow = totalRows[0];
+    const totalUsers = Number(totalRow?.total_users ?? 0);
+    const totalPages = Math.max(1, Math.ceil(totalUsers / pageSize));
+    const page = Math.min(Math.max(1, Math.trunc(requestedPage)), totalPages);
+    const offset = (page - 1) * pageSize;
+
     const [rows] = await this.pool.execute<AdminGameSummaryRow[]>(
-      `SELECT s.owner_type, u.id AS user_id, u.email, p.nickname, u.is_active,
+      `SELECT u.id AS user_id, u.email, p.nickname, u.is_active,
               COUNT(*) AS total_sessions,
               COALESCE(SUM(CASE WHEN s.status = 'CONFIGURATION' THEN 1 ELSE 0 END), 0) AS configuration_count,
               COALESCE(SUM(CASE WHEN s.status = 'ACTIVE' THEN 1 ELSE 0 END), 0) AS active_count,
@@ -158,14 +190,16 @@ export class GameRepository {
               COALESCE(SUM(CASE WHEN s.status = 'ABANDONED' THEN 1 ELSE 0 END), 0) AS abandoned_count,
               MAX(s.updated_at) AS last_activity_at
          FROM game_sessions s
-         LEFT JOIN users u ON u.id = s.owner_account_id
-         LEFT JOIN profiles p ON p.user_id = u.id
-        GROUP BY s.owner_type, u.id, u.email, p.nickname, u.is_active
-        ORDER BY total_sessions DESC, last_activity_at DESC`,
+         JOIN users u ON u.id = s.owner_account_id
+         JOIN profiles p ON p.user_id = u.id
+        WHERE s.owner_type = 'ACCOUNT'
+        GROUP BY u.id, u.email, p.nickname, u.is_active
+        ORDER BY total_sessions DESC, last_activity_at DESC, u.id DESC
+        LIMIT ${pageSize} OFFSET ${offset}`,
     );
 
     const users = rows
-      .filter((row) => row.owner_type === 'ACCOUNT' && row.user_id && row.email)
+      .filter((row) => row.user_id && row.email)
       .map((row) => ({
         userId: row.user_id!,
         email: row.email!,
@@ -178,19 +212,19 @@ export class GameRepository {
         abandoned: Number(row.abandoned_count ?? 0),
         lastActivityAt: row.last_activity_at,
       }));
-    const guest = rows.find((row) => row.owner_type === 'GUEST');
 
     return {
       users,
       totals: {
-        users: users.length,
-        sessions: rows.reduce((total, row) => total + Number(row.total_sessions ?? 0), 0),
-        configuration: rows.reduce((total, row) => total + Number(row.configuration_count ?? 0), 0),
-        active: rows.reduce((total, row) => total + Number(row.active_count ?? 0), 0),
-        finished: rows.reduce((total, row) => total + Number(row.finished_count ?? 0), 0),
-        abandoned: rows.reduce((total, row) => total + Number(row.abandoned_count ?? 0), 0),
-        guestSessions: Number(guest?.total_sessions ?? 0),
+        users: totalUsers,
+        sessions: Number(totalRow?.total_sessions ?? 0),
+        configuration: Number(totalRow?.configuration_count ?? 0),
+        active: Number(totalRow?.active_count ?? 0),
+        finished: Number(totalRow?.finished_count ?? 0),
+        abandoned: Number(totalRow?.abandoned_count ?? 0),
+        guestSessions: Number(totalRow?.guest_sessions ?? 0),
       },
+      pagination: { page, pageSize, total: totalUsers, totalPages },
     };
   }
 

@@ -1065,6 +1065,18 @@
   font-size: 19px;
 }
 
+.super-admin-panel .admin-pagination {
+  border-top-color: var(--page-line);
+}
+
+.super-admin-panel .admin-pagination__status {
+  color: var(--page-muted);
+}
+
+.super-admin-panel .admin-pagination__actions button {
+  min-width: 90px;
+}
+
 .super-admin-panel button:not(.tab) {
   min-height: 34px;
   padding: 0 11px;
@@ -1442,6 +1454,10 @@
 
   .super-admin-panel .admin-match-stats-summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .super-admin-panel .admin-pagination__actions button {
+    min-width: 0;
   }
 
   .public-list-toolbar {

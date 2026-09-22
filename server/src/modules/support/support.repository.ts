@@ -120,12 +120,20 @@ export class SupportRepository {
     });
   }
 
-  async listTickets(status?: SupportStatus): Promise<SupportTicket[]> {
+  async listTickets(status?: SupportStatus, limit = 20, offset = 0): Promise<SupportTicket[]> {
+    const safeLimit = Math.max(1, Math.min(100, Math.trunc(limit)));
+    const safeOffset = Math.max(0, Math.min(10_000_000, Math.trunc(offset)));
     const values: string[] = [];
     const where = status ? ' WHERE status = ?' : '';
     if (status) values.push(status);
-    const [rows] = await this.pool.execute<TicketRow[]>(`${ticketColumns}${where} ORDER BY updated_at DESC, id DESC`, values);
+    const [rows] = await this.pool.execute<TicketRow[]>(`${ticketColumns}${where} ORDER BY updated_at DESC, id DESC LIMIT ${safeLimit} OFFSET ${safeOffset}`, values);
     return rows.map(mapTicket);
+  }
+
+  async countTickets(status?: SupportStatus): Promise<number> {
+    const where = status ? ' WHERE status = ?' : '';
+    const [rows] = await this.pool.execute<RowDataPacket[]>(`SELECT COUNT(*) AS total FROM support_tickets${where}`, status ? [status] : []);
+    return Number(rows[0]?.total ?? 0);
   }
 
   async countOpenTickets(): Promise<number> {
