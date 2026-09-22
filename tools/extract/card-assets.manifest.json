@@ -94,7 +94,7 @@
     },
     "attachment-artefact-hunt-sheet": {
       "path": "docs/sources/2026-09-22/artefact-hunt-sheet.png",
-      "sha256": "5FD2A5AD85179194080D3593844B3471D54EDE2157BC848CC5AFCBA9516CD3FC",
+      "sha256": "0DAA5DFD1452D97B535D2FA685A9208BCDD48B9926C7F0D3CBC6618BFB06859F",
       "format": "image"
     },
     "attachment-new-deployments-sheet": {
@@ -200,8 +200,8 @@
     { "id": "mission.gather_the_resources.skirmish", "source": "zerg", "page": 18, "layout": "mission", "slot": [1, 1], "output": "cards/scenarios/gather-the-resources-skirmish.webp" },
     { "id": "mission.divide_and_conquer.standard", "source": "zerg", "page": 19, "layout": "mission", "slot": [0, 0], "output": "cards/scenarios/divide-and-conquer-standard.webp" },
     { "id": "mission.divide_and_conquer.skirmish", "source": "zerg", "page": 19, "layout": "mission", "slot": [1, 0], "output": "cards/scenarios/divide-and-conquer-skirmish.webp" },
-    { "id": "mission.artefact_hunt.standard", "source": "attachment-artefact-hunt-sheet", "layout": "mission", "crop": { "left": 20, "top": 17, "width": 261, "height": 451 }, "output": "cards/scenarios/artefact-hunt-standard.webp" },
-    { "id": "mission.artefact_hunt.skirmish", "source": "attachment-artefact-hunt-sheet", "layout": "mission", "crop": { "left": 285, "top": 17, "width": 267, "height": 451 }, "output": "cards/scenarios/artefact-hunt-skirmish.webp" },
+    { "id": "mission.artefact_hunt.standard", "source": "attachment-artefact-hunt-sheet", "layout": "mission", "crop": { "left": 0, "top": 0, "width": 465, "height": 794 }, "output": "cards/scenarios/artefact-hunt-standard.webp" },
+    { "id": "mission.artefact_hunt.skirmish", "source": "attachment-artefact-hunt-sheet", "layout": "mission", "crop": { "left": 465, "top": 0, "width": 465, "height": 794 }, "output": "cards/scenarios/artefact-hunt-skirmish.webp" },
 
     { "id": "deployment.abandoned_camp", "source": "zerg", "page": 19, "layout": "deployment", "slot": [0, 2], "rotation": 180, "output": "cards/scenarios/deployment-abandoned-camp-original.webp" },
     { "id": "deployment.agria_valley", "source": "zerg", "page": 19, "layout": "deployment", "slot": [1, 2], "rotation": 180, "output": "cards/scenarios/deployment-agria-valley-original.webp" },
