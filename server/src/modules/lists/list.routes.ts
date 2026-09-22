@@ -52,17 +52,6 @@ export function createListRouter(repository: ListRepository, matches: MatchRepos
     response.json({ recentLists: recentLists.map(payload), publicLists: publicLists.map(payload) });
   });
 
-  router.get('/public', async (request, response) => {
-    const lists = await repository.listPublic(request.authenticatedUser!.id);
-    response.json({ lists: lists.map(payload) });
-  });
-
-  router.get('/public/:id', async (request, response) => {
-    const list = await repository.findPublic(request.params.id, request.authenticatedUser!.id);
-    if (!list) throw new HttpError(404, 'PUBLIC_LIST_NOT_FOUND', 'No existe esa lista pública.');
-    response.json({ list: payload(list) });
-  });
-
   router.post('/public/:id/like', async (request, response) => {
     const list = await repository.findPublic(request.params.id, request.authenticatedUser!.id);
     if (!list) throw new HttpError(404, 'PUBLIC_LIST_NOT_FOUND', 'No existe esa lista pública.');
@@ -136,6 +125,29 @@ export function createListRouter(repository: ListRepository, matches: MatchRepos
     const deleted = await repository.delete(request.params.id, request.authenticatedUser!.id);
     if (!deleted) throw new HttpError(404, 'LIST_NOT_FOUND', 'No existe esa lista.');
     response.status(204).end();
+  });
+
+  return router;
+}
+
+/** Lectura pública de listas. Las mutaciones permanecen en el router privado. */
+export function createPublicListRouter(repository: ListRepository): Router {
+  const router = Router();
+  router.use((_request, response, next) => {
+    response.setHeader('Cache-Control', 'private, no-store');
+    response.setHeader('Vary', 'Cookie');
+    next();
+  });
+
+  router.get('/', async (request, response) => {
+    const lists = await repository.listPublic(request.authenticatedUser?.id ?? null);
+    response.json({ lists: lists.map(payload) });
+  });
+
+  router.get('/:id', async (request, response) => {
+    const list = await repository.findPublic(request.params.id, request.authenticatedUser?.id ?? null);
+    if (!list) throw new HttpError(404, 'PUBLIC_LIST_NOT_FOUND', 'No existe esa lista pública.');
+    response.json({ list: payload(list) });
   });
 
   return router;

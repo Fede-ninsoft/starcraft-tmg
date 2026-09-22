@@ -129,7 +129,7 @@ export function TournamentsPage() {
     {savedNotice && <TournamentSavedDialog text={text} close={() => { const destination = savedNotice.destination; setSavedNotice(null); if (destination) navigate(destination); }} />}
     {id && !t && error && <p>{text('No se ha podido cargar el torneo.', 'The tournament could not be loaded.')} <button disabled={busy} onClick={() => void run(async () => setData(await getTournament(id)))}>{text('Reintentar', 'Retry')}</button></p>}
     {busy && <p role="status">{text('Guardando…', 'Saving…')}</p>}
-    {!user?.emailVerified && <p>{text('Puedes consultar todos los torneos. Inicia sesión con una cuenta verificada para crear uno o inscribirte.', 'You can view every tournament. Sign in with a verified account to create or join one.')} <a href={localizedPath('home', locale)}>{text('Iniciar sesión', 'Sign in')}</a></p>}
+    {!user?.emailVerified && <p>{text('Puedes consultar todos los torneos. Inicia sesión con una cuenta verificada para crear uno o inscribirte.', 'You can view every tournament. Sign in with a verified account to create or join one.')} <a href={localizedPath('login', locale)}>{text('Iniciar sesión', 'Sign in')}</a></p>}
     {!id && <>
       {creating && <ConfigForm initial={initialConfig()} text={text} busy={busy} save={(config) => void run(async () => { const response = await createTournament(config); setCreating(false); setSavedNotice({ destination: `${base}/${response.tournament.id}` }); })} />}
       {!creating && <>

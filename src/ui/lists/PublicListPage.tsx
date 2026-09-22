@@ -9,10 +9,14 @@ import { PrintSheet } from '../print/PrintSheet';
 
 export function PublicListPage({
   list,
+  canLike,
+  onRequireAuthentication,
   onBack,
   onClone,
 }: {
   list: RemoteList;
+  canLike: boolean;
+  onRequireAuthentication: () => void;
   onBack: () => void;
   onClone: () => void;
 }) {
@@ -32,6 +36,10 @@ export function PublicListPage({
   }, [list]);
 
   const toggleLike = async () => {
+    if (!canLike) {
+      onRequireAuthentication();
+      return;
+    }
     setLikePending(true);
     setLikeError(null);
     try {

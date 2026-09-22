@@ -11,7 +11,7 @@ describe('pestañas del acceso', () => {
 
     expect(html).toContain('Iniciar sesión');
     expect(html).toContain('Crear cuenta');
-    expect(html).toContain('href="/es/inicio"');
+    expect(html).toContain('href="/es/iniciar-sesion"');
     expect(html).toContain('href="/es/registro"');
     expect(html).toContain('aria-selected="true"');
     expect(html).toContain('aria-selected="false"');
@@ -24,7 +24,7 @@ describe('pestañas del acceso', () => {
 
     expect(html).toContain('Iniciar sesión');
     expect(html).toContain('Crear cuenta');
-    expect(html).toContain('href="/es/inicio"');
+    expect(html).toContain('href="/es/iniciar-sesion"');
     expect(html).toContain('href="/es/registro"');
     expect(html).toContain('aria-selected="true"');
     expect(html).toContain('aria-selected="false"');

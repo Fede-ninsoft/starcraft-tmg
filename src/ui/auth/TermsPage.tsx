@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { localizedPath, routeLocale } from '@/i18n/routing';
 import { ChangelogLink } from '@/ui/common/ChangelogLink';
 
-const lastUpdated = '5 de agosto de 2026';
+const lastUpdated = '22 de septiembre de 2026';
 const siteDomain = 'starcraft-builder.com';
 
 function TermsSection({ title, children }: { title: string; children: ReactNode }) {
@@ -29,7 +29,7 @@ export function TermsPage() {
           <header className="terms-page__header">
             <p className="eyebrow">{t('eyebrow')}</p>
             <h1>{t('terms')}</h1>
-            <p className="muted">{t('updated', { date: locale === 'en' ? 'August 5, 2026' : lastUpdated })}</p>
+            <p className="muted">{t('updated', { date: locale === 'en' ? 'September 22, 2026' : lastUpdated })}</p>
           </header>
 
           <div className="terms-page__content">

@@ -101,7 +101,7 @@ export class ListRepository {
     return this.withLikeMetadata(rows.map(map), ownerId);
   }
 
-  async listLatestPublic(viewerId: string, limit = 10): Promise<SavedListRecord[]> {
+  async listLatestPublic(viewerId: string | null, limit = 10): Promise<SavedListRecord[]> {
     const [rows] = await this.pool.execute<SavedListRow[]>(`${recordColumns}
     JOIN users u ON u.id = l.owner_id
    WHERE l.is_public = 1
@@ -113,7 +113,7 @@ export class ListRepository {
     return this.withLikeMetadata(rows.map(map), viewerId);
   }
 
-  async listPublic(viewerId: string): Promise<SavedListRecord[]> {
+  async listPublic(viewerId: string | null): Promise<SavedListRecord[]> {
     const [rows] = await this.pool.execute<SavedListRow[]>(`${recordColumns}
     JOIN users u ON u.id = l.owner_id
    WHERE l.is_public = 1
@@ -130,7 +130,7 @@ export class ListRepository {
     return (await this.withLikeMetadata([map(rows[0])], ownerId))[0] ?? null;
   }
 
-  async findPublic(id: string, viewerId: string): Promise<SavedListRecord | null> {
+  async findPublic(id: string, viewerId: string | null): Promise<SavedListRecord | null> {
     const [rows] = await this.pool.execute<SavedListRow[]>(`${recordColumns}
     JOIN users u ON u.id = l.owner_id
    WHERE l.id = ?
@@ -175,7 +175,7 @@ export class ListRepository {
     return 'affectedRows' in result && result.affectedRows > 0;
   }
 
-  private async withLikeMetadata(records: SavedListRecord[], viewerId: string): Promise<SavedListRecord[]> {
+  private async withLikeMetadata(records: SavedListRecord[], viewerId: string | null): Promise<SavedListRecord[]> {
     if (records.length === 0) return records;
     const ids = records.map((record) => record.id);
     const placeholders = ids.map(() => '?').join(', ');

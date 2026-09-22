@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FactionIcon } from '@/ui/common/FactionIcon';
 import { useTranslation } from 'react-i18next';
-import { loadHomeData, setPublicListLike, type RemoteList } from '@/auth/listService';
+import { loadHomeData, loadPublicLists, setPublicListLike, type RemoteList } from '@/auth/listService';
 import type { Race } from '@/engine/types';
 import { ListTable } from '../lists/ListTable';
 
@@ -12,6 +12,8 @@ const RACES: Array<{ id: Race; label: string; description: string }> = [
 ];
 
 export function HomePage({
+  authenticated,
+  onRequireAuthentication,
   onCreateRace,
   onOpenOwn,
   onViewPublic,
@@ -19,6 +21,8 @@ export function HomePage({
   onViewAllPublic,
   onOpenGames,
 }: {
+  authenticated: boolean;
+  onRequireAuthentication: () => void;
   onCreateRace: (race: Race) => void;
   onOpenOwn: (list: RemoteList) => void;
   onViewPublic: (id: string) => void;
@@ -32,7 +36,7 @@ export function HomePage({
 
   useEffect(() => {
     let active = true;
-    void loadHomeData()
+    void (authenticated ? loadHomeData() : loadPublicLists().then((publicLists) => ({ recentLists: [], publicLists: publicLists.slice(0, 10) })))
       .then((loaded) => {
         if (!active) return;
         setData(loaded);
@@ -43,9 +47,13 @@ export function HomePage({
         setMessage(error instanceof Error ? error.message : t('loadError'));
       });
     return () => { active = false; };
-  }, []);
+  }, [authenticated, t]);
 
   const handleLike = async (id: string, liked: boolean) => {
+    if (!authenticated) {
+      onRequireAuthentication();
+      return;
+    }
     try {
       const updated = await setPublicListLike(id, !liked);
       setData((current) => current ? {
@@ -91,7 +99,7 @@ export function HomePage({
 
       {data && (
         <>
-          <section className="home-section" aria-labelledby="home-recent-title">
+          {authenticated && <section className="home-section" aria-labelledby="home-recent-title">
             <div className="home-section__heading">
               <h2 id="home-recent-title">{t('recent')}</h2>
               <span className="muted small">{t('recentHint', { defaultValue: i18n.language.startsWith('en') ? 'Up to 5 recently saved lists.' : 'Hasta 5 listas guardadas recientemente.' })}</span>
@@ -101,7 +109,7 @@ export function HomePage({
             ) : (
               <ListTable lists={data.recentLists} onOpen={onOpenOwn} onViewPublic={onViewPublic} onLikePublic={handleLike} onClonePublic={undefined} showCreator showVisibility={false} openLabel={i18n.language.startsWith('en') ? 'Edit' : 'Editar'} />
             )}
-          </section>
+          </section>}
 
           <section className="home-section" aria-labelledby="home-public-title">
             <div className="home-section__heading">

@@ -9,6 +9,8 @@ describe('rutas localizadas', () => {
     expect(pageFromPath('/en/public-lists')).toBe('public-lists');
     expect(pageFromPath('/es/registro')).toBe('register');
     expect(pageFromPath('/en/register')).toBe('register');
+    expect(pageFromPath('/es/iniciar-sesion')).toBe('login');
+    expect(pageFromPath('/en/sign-in')).toBe('login');
     expect(pageFromPath('/es/revisa-tu-correo')).toBe('check-email');
     expect(pageFromPath('/en/check-your-email')).toBe('check-email');
     expect(pageFromPath('/es/partidas')).toBe('games');
@@ -25,6 +27,8 @@ describe('rutas localizadas', () => {
     expect(localizedPath('public-list', 'en', 'abc')).toBe('/en/public-lists/abc');
     expect(localizedPath('register', 'es')).toBe('/es/registro');
     expect(localizedPath('register', 'en')).toBe('/en/register');
+    expect(localizedPath('login', 'es')).toBe('/es/iniciar-sesion');
+    expect(localizedPath('login', 'en')).toBe('/en/sign-in');
     expect(localizedPath('check-email', 'es')).toBe('/es/revisa-tu-correo');
     expect(localizedPath('check-email', 'en')).toBe('/en/check-your-email');
     expect(localizedPath('games', 'es')).toBe('/es/partidas');
