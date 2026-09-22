@@ -965,12 +965,12 @@
 
 .page-content .saved-list-table__owner > span:last-child {
   color: var(--page-text);
-  font-size: 0.5em;
+  font-size: 0.8em;
   white-space: nowrap;
 }
 
 .page-content .saved-list-table__updated {
-  font-size: 0.5em;
+  font-size: 0.8em;
 }
 
 .page-content .avatar-choice {

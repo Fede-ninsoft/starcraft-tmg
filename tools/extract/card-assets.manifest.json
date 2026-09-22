@@ -212,7 +212,7 @@
     { "id": "deployment.acropolis", "source": "zerg", "page": 20, "layout": "deployment", "slot": [0, 1], "rotation": 0, "output": "cards/scenarios/deployment-acropolis-original.webp" },
     { "id": "deployment.proving_grounds", "source": "zerg", "page": 20, "layout": "deployment", "slot": [1, 1], "rotation": 0, "output": "cards/scenarios/deployment-proving-grounds-original.webp" },
     { "id": "deployment.char_plains", "source": "zerg", "page": 20, "layout": "deployment", "slot": [0, 2], "rotation": 180, "output": "cards/scenarios/deployment-char-plains-original.webp" },
-    { "id": "deployment.breach", "source": "zerg", "page": 20, "layout": "deployment", "slot": [1, 2], "rotation": 0, "output": "cards/scenarios/deployment-breach-original.webp" },
+    { "id": "deployment.breach", "source": "zerg", "page": 20, "layout": "deployment", "slot": [0, 3], "rotation": 0, "output": "cards/scenarios/deployment-breach-original.webp" },
     { "id": "deployment.green_valleys", "source": "attachment-new-deployments-sheet", "layout": "deployment", "crop": { "left": 0, "top": 0, "width": 333, "height": 238 }, "rotation": 180, "output": "cards/scenarios/deployment-green-valleys-original.webp" },
     { "id": "deployment.meeting_engagement", "source": "attachment-new-deployments-sheet", "layout": "deployment", "crop": { "left": 0, "top": 240, "width": 333, "height": 238 }, "output": "cards/scenarios/deployment-meeting-engagement-original.webp" },
     {
