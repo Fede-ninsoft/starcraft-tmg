@@ -409,7 +409,7 @@ label.field textarea {
   background: var(--accent-deep);
   color: var(--accent);
 }
-.primary-nav__mobile .primary-nav__rules-menu button { text-transform: uppercase; }
+.primary-nav__mobile .primary-nav__rules-menu button { align-items: center; gap: 8px; text-transform: uppercase; }
 
 .primary-nav__buttons .primary-nav__item,
 .primary-nav__support {
@@ -624,6 +624,9 @@ label.field textarea {
   }
 
   .primary-nav__mobile-menu button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     min-height: 40px;
     border-radius: var(--radius);
     font-family: var(--font-heading);

@@ -1,15 +1,17 @@
-import { useEffect, useState, type FormEvent, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent, type MouseEvent, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { ApiError, requestPasswordReset, requestVerification, resetPassword, verifyEmail } from '@/auth/authService';
 import { googleSignInEnabled } from '@/auth/googleIdentity';
 import { useAuthStore } from '@/store/authStore';
+import { useListStore } from '@/store/listStore';
 import { GoogleSignInButton } from './GoogleSignInButton';
 import { TermsPage } from './TermsPage';
 import { localizedPath, pageFromPath, routeLocale } from '@/i18n/routing';
 import { LanguageSelector } from '../common/LanguageSelector';
 import { AppVersion } from '../common/AppVersion';
 import { ChangelogLink } from '../common/ChangelogLink';
+import { NavigationIcon } from '../common/NavigationIcon';
 
 export function AuthGate({ children }: { children: ReactNode }) {
   const location = useLocation();
@@ -59,20 +61,92 @@ function AuthLayout({ children }: { children: ReactNode }) {
 }
 
 function AuthShell({ children, mainClassName = '' }: { children: ReactNode; mainClassName?: string }) {
-  return <div className="auth-page"><AuthNavigation /><main className={`auth-page__main ${mainClassName}`.trim()}><div className="auth-page__locale"><LanguageSelector /></div><AuthBrand />{children}</main><AuthFooter /></div>;
+  const { t } = useTranslation('common');
+  const location = useLocation();
+  const navigate = useNavigate();
+  const locale = routeLocale(location.pathname);
+  return <div className="auth-page">
+    <header className="topbar app-header auth-page__header no-print">
+      <button type="button" className="topbar__brand" aria-label={t('appName')} onClick={() => navigate(localizedPath('home', locale))}>
+        <img className="topbar__logo" src="/logo.png" alt="" width={521} height={149} />
+      </button>
+      <AuthNavigation />
+      <div className="topbar__spacer" />
+      <div className="topbar__account"><LanguageSelector /></div>
+    </header>
+    <main className={`auth-page__main ${mainClassName}`.trim()}><AuthBrand />{children}</main>
+    <AuthFooter />
+  </div>;
 }
 
 function AuthNavigation() {
   const { t } = useTranslation('navigation');
+  const race = useListStore((state) => state.list.race);
   const location = useLocation();
   const locale = routeLocale(location.pathname);
-  const items = [
-    ['home', 'home'], ['lists', 'lists'], ['builder', 'newList'], ['tournaments', 'tournaments'],
-    ['games', 'games'], ['public-lists', 'publicLists'], ['faqs', 'faqs'],
-    ['organised-play', 'organisedPlay'], ['support', 'support'],
-  ] as const;
-  return <nav className="auth-page__navigation" aria-label={t('main')}>
-    {items.map(([page, label]) => <Link key={page} to={localizedPath(page, locale)}>{t(label)}</Link>)}
+  const page = pageFromPath(location.pathname);
+  const navRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const closeOutside = (event: PointerEvent) => {
+      navRef.current?.querySelectorAll<HTMLDetailsElement>('details[open]').forEach((menu) => {
+        if (!menu.contains(event.target as Node)) menu.open = false;
+      });
+    };
+    document.addEventListener('pointerdown', closeOutside);
+    return () => document.removeEventListener('pointerdown', closeOutside);
+  }, []);
+
+  const closeOnNavigate = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.currentTarget.closest<HTMLDetailsElement>('.primary-nav__rules')?.removeAttribute('open');
+    event.currentTarget.closest<HTMLDetailsElement>('.primary-nav__mobile')?.removeAttribute('open');
+  };
+  const closeOnEscape = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key !== 'Escape') return;
+    const menu = (event.target as HTMLElement).closest<HTMLDetailsElement>('details[open]');
+    if (!menu) return;
+    event.stopPropagation();
+    menu.open = false;
+    menu.querySelector('summary')?.focus();
+  };
+  const icons = { home: 'inicio', lists: 'mis-listas', builder: 'nueva-lista', tournaments: 'torneos', games: 'partidas', 'public-lists': 'listas-publicas', faqs: 'preguntas', 'organised-play': 'juego-organizado', support: 'contacto' } as const;
+  const link = (target: keyof typeof icons, label: string, className = 'primary-nav__item') => <Link
+    key={target}
+    to={localizedPath(target, locale)}
+    className={`${className}${page === target ? ` ${className}--active` : ''}`}
+    aria-current={page === target ? 'page' : undefined}
+    onClick={closeOnNavigate}
+  ><NavigationIcon race={race} icon={icons[target]} /><span>{t(label)}</span></Link>;
+  const group = (label: string, icon: string, targets: Array<['lists' | 'builder' | 'faqs' | 'organised-play', string]>, active: boolean) => <details className="primary-nav__rules">
+    <summary aria-label={t(label)} className={`primary-nav__item${active ? ' primary-nav__item--active' : ''}`}><NavigationIcon race={race} icon={icon} /><span>{t(label)}</span><span className="primary-nav__chevron" aria-hidden="true">⌄</span></summary>
+    <div className="primary-nav__rules-menu">{targets.map(([target, itemLabel]) => link(target, itemLabel))}</div>
+  </details>;
+  const lists = () => group('lists', 'mis-listas', [['lists', 'lists'], ['builder', 'newList']], page === 'lists' || page === 'builder');
+  const rules = () => group('rules', 'reglas', [['faqs', 'faqs'], ['organised-play', 'organisedPlay']], page === 'faqs' || page === 'organised-play');
+
+  return <nav ref={navRef} className="primary-nav auth-page__navigation" aria-label={t('main')} onKeyDown={closeOnEscape}>
+    <div className="primary-nav__buttons">
+      {link('home', 'home')}
+      {lists()}
+      {link('tournaments', 'tournaments')}
+      {link('games', 'games')}
+      {link('public-lists', 'publicLists')}
+      {rules()}
+    </div>
+    <span className="primary-nav__divider" aria-hidden="true" />
+    {link('support', 'support', 'primary-nav__support')}
+    <details className="primary-nav__mobile">
+      <summary>{t('main')}</summary>
+      <div className="primary-nav__mobile-menu">
+        {link('home', 'home', 'primary-nav__mobile-item')}
+        {lists()}
+        {link('tournaments', 'tournaments', 'primary-nav__mobile-item')}
+        {link('games', 'games', 'primary-nav__mobile-item')}
+        {link('public-lists', 'publicLists', 'primary-nav__mobile-item')}
+        {rules()}
+        {link('support', 'support', 'primary-nav__mobile-item')}
+      </div>
+    </details>
   </nav>;
 }
 

@@ -56,28 +56,56 @@
   to { transform: scale(1.14) translate3d(1.2%, .8%, 0); }
 }
 
-.auth-page .auth-page__navigation {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-wrap: wrap;
+.auth-page .primary-nav__buttons > a,
+.auth-page .primary-nav > a.primary-nav__support {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  gap: 8px 18px;
-  padding: 18px 24px 0;
+  text-decoration: none;
 }
 
-.auth-page .auth-page__navigation a {
-  color: var(--auth-muted);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .04em;
+.auth-page .primary-nav__rules-menu a {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.auth-page .primary-nav__rules-menu a:hover,
+.auth-page .primary-nav__rules-menu a[aria-current="page"] {
+  background: color-mix(in srgb, var(--accent) 16%, #1f2434);
+  color: var(--accent-soft);
+}
+
+.auth-page .primary-nav__mobile .primary-nav__rules-menu a { gap: 8px; }
+
+.auth-page .primary-nav__mobile-menu > a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 7px 10px;
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  font-family: var(--font-heading);
   text-decoration: none;
   text-transform: uppercase;
 }
 
-.auth-page .auth-page__navigation a:hover,
-.auth-page .auth-page__navigation a:focus-visible {
-  color: var(--auth-text);
+.auth-page .primary-nav__mobile-menu > a:hover {
+  background: var(--accent-deep);
+  color: var(--accent);
 }
 
 .auth-page .auth-page__main {
@@ -538,17 +566,6 @@
 }
 
 @media (max-width: 760px) {
-  .auth-page .auth-page__navigation {
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-inline: 16px;
-  }
-
-  .auth-page .auth-page__navigation a {
-    flex: 0 0 auto;
-  }
-
   .auth-page .auth-page__main,
   .auth-page .auth-page__main--split,
   .auth-page .auth-page__main--compact,

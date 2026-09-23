@@ -301,13 +301,6 @@
   font: inherit;
 }
 
-.auth-page__locale {
-  position: absolute;
-  top: 16px;
-  right: 20px;
-  z-index: 2;
-}
-
 @media (max-width: 900px) {
   .toast {
     bottom: calc(128px + env(safe-area-inset-bottom, 0px));
