@@ -16,26 +16,28 @@ habilidades se conservan en inglés, mientras que los textos explicativos se
 localizan.
 
 > **Estado actual:** las funciones de cuenta y listas remotas requieren conexión
-> con la API. El modo invitado descrito a continuación está implementado y
+> con la API. El acceso público descrito a continuación está implementado y
 > verificado con pruebas de permisos, renderizado y navegación local. La
 > instalación PWA no implica funcionamiento íntegro sin conexión. Consulta
 > [`docs/08-AUDITORIA-2026-08-03.md`](docs/08-AUDITORIA-2026-08-03.md) para ver
 > los riesgos y mejoras pendientes antes de un despliegue multiusuario.
 
-## Modo invitado
+## Acceso público y borradores locales
 
 Las entradas públicas del constructor son `/es/crear-lista` y
-`/en/create-list` (`/crear-lista` se conserva como alias). Sin iniciar sesión, un
-invitado podrá crear y validar una lista, importar o exportar JSON, copiar o
-importar un seed e imprimir o guardar como PDF. También podrá imprimir una lista
+`/en/create-list` (`/crear-lista` se conserva como alias). Sin iniciar sesión se
+puede entrar en Inicio, consultar torneos y listas públicas, usar una lista
+pública como base, crear y validar una lista, importar o exportar JSON, copiar o
+importar un seed e imprimir o guardar como PDF. También se puede imprimir una lista
 inválida, pero la salida conservará un aviso visible de que no es válida.
 
-El invitado no podrá guardar en la cuenta, abrir «Mis listas» ni acceder al
-perfil. Su borrador se guarda únicamente en el almacenamiento local de ese
+Sin una cuenta no se puede guardar remotamente, gestionar partidas, abrir «Mis
+listas» ni acceder al perfil. Esas entradas siguen visibles y llevan al inicio
+de sesión. El borrador se guarda únicamente en el almacenamiento local de ese
 dispositivo; no se envía a la API ni se sincroniza entre dispositivos. JSON y
 seed son salidas portables iniciadas expresamente por el usuario.
 
-Si el invitado inicia el flujo de acceso o registro sin recargar la aplicación,
+Si se inicia el flujo de acceso o registro sin recargar la aplicación,
 el borrador se conservará en memoria y seguirá disponible localmente. Tras
 completar la autenticación y la verificación exigida, podrá guardarlo como una
 lista remota. Este traspaso no

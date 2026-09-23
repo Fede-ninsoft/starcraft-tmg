@@ -13,7 +13,7 @@ import { clonePublicList as cloneRemotePublicList, loadPublicList, loadRemoteLis
 import { useAuthStore } from '@/store/authStore';
 import { copyToClipboard } from './ui/common/clipboard';
 import { decodeSeedForAnyRace } from './ui/common/seedImport';
-import { AuthGate } from './ui/auth/AuthGate';
+import { AuthGate, type AuthNavigationState } from './ui/auth/AuthGate';
 import { SavedListsPage } from './ui/lists/SavedListsPage';
 import { PublicListPage } from './ui/lists/PublicListPage';
 import { PublicListsPage } from './ui/lists/PublicListsPage';
@@ -144,8 +144,8 @@ function MobileNavigation({ page, race, onNavigate, onCreate }: { page: PageId; 
     </div>
   </details>;
 }
-const publicListPath = () => {
-  return findPublicListId(window.location.pathname) ?? (window.location.pathname.match(/^\/public-lists\/([^/]+)$/)?.[1] ?? null);
+const publicListPath = (pathname = typeof window === 'undefined' ? '/' : window.location.pathname) => {
+  return findPublicListId(pathname) ?? (pathname.match(/^\/public-lists\/([^/]+)$/)?.[1] ?? null);
 };
 
 const PAGE_PATHS: Record<Exclude<PageId, 'public-list'>, string> = {
@@ -171,7 +171,7 @@ export function pageForPathname(pathname: string, publicListId: string | null = 
   if (publicListId) return 'public-list';
   const localizedPage = pageFromPath(pathname);
   if (localizedPage === 'public-list') return 'public-list';
-  if (localizedPage === 'builder') return 'builder';
+  if (localizedPage === 'builder' || localizedPage === 'guest-builder') return 'builder';
   if (localizedPage === 'lists') return 'lists';
   if (localizedPage === 'public-lists') return 'public-lists';
   if (localizedPage === 'tournaments') return 'tournaments';
@@ -191,10 +191,6 @@ export function pageForPathname(pathname: string, publicListId: string | null = 
   return 'home';
 }
 
-interface DraftNavigationState {
-  preserveGuestDraft?: boolean;
-}
-
 export function initialPageFor(mode: AccessMode, preserveGuestDraft: boolean, publicListId: string | null): PageId {
   if (mode === 'guest' || preserveGuestDraft) return 'builder';
   return publicListId ? 'public-list' : 'home';
@@ -202,147 +198,46 @@ export function initialPageFor(mode: AccessMode, preserveGuestDraft: boolean, pu
 
 export function App() {
   return <>
+    <SessionManager />
     <CookieConsent />
     <PwaPrompt />
     <PwaNetworkStatus />
     <Routes>
-      <Route path="/:locale/torneos/*" element={<TournamentsRoute />} />
-      <Route path="/:locale/tournaments/*" element={<TournamentsRoute />} />
-      <Route path="/crear-lista" element={<GuestBuilderRoute />} />
-      <Route path="/:locale/crear-lista" element={<GuestBuilderRoute />} />
-      <Route path="/:locale/create-list" element={<GuestBuilderRoute />} />
-      <Route path="/registro" element={<AccountRoute />} />
-      <Route path="/:locale/registro" element={<AccountRoute />} />
-      <Route path="/:locale/register" element={<AccountRoute />} />
-      <Route path="/revisa-tu-correo" element={<AccountRoute />} />
-      <Route path="/:locale/revisa-tu-correo" element={<AccountRoute />} />
-      <Route path="/:locale/check-your-email" element={<AccountRoute />} />
-      <Route path="/soporte" element={<SupportRoute />} />
-      <Route path="/:locale/soporte" element={<SupportRoute />} />
-      <Route path="/:locale/support" element={<SupportRoute />} />
-      <Route path="/faqs" element={<FaqRoute />} />
-      <Route path="/:locale/faqs" element={<FaqRoute />} />
-      <Route path="/reglas-de-torneo" element={<OrganisedPlayRoute />} />
-      <Route path="/:locale/reglas-de-torneo" element={<OrganisedPlayRoute />} />
-      <Route path="/:locale/organised-play" element={<OrganisedPlayRoute />} />
-      <Route path="/partida" element={<GameRoute />} />
-      <Route path="/:locale/partida" element={<GameRoute />} />
-      <Route path="/:locale/game" element={<GameRoute />} />
-      <Route path="/partidas" element={<GameRoute />} />
-      <Route path="/:locale/partidas" element={<GameRoute />} />
-      <Route path="/:locale/partidas/nueva" element={<GameRoute />} />
-      <Route path="/:locale/games" element={<GameRoute />} />
-      <Route path="/:locale/games/new" element={<GameRoute />} />
-      <Route path="/:locale/partidas/:id" element={<GameRoute />} />
-      <Route path="/:locale/games/:id" element={<GameRoute />} />
       <Route path="*" element={<AccountRoute />} />
     </Routes>
   </>;
 }
 
-function GameRoute() {
+function SessionManager() {
   const status = useAuthStore((state) => state.status);
   const restore = useAuthStore((state) => state.restore);
-  const locale = routeLocale(window.location.pathname);
-  const noIndex = isGameSubpage(window.location.pathname);
-  useEffect(() => { if (status === 'checking') void restore(); }, [restore, status]);
-  const surface = gameRouteSurface(status);
-  if (surface === 'loading') return <><SeoMetadata page="games" locale={locale} noIndex={noIndex} /><div className="game-page game-empty">Cargando…</div></>;
-  if (surface === 'account-shell') return <AccountRoute />;
-  return <><SeoMetadata page="games" locale={locale} noIndex={noIndex} /><GamePage mode="guest" /></>;
+  const refreshSession = useAuthStore((state) => state.refreshSession);
+  useEffect(() => {
+    if (status === 'checking') void restore();
+  }, [restore, status]);
+  useEffect(() => {
+    if (status !== 'authenticated') return;
+    const refresh = () => { void refreshSession().catch(() => restore()); };
+    const onVisibility = () => { if (document.visibilityState === 'visible') refresh(); };
+    const timer = window.setInterval(refresh, 5 * 60 * 1000);
+    window.addEventListener('focus', refresh);
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener('focus', refresh);
+      document.removeEventListener('visibilitychange', onVisibility);
+    };
+  }, [refreshSession, restore, status]);
+  return null;
 }
 
 function isGameSubpage(pathname: string): boolean {
   return /\/(?:partidas|games)\/[^/]+\/?$/.test(pathname);
 }
 
-export function gameRouteSurface(status: 'checking' | 'anonymous' | 'unverified' | 'authenticated'): 'loading' | 'account-shell' | 'guest-page' {
+export function gameRouteSurface(status: 'checking' | 'anonymous' | 'unverified' | 'authenticated'): 'loading' | 'account-shell' | 'auth-gate' {
   if (status === 'checking') return 'loading';
-  return status === 'authenticated' ? 'account-shell' : 'guest-page';
-}
-
-function SupportRoute() {
-  const { t: tCommon } = useTranslation('common');
-  const { t: tNavigation } = useTranslation('navigation');
-  const { t: tLegal } = useTranslation('legal');
-  const status = useAuthStore((state) => state.status);
-  const restore = useAuthStore((state) => state.restore);
-  useEffect(() => {
-    if (status === 'checking') void restore();
-  }, [restore, status]);
-  if (status === 'authenticated') return <AccountRoute />;
-  const locale = routeLocale(window.location.pathname);
-  if (status === 'checking') return <><SeoMetadata page="support" locale={locale} /><div className="support-standalone support-standalone--loading"><img src="/logo.png" alt="StarCraft: The Miniatures Game" /></div></>;
-  return <div className="support-standalone">
-    <SeoMetadata page="support" locale={locale} />
-    <header className="support-standalone__header"><a href={localizedPath('home', locale)} aria-label={tCommon('appName')}><img src="/logo.png" alt="StarCraft: The Miniatures Game" /></a><LanguageSelector /><a className="support-standalone__back" href={localizedPath('home', locale)}>{tNavigation('home')}</a></header>
-    <SupportPage user={null} />
-    <footer className="auth-page__footer">{tLegal('footer')} <a href={localizedPath('terms', locale)}>{tLegal('terms')}</a> · <ChangelogLink /> · <AppVersion /></footer>
-  </div>;
-}
-
-function FaqRoute() {
-  const { t: tCommon } = useTranslation('common');
-  const { t: tNavigation } = useTranslation('navigation');
-  const { t: tLegal } = useTranslation('legal');
-  const status = useAuthStore((state) => state.status);
-  const restore = useAuthStore((state) => state.restore);
-  useEffect(() => { if (status === 'checking') void restore(); }, [restore, status]);
-  const locale = routeLocale(window.location.pathname);
-  if (status === 'authenticated') return <AccountRoute />;
-  if (status === 'checking') return <><SeoMetadata page="faqs" locale={locale} /><div className="support-standalone support-standalone--loading"><img src="/logo.png" alt="StarCraft: The Miniatures Game" /></div></>;
-  return <div className="support-standalone">
-    <SeoMetadata page="faqs" locale={locale} />
-    <header className="support-standalone__header"><a href={localizedPath('home', locale)} aria-label={tCommon('appName')}><img src="/logo.png" alt="StarCraft: The Miniatures Game" /></a><LanguageSelector /><a className="support-standalone__back" href={localizedPath('home', locale)}>{tNavigation('home')}</a></header>
-    <FaqPage />
-    <footer className="auth-page__footer">{tLegal('footer')} <a href={localizedPath('terms', locale)}>{tLegal('terms')}</a> · <ChangelogLink /> · <AppVersion /></footer>
-  </div>;
-}
-
-function TournamentsRoute() {
-  const status = useAuthStore((state) => state.status);
-  const restore = useAuthStore((state) => state.restore);
-  useEffect(() => { if (status === 'checking') void restore(); }, [status, restore]);
-  const locale = routeLocale(window.location.pathname);
-  if (status === 'authenticated') return <AccountRoute />;
-  return <div className="support-standalone"><SeoMetadata page="tournaments" locale={locale} /><header className="support-standalone__header"><a href={localizedPath('home', locale)}><img src="/logo.png" alt="StarCraft" /></a><LanguageSelector /></header><TournamentsPage /></div>;
-}
-
-function OrganisedPlayRoute() {
-  const { t: tCommon } = useTranslation('common');
-  const { t: tNavigation } = useTranslation('navigation');
-  const { t: tLegal } = useTranslation('legal');
-  const status = useAuthStore((state) => state.status);
-  const restore = useAuthStore((state) => state.restore);
-  useEffect(() => { if (status === 'checking') void restore(); }, [restore, status]);
-  const locale = routeLocale(window.location.pathname);
-  if (status === 'authenticated') return <AccountRoute />;
-  if (status === 'checking') return <><SeoMetadata page="organised-play" locale={locale} /><div className="support-standalone support-standalone--loading"><img src="/logo.png" alt="StarCraft: The Miniatures Game" /></div></>;
-  return <div className="support-standalone">
-    <SeoMetadata page="organised-play" locale={locale} />
-    <header className="support-standalone__header"><a href={localizedPath('home', locale)} aria-label={tCommon('appName')}><img src="/logo.png" alt="StarCraft: The Miniatures Game" /></a><LanguageSelector /><a className="support-standalone__back" href={localizedPath('home', locale)}>{tNavigation('home')}</a></header>
-    <OrganisedPlayPage />
-    <footer className="auth-page__footer">{tLegal('footer')} <a href={localizedPath('terms', locale)}>{tLegal('terms')}</a> · <ChangelogLink /> · <AppVersion /></footer>
-  </div>;
-}
-
-function GuestBuilderRoute() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const status = useAuthStore((state) => state.status);
-  const restore = useAuthStore((state) => state.restore);
-  const locale = routeLocale(location.pathname);
-  const initialSeed = new URLSearchParams(location.search).get('seed');
-  useEffect(() => {
-    if (status === 'checking') void restore();
-  }, [restore, status]);
-  if (status === 'authenticated') return <Navigate to={`${localizedPath('builder', locale)}${location.search}${location.hash}`} replace />;
-  return <ArmyBuilderApp
-    mode="guest"
-    initialSeed={initialSeed}
-    onCloseGuestBuilder={() => navigate(localizedPath('home', locale), { replace: true })}
-    onRequestAuthentication={() => navigate('/', { state: { preserveGuestDraft: true } satisfies DraftNavigationState })}
-  />;
+  return status === 'authenticated' ? 'account-shell' : 'auth-gate';
 }
 
 function AccountRoute() {
@@ -353,8 +248,9 @@ function AccountRoute() {
   const locale = routeLocale(location.pathname);
   const resetForRace = useListStore((state) => state.resetForRace);
   const previousStatus = useRef(status);
-  const navigationState = location.state as DraftNavigationState | null;
-  const preserveGuestDraft = navigationState?.preserveGuestDraft === true;
+  const navigationState = location.state as AuthNavigationState | null;
+  const preserveGuestDraft = navigationState?.preserveGuestDraft === true
+    && (routePage === 'builder' || routePage === 'guest-builder');
   const initialSeed = new URLSearchParams(location.search).get('seed');
   const initialListId = new URLSearchParams(location.search).get('list');
   const consumeGuestDraft = useCallback(() => {
@@ -367,37 +263,50 @@ function AccountRoute() {
     if (priorStatus === 'authenticated' && status === 'anonymous') resetForRace('ZERG');
   }, [resetForRace, status]);
 
-  const appOwnsSeo = status === 'authenticated' && !AUTH_GATE_ONLY_PAGES.has(routePage);
+  const privatePage = routePage === 'lists' || routePage === 'games' || routePage === 'profile';
+  const returnTo = `${location.pathname}${location.search}${location.hash}`;
+  if (status === 'checking' && (privatePage || AUTH_GATE_ONLY_PAGES.has(routePage))) {
+    return <><SeoMetadata page={routePage} locale={locale} /><AuthGate><span /></AuthGate></>;
+  }
+  if (!AUTH_GATE_ONLY_PAGES.has(routePage) && privatePage && status !== 'authenticated') {
+    return <Navigate to={status === 'unverified' ? localizedPath('check-email', locale) : localizedPath('login', locale)} state={{ returnTo } satisfies AuthNavigationState} replace />;
+  }
+  const appOwnsSeo = !AUTH_GATE_ONLY_PAGES.has(routePage);
+  const requestAuthentication = (destination = returnTo) => navigate(
+    status === 'unverified' ? localizedPath('check-email', locale) : localizedPath('login', locale),
+    { state: { returnTo: destination, preserveGuestDraft: true } satisfies AuthNavigationState },
+  );
   return <>
     {!appOwnsSeo && <SeoMetadata page={routePage} locale={locale} />}
-    <AuthGate>
+    {AUTH_GATE_ONLY_PAGES.has(routePage) ? <AuthGate><span /></AuthGate> :
       <ArmyBuilderApp
-        mode="account"
+        mode={status === 'authenticated' ? 'account' : 'guest'}
         initialSeed={initialSeed}
         initialListId={initialListId}
         preserveDraftOnMount={preserveGuestDraft}
         onDraftClaimed={consumeGuestDraft}
+        onRequestAuthentication={requestAuthentication}
       />
-    </AuthGate>
+    }
   </>;
 }
 
 const AUTH_GATE_ONLY_PAGES = new Set<LocalizedPage>([
   'terms',
+  'login',
   'register',
   'check-email',
   'verify-email',
   'reset-password',
 ]);
 
-function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preserveDraftOnMount = false, onDraftClaimed, onCloseGuestBuilder, onRequestAuthentication }: {
+function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preserveDraftOnMount = false, onDraftClaimed, onRequestAuthentication }: {
   mode: AccessMode;
   initialSeed?: string | null;
   initialListId?: string | null;
   preserveDraftOnMount?: boolean;
   onDraftClaimed?: () => void;
-  onCloseGuestBuilder?: () => void;
-  onRequestAuthentication?: () => void;
+  onRequestAuthentication?: (returnTo?: string) => void;
 }) {
   const { t: tBuilder } = useTranslation('builder');
   const { t: tBuilderUi } = useTranslation('builderUi');
@@ -410,10 +319,10 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
   const location = useLocation();
   const locale = routeLocale(typeof window === 'undefined' ? '/' : window.location.pathname);
   const [step, setStep] = useState<StepId>('cards');
-  const initialPublicListId = mode === 'account' ? publicListPath() : null;
-  const initialPage = mode === 'account' && !preserveDraftOnMount
-    ? pageForPathname(window.location.pathname, initialPublicListId)
-    : initialPageFor(mode, preserveDraftOnMount, initialPublicListId);
+  const initialPublicListId = publicListPath(location.pathname);
+  const initialPage = preserveDraftOnMount
+    ? 'builder'
+    : pageForPathname(location.pathname, initialPublicListId);
   const [page, setPage] = useState<PageId>(initialPage);
   const [publicList, setPublicList] = useState<RemoteList | null>(null);
   const [publicListId, setPublicListId] = useState<string | null>(initialPublicListId);
@@ -505,10 +414,6 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
       const draft = loadDraft(draftScope);
       if (draft) {
         setList(draft.list);
-      if (window.location.pathname === pathForPage('home') || window.location.pathname === PAGE_PATHS.home) {
-        window.history.replaceState({}, '', pathForPage('builder'));
-        setPage('builder');
-      }
       setListIsPublic(draft.isPublic);
       setListVisibilityDirty(false);
       setRemoteRevision(draft.remoteRevision);
@@ -538,7 +443,7 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
   }, [isDirty, listVisibilityDirty]);
   useEffect(() => { if (!toast) return; const timer = setTimeout(() => setToast(null), 2600); return () => clearTimeout(timer); }, [toast]);
   useEffect(() => {
-    if (mode !== 'account' || !publicListId) return;
+    if (!publicListId) return;
     let active = true;
     void loadPublicList(publicListId)
       .then((loaded) => { if (active) setPublicList(loaded); })
@@ -550,9 +455,8 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
         setPage('home');
       });
     return () => { active = false; };
-  }, [mode, publicListId]);
+  }, [publicListId]);
   useEffect(() => {
-    if (mode !== 'account') return;
     const onPopState = () => {
       const id = publicListPath();
       setPublicListId(id);
@@ -560,7 +464,7 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
     };
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
-  }, [mode]);
+  }, []);
   useEffect(() => {
     if (!statsAvailable && step === 'stats') setStep('cards');
   }, [statsAvailable, step]);
@@ -596,6 +500,10 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
     if (page === nextPage && nextPage !== 'tournaments') return;
     if (page === 'builder' && !confirmDiscard(locale === 'en' ? `Go to “${destination}”` : `Ir a la sección «${destination}»`)) return;
     const nextPath = pathForPage(nextPage);
+    if (mode === 'guest' && (nextPage === 'lists' || nextPage === 'games' || nextPage === 'profile')) {
+      onRequestAuthentication?.(nextPath);
+      return;
+    }
     if (nextPage === 'tournaments') navigate(nextPath);
     else if (window.location.pathname !== nextPath) window.history.pushState({}, '', nextPath);
     setPublicListId(null);
@@ -617,7 +525,7 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
       setSeedVisible(false);
       setPublicListId(null);
       setPublicList(null);
-      if (mode === 'account' && window.location.pathname !== pathForPage('builder')) window.history.pushState({}, '', pathForPage('builder'));
+      if (window.location.pathname !== pathForPage('builder')) window.history.pushState({}, '', pathForPage('builder'));
       setPage('builder');
       setToast(tBuilderUi('imported'));
     } else setToast(result.error ?? tBuilderUi('listSaveError'));
@@ -635,7 +543,7 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
   };
   const saveList = async () => {
     if (!capabilities.saveRemoteLists) {
-      onRequestAuthentication?.();
+      onRequestAuthentication?.(pathForPage('builder'));
       return;
     }
     try {
@@ -664,12 +572,20 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
   const clonePublicList = async (id: string) => {
     if (!confirmDiscard(tBuilderUi('clonePublic'))) return;
     try {
-      const cloned = await cloneRemotePublicList(id);
+      const remote = mode === 'account' ? await cloneRemotePublicList(id) : await loadPublicList(id);
+      const { revision: _revision, remoteUpdatedAt: _remoteUpdatedAt, isPublic: _isPublic, publishedAt: _publishedAt, ownerNickname: _ownerNickname, ownerAvatar: _ownerAvatar, likeCount: _likeCount, likedByCurrentUser: _likedByCurrentUser, ...base } = remote;
+      const cloned = mode === 'account' ? remote : {
+        ...base,
+        id: crypto.randomUUID(),
+        name: locale === 'en' ? `Copy of ${remote.name}` : `Copia de ${remote.name}`,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
       setList(cloned);
       setListIsPublic(false);
       setListVisibilityDirty(false);
-      setRemoteRevision(cloned.revision);
-      markSaved();
+      setRemoteRevision(mode === 'account' ? remote.revision : null);
+      if (mode === 'account') markSaved();
       setPublicListId(null);
       setPublicList(null);
       if (window.location.pathname !== pathForPage('builder')) window.history.pushState({}, '', pathForPage('builder'));
@@ -693,22 +609,13 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
 
   return (
     <div className={`app${reviewErrorsOpen ? ' app--modal-open' : ''}`} data-race={list.race}>
-      <SeoMetadata page={mode === 'guest' ? 'guest-builder' : page} locale={locale} noIndex={page === 'games' && isGameSubpage(window.location.pathname)} />
+      <SeoMetadata page={page} locale={locale} noIndex={page === 'games' && isGameSubpage(window.location.pathname)} />
       <header className="topbar app-header no-print">
-        {mode === 'account' ? (
-          <button type="button" className="topbar__brand" aria-label={tCommon('appName')} onClick={() => navigateToPage('home', tNavigation('home'))}>
-            <img className="topbar__logo" src="/logo.png" alt="" width={521} height={149} />
-          </button>
-        ) : (
-          <div className="topbar__brand">
-            <img className="topbar__logo" src="/logo.png" alt="StarCraft: The Miniatures Game" width={521} height={149} />
-          </div>
-        )}
+        <button type="button" className="topbar__brand" aria-label={tCommon('appName')} onClick={() => navigateToPage('home', tNavigation('home'))}>
+          <img className="topbar__logo" src="/logo.png" alt="" width={521} height={149} />
+        </button>
         <nav className="primary-nav" aria-label={tNavigation('main')}>
-          {mode === 'guest' ? (
-            <button className="primary-nav__item" onClick={onCloseGuestBuilder}>{tCommon('close')}</button>
-          ) : (
-            <>
+          <>
             <div className="primary-nav__buttons">
               <button aria-current={page === 'home' ? 'page' : undefined} className={`primary-nav__item${page === 'home' ? ' primary-nav__item--active' : ''}`} onClick={() => navigateToPage('home', tNavigation('home'))}><NavigationIcon race={list.race} icon="inicio" />{tNavigation('home')}</button>
               <ListsNavigation page={page} onNavigate={navigateToPage} onCreate={() => createList()} />
@@ -745,24 +652,24 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
               </optgroup>
               <option value="support">{tNavigation('support')}</option>
             </select>
-            </>
-          )}
+          </>
         </nav>
         <div className="topbar__spacer" />
         <div className="topbar__account">
-          {mode === 'guest' && <span className="guest-mode">{tBuilder('guestMode')}</span>}
+          {mode === 'guest' && page === 'builder' && <span className="guest-mode">{tBuilder('guestMode')}</span>}
           {capabilities.manageAccount && user && (
             <button className={`profile-trigger${page === 'profile' ? ' profile-trigger--active' : ''}`} onClick={() => navigateToPage('profile', tNavigation('profile'))} aria-label={tNavigation('openProfile')}>
               <ProfileAvatar user={user} />
               <span className="profile-trigger__name">{profileName(user)}</span>
             </button>
           )}
-          {mode === 'account' && <LanguageSelector />}
+          <LanguageSelector />
           {mode === 'account' && <button className="header-logout" onClick={logoutFromApp}>{tNavigation('logout')}</button>}
+          {mode === 'guest' && <button className="header-logout" onClick={() => onRequestAuthentication?.(`${location.pathname}${location.search}${location.hash}`)}>{tNavigation('login')}</button>}
         </div>
       </header>
 
-      {mode === 'guest' && (
+      {mode === 'guest' && page === 'builder' && (
         <aside className="guest-notice no-print" role="status">
           {tPwa('guestDraftMessage')}
         </aside>
@@ -863,16 +770,16 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
         </>
       )}
 
-      {mode === 'account' && page === 'home' && <HomePage onCreateRace={createList} onOpenOwn={(remote) => loadList(remote, remote.revision)} onViewPublic={(id) => { void openPublicList(id); }} onClonePublic={(id) => { void clonePublicList(id); }} onViewAllPublic={() => navigateToPage('public-lists', tNavigation('publicLists'))} onOpenGames={() => navigateToPage('games', tNavigation('games'))} />}
+      {page === 'home' && <HomePage authenticated={mode === 'account'} onRequireAuthentication={() => onRequestAuthentication?.()} onCreateRace={createList} onOpenOwn={(remote) => loadList(remote, remote.revision)} onViewPublic={(id) => { void openPublicList(id); }} onClonePublic={(id) => { void clonePublicList(id); }} onViewAllPublic={() => navigateToPage('public-lists', tNavigation('publicLists'))} onOpenGames={() => navigateToPage('games', tNavigation('games'))} />}
       {mode === 'account' && page === 'lists' && <SavedListsPage onCreate={() => createList()} onLoad={loadList} onViewPublic={(id) => { void openPublicList(id); }} />}
-      {mode === 'account' && page === 'tournaments' && <TournamentsPage key={location.key} />}
+      {page === 'tournaments' && <TournamentsPage key={location.key} />}
       {mode === 'account' && page === 'games' && <GamePage mode="account" embedded />}
-      {mode === 'account' && page === 'public-lists' && <PublicListsPage onViewPublic={(id) => { void openPublicList(id); }} onClonePublic={(id) => { void clonePublicList(id); }} />}
-      {mode === 'account' && page === 'support' && <SupportPage user={user} />}
-      {mode === 'account' && page === 'faqs' && <FaqPage />}
-      {mode === 'account' && page === 'organised-play' && <OrganisedPlayPage />}
+      {page === 'public-lists' && <PublicListsPage canLike={mode === 'account'} onRequireAuthentication={() => onRequestAuthentication?.()} onViewPublic={(id) => { void openPublicList(id); }} onClonePublic={(id) => { void clonePublicList(id); }} />}
+      {page === 'support' && <SupportPage user={mode === 'account' ? user : null} />}
+      {page === 'faqs' && <FaqPage />}
+      {page === 'organised-play' && <OrganisedPlayPage />}
       {mode === 'account' && page === 'profile' && <AccountPage />}
-      {mode === 'account' && page === 'public-list' && publicList && <PublicListPage list={publicList} onBack={closePublicList} onClone={() => { void clonePublicList(publicList.id); }} />}
+      {page === 'public-list' && publicList && <PublicListPage list={publicList} canLike={mode === 'account'} onRequireAuthentication={() => onRequestAuthentication?.()} onBack={closePublicList} onClone={() => { void clonePublicList(publicList.id); }} />}
       {toast && <div className="toast no-print">{toast}</div>}
       <footer className="auth-page__footer app__footer no-print">{tLegal('footer')} <a href={localizedPath('faqs', locale)}>{tNavigation('faqs')}</a> · <a href={localizedPath('organised-play', locale)}>{tNavigation('organisedPlay')}</a> · <a href={localizedPath('support', locale)}>{tNavigation('support')}</a> · <a href={localizedPath('terms', locale)}>{tLegal('terms')}</a> · <ChangelogLink /> · <AppVersion /></footer>
     </div>

@@ -117,9 +117,10 @@ describe('metadatos SEO y rich snippets', () => {
     const privatePages: LocalizedPage[] = [
       'builder',
       'lists',
-      'public-lists',
+      'games',
       'profile',
       'public-list',
+      'login',
       'register',
       'check-email',
       'verify-email',
@@ -144,7 +145,8 @@ describe('metadatos SEO y rich snippets', () => {
     }> = [
       { page: 'home', es: '/es/inicio', en: '/en/home' },
       { page: 'guest-builder', es: '/es/crear-lista', en: '/en/create-list' },
-      { page: 'games', es: '/es/partidas', en: '/en/games' },
+      { page: 'public-lists', es: '/es/listas-publicas', en: '/en/public-lists' },
+      { page: 'tournaments', es: '/es/torneos', en: '/en/tournaments' },
       { page: 'support', es: '/es/soporte', en: '/en/support' },
       { page: 'terms', es: '/es/terminos-y-condiciones', en: '/en/terms-and-conditions' },
       { page: 'faqs', es: '/es/faqs', en: '/en/faqs' },

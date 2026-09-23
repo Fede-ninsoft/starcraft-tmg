@@ -3,8 +3,9 @@ import type { Response } from 'express';
 import type { ServerEnvironment } from '../../config/env.js';
 
 export const SESSION_COOKIE = 'sctmg_session';
-// La cookie y el token duran dos días, también al cerrar el navegador.
-export const SESSION_TTL_SECONDS = 2 * 24 * 60 * 60;
+// La sesión persiste durante catorce días y se renueva mientras el usuario
+// siga utilizando la aplicación. Cerrar el navegador no cierra la sesión.
+export const SESSION_TTL_SECONDS = 14 * 24 * 60 * 60;
 export const SESSION_TTL_MS = SESSION_TTL_SECONDS * 1000;
 
 export interface SessionPayload {

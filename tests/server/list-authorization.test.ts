@@ -6,10 +6,10 @@ import type { ServerEnvironment } from '../../server/src/config/env';
 import type { DatabasePool } from '../../server/src/db/pool';
 import type { EmailGateway } from '../../server/src/modules/email/email.gateway';
 
-const databaseQuery = vi.fn(async () => {
+const databaseQuery = vi.fn(async (): Promise<unknown> => {
   throw new Error('Una peticion sin autenticar no debe consultar la base de datos.');
 });
-const databaseExecute = vi.fn(async () => {
+const databaseExecute = vi.fn(async (): Promise<unknown> => {
   throw new Error('Una peticion sin autenticar no debe consultar la base de datos.');
 });
 
@@ -73,5 +73,13 @@ describe('autorizacion HTTP de listas', () => {
     });
     expect(databaseQuery).not.toHaveBeenCalled();
     expect(databaseExecute).not.toHaveBeenCalled();
+  });
+
+  it('permite consultar el directorio público sin sesión', async () => {
+    databaseExecute.mockResolvedValueOnce([[], []]);
+    const response = await fetch(`${baseUrl}/api/lists/public`);
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({ lists: [] });
   });
 });

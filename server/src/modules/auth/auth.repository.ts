@@ -125,9 +125,16 @@ export class AuthRepository {
   async recordLogin(userId: string): Promise<void> { await this.pool.execute('UPDATE users SET last_login_at = NOW() WHERE id = ?', [userId]); }
   async setUserActive(userId: string, isActive: boolean): Promise<void> { await this.pool.execute('UPDATE users SET is_active = ?, session_version = session_version + 1 WHERE id = ?', [isActive, userId]); }
 
-  async listUsersForAdmin(): Promise<Array<{ id: string; email: string; nickname: string | null; isActive: boolean; emailVerifiedAt: string | null; authProvider: AuthProvider; locale: SupportedLocale; lastLoginAt: string | null; savedLists: number }>> {
-    const [rows] = await this.pool.execute<RowDataPacket[]>(`SELECT u.id, u.email, p.nickname, p.locale, u.is_active, u.email_verified_at, u.google_sub, u.password_hash IS NOT NULL AS has_password, u.last_login_at, COUNT(l.id) AS saved_lists FROM users u JOIN profiles p ON p.user_id = u.id LEFT JOIN saved_lists l ON l.owner_id = u.id GROUP BY u.id, u.email, p.nickname, p.locale, u.is_active, u.email_verified_at, u.google_sub, has_password, u.last_login_at ORDER BY u.created_at DESC`);
+  async listUsersForAdmin(limit = 20, offset = 0): Promise<Array<{ id: string; email: string; nickname: string | null; isActive: boolean; emailVerifiedAt: string | null; authProvider: AuthProvider; locale: SupportedLocale; lastLoginAt: string | null; savedLists: number }>> {
+    const safeLimit = Math.max(1, Math.min(100, Math.trunc(limit)));
+    const safeOffset = Math.max(0, Math.min(10_000_000, Math.trunc(offset)));
+    const [rows] = await this.pool.execute<RowDataPacket[]>(`SELECT u.id, u.email, p.nickname, p.locale, u.is_active, u.email_verified_at, u.google_sub, u.password_hash IS NOT NULL AS has_password, u.last_login_at, (SELECT COUNT(*) FROM saved_lists l WHERE l.owner_id = u.id) AS saved_lists FROM users u JOIN profiles p ON p.user_id = u.id ORDER BY u.created_at DESC, u.id DESC LIMIT ${safeLimit} OFFSET ${safeOffset}`);
     return rows.map((row) => ({ id: row.id, email: row.email, nickname: row.nickname, isActive: Boolean(row.is_active), emailVerifiedAt: row.email_verified_at, authProvider: authProviderOf({ googleSub: row.google_sub, passwordHash: Number(row.has_password) ? 'set' : null }), locale: row.locale === 'en' ? 'en' : 'es', lastLoginAt: row.last_login_at, savedLists: Number(row.saved_lists) }));
+  }
+
+  async countUsersForAdmin(): Promise<number> {
+    const [rows] = await this.pool.execute<RowDataPacket[]>('SELECT COUNT(*) AS total FROM users');
+    return Number(rows[0]?.total ?? 0);
   }
 
   async updateDefaultRace(userId: string, defaultRace: Race): Promise<UserRecord> {

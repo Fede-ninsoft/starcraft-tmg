@@ -48,14 +48,15 @@ export class EmailDeliveryLogRepository {
     );
   }
 
-  async list(limit = 100): Promise<EmailDeliveryLog[]> {
-    const safeLimit = Math.max(1, Math.min(250, Math.trunc(limit)));
+  async list(limit = 20, offset = 0): Promise<EmailDeliveryLog[]> {
+    const safeLimit = Math.max(1, Math.min(100, Math.trunc(limit)));
+    const safeOffset = Math.max(0, Math.min(10_000_000, Math.trunc(offset)));
     const [rows] = await this.pool.query<EmailDeliveryLogRow[]>(
       `SELECT id, recipient, message_type, subject, locale, status,
               provider_message_id, error_message, created_at
        FROM email_delivery_logs
        ORDER BY created_at DESC, id DESC
-       LIMIT ${safeLimit}`,
+       LIMIT ${safeLimit} OFFSET ${safeOffset}`,
     );
     return rows.map((row) => ({
       id: row.id,
@@ -68,5 +69,14 @@ export class EmailDeliveryLogRepository {
       errorMessage: row.error_message,
       createdAt: row.created_at,
     }));
+  }
+
+  async countSummary(): Promise<{ total: number; failed: number }> {
+    const [rows] = await this.pool.query<RowDataPacket[]>(
+      `SELECT COUNT(*) AS total,
+              COALESCE(SUM(CASE WHEN status = 'FAILED' THEN 1 ELSE 0 END), 0) AS failed
+         FROM email_delivery_logs`,
+    );
+    return { total: Number(rows[0]?.total ?? 0), failed: Number(rows[0]?.failed ?? 0) };
   }
 }

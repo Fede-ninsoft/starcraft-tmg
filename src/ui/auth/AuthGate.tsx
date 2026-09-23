@@ -15,46 +15,43 @@ export function AuthGate({ children }: { children: ReactNode }) {
   const location = useLocation();
   const page = pageFromPath(location.pathname);
   const locale = routeLocale(location.pathname);
-  const { status, restore, user, developmentVerificationUrl, emailDeliveryWarning } = useAuthStore();
-  useEffect(() => { void restore(); }, [restore]);
-  const refreshSession = useAuthStore((state) => state.refreshSession);
-  useEffect(() => {
-    if (status !== 'authenticated') return undefined;
-
-    const refresh = () => {
-      void refreshSession().catch((error) => {
-        if (error instanceof ApiError && error.status === 401) void restore();
-      });
-    };
-    const onVisibilityChange = () => {
-      if (!document.hidden) refresh();
-    };
-    const interval = window.setInterval(refresh, 5 * 60 * 1000);
-    window.addEventListener('focus', refresh);
-    document.addEventListener('visibilitychange', onVisibilityChange);
-    return () => {
-      window.clearInterval(interval);
-      window.removeEventListener('focus', refresh);
-      document.removeEventListener('visibilitychange', onVisibilityChange);
-    };
-  }, [refreshSession, restore, status]);
+  const { status, user, developmentVerificationUrl, emailDeliveryWarning } = useAuthStore();
+  const navigationState = location.state as AuthNavigationState | null;
+  const destination = safeReturnTo(navigationState?.returnTo, locale);
+  const destinationState = navigationState?.preserveGuestDraft ? { preserveGuestDraft: true } : null;
   if (page === 'terms') return <TermsPage />;
   if (status === 'checking') return <AuthLoading />;
   if (page === 'verify-email') return <VerifyEmail />;
   if (page === 'reset-password') return <ResetPassword />;
+  if (page === 'login') {
+    if (status === 'authenticated') return <Navigate to={destination} state={destinationState} replace />;
+    if (status === 'unverified') return <Navigate to={localizedPath('check-email', locale)} state={navigationState} replace />;
+    return <AuthForm mode="login" />;
+  }
   if (page === 'register') {
-    if (status === 'authenticated') return <Navigate to={localizedPath('home', locale)} replace />;
-    if (status === 'unverified') return <Navigate to={localizedPath('check-email', locale)} replace />;
+    if (status === 'authenticated') return <Navigate to={destination} state={destinationState} replace />;
+    if (status === 'unverified') return <Navigate to={localizedPath('check-email', locale)} state={navigationState} replace />;
     return <AuthForm mode="register" />;
   }
   if (page === 'check-email') {
-    if (status === 'authenticated') return <Navigate to={localizedPath('home', locale)} replace />;
+    if (status === 'authenticated') return <Navigate to={destination} state={destinationState} replace />;
     if (status === 'unverified') return <UnverifiedEmail email={user?.email ?? ''} warning={emailDeliveryWarning} developmentVerificationUrl={developmentVerificationUrl} />;
     return <Navigate to={localizedPath('register', locale)} replace />;
   }
   if (status === 'authenticated') return <>{children}</>;
   if (status === 'unverified') return <UnverifiedEmail email={user?.email ?? ''} warning={emailDeliveryWarning} developmentVerificationUrl={developmentVerificationUrl} />;
-  return <AuthForm mode="login" />;
+  return <Navigate to={localizedPath('login', locale)} state={{ returnTo: `${location.pathname}${location.search}${location.hash}` }} replace />;
+}
+
+export interface AuthNavigationState {
+  returnTo?: string;
+  preserveGuestDraft?: boolean;
+}
+
+function safeReturnTo(value: string | undefined, locale: 'es' | 'en'): string {
+  if (!value || !value.startsWith('/') || value.startsWith('//')) return localizedPath('home', locale);
+  const page = pageFromPath(new URL(value, 'https://local.invalid').pathname);
+  return page === 'login' || page === 'register' ? localizedPath('home', locale) : value;
 }
 
 function AuthLayout({ children }: { children: ReactNode }) {
@@ -62,7 +59,21 @@ function AuthLayout({ children }: { children: ReactNode }) {
 }
 
 function AuthShell({ children, mainClassName = '' }: { children: ReactNode; mainClassName?: string }) {
-  return <div className="auth-page"><main className={`auth-page__main ${mainClassName}`.trim()}><div className="auth-page__locale"><LanguageSelector /></div><AuthBrand />{children}</main><AuthFooter /></div>;
+  return <div className="auth-page"><AuthNavigation /><main className={`auth-page__main ${mainClassName}`.trim()}><div className="auth-page__locale"><LanguageSelector /></div><AuthBrand />{children}</main><AuthFooter /></div>;
+}
+
+function AuthNavigation() {
+  const { t } = useTranslation('navigation');
+  const location = useLocation();
+  const locale = routeLocale(location.pathname);
+  const items = [
+    ['home', 'home'], ['lists', 'lists'], ['builder', 'newList'], ['tournaments', 'tournaments'],
+    ['games', 'games'], ['public-lists', 'publicLists'], ['faqs', 'faqs'],
+    ['organised-play', 'organisedPlay'], ['support', 'support'],
+  ] as const;
+  return <nav className="auth-page__navigation" aria-label={t('main')}>
+    {items.map(([page, label]) => <Link key={page} to={localizedPath(page, locale)}>{t(label)}</Link>)}
+  </nav>;
 }
 
 function AuthBrand() {
@@ -77,28 +88,32 @@ function AuthLoading() {
 function AuthFooter() {
   const { t: tLegal } = useTranslation('legal');
   const { t: tNavigation } = useTranslation('navigation');
-  const locale = routeLocale(window.location.pathname);
+  const location = useLocation();
+  const locale = routeLocale(location.pathname);
   return <footer className="auth-page__footer"><span>{tLegal('footer')}</span><span className="auth-page__footer-links"><a href={localizedPath('tournaments', locale)}>{tNavigation('tournaments')}</a><span aria-hidden="true">·</span><a href={localizedPath('support', locale)}>{tNavigation('support')}</a><span aria-hidden="true">·</span><a href={localizedPath('terms', locale)}>{tLegal('terms')}</a><span aria-hidden="true">·</span><ChangelogLink /><span aria-hidden="true">·</span><AppVersion /></span></footer>;
 }
 
-export function AuthModeTabs({ mode, locale, loginLabel, registerLabel, accessModeLabel, disabled }: {
+export function AuthModeTabs({ mode, locale, loginLabel, registerLabel, accessModeLabel, disabled, navigationState = null }: {
   mode: 'login' | 'register';
   locale: 'es' | 'en';
   loginLabel: string;
   registerLabel: string;
   accessModeLabel: string;
   disabled: boolean;
+  navigationState?: AuthNavigationState | null;
 }) {
   return <div className="auth-page__mode-tabs" role="tablist" aria-label={accessModeLabel}>
-    <Link role="tab" aria-selected={mode === 'login'} aria-controls="auth-form" className="auth-mode-tab" to={localizedPath('home', locale)} aria-disabled={disabled || undefined} onClick={(event) => { if (disabled) event.preventDefault(); }}>{loginLabel}</Link>
-    <Link role="tab" aria-selected={mode === 'register'} aria-controls="auth-form" className="auth-mode-tab" to={localizedPath('register', locale)} aria-disabled={disabled || undefined} onClick={(event) => { if (disabled) event.preventDefault(); }}>{registerLabel}</Link>
+    <Link role="tab" aria-selected={mode === 'login'} aria-controls="auth-form" className="auth-mode-tab" to={localizedPath('login', locale)} state={navigationState} aria-disabled={disabled || undefined} onClick={(event) => { if (disabled) event.preventDefault(); }}>{loginLabel}</Link>
+    <Link role="tab" aria-selected={mode === 'register'} aria-controls="auth-form" className="auth-mode-tab" to={localizedPath('register', locale)} state={navigationState} aria-disabled={disabled || undefined} onClick={(event) => { if (disabled) event.preventDefault(); }}>{registerLabel}</Link>
   </div>;
 }
 
 function AuthForm({ mode }: { mode: 'login' | 'register' }) {
   const { t } = useTranslation('auth');
-  const locale = routeLocale(window.location.pathname);
+  const location = useLocation();
+  const locale = routeLocale(location.pathname);
   const navigate = useNavigate();
+  const navigationState = location.state as AuthNavigationState | null;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -122,7 +137,7 @@ function AuthForm({ mode }: { mode: 'login' | 'register' }) {
       if (mode === 'login') await login(email, password);
       else {
         await register(email, password);
-        navigate(localizedPath('check-email', locale), { replace: true });
+        navigate(localizedPath('check-email', locale), { replace: true, state: navigationState });
       }
     } catch (reason) {
       setError(reason instanceof Error ? reason.message : t('genericError'));
@@ -152,8 +167,8 @@ function AuthForm({ mode }: { mode: 'login' | 'register' }) {
   };
 
   return (
-    <AuthShell mainClassName="auth-page__main--split">
-      <div className="auth-page__panels">
+    <AuthShell mainClassName="auth-page__main--compact">
+      <div className="auth-page__panels auth-page__panels--single">
         <section className="panel stack auth-page__panel auth-page__panel--account">
           <h1>{mode === 'login' ? t('login') : t('register')}</h1>
           <form id="auth-form" className="stack auth-form" onSubmit={submit}>
@@ -180,22 +195,8 @@ function AuthForm({ mode }: { mode: 'login' | 'register' }) {
           {googleSignInEnabled && <><p className="auth-separator">{t('or')}</p><GoogleSignInButton text={mode === 'login' ? 'signin_with' : 'signup_with'} onCredential={(credential) => { void enterWithGoogle(credential); }} locale={locale} /><p className="muted small">{t('googleNote')}</p></>}
           <div className="auth-page__account-links">
             {mode === 'login' && <Link to={localizedPath('reset-password', locale)}> {t('forgotPassword')}</Link>}
-            <AuthModeTabs mode={mode} locale={locale} loginLabel={t('login')} registerLabel={t('register')} accessModeLabel={t('accessMode')} disabled={pending} />
+            <AuthModeTabs mode={mode} locale={locale} loginLabel={t('login')} registerLabel={t('register')} accessModeLabel={t('accessMode')} disabled={pending} navigationState={navigationState} />
           </div>
-        </section>
-
-        <section className="panel stack auth-page__panel auth-page__panel--guest" aria-labelledby="guest-panel-title">
-          <p className="auth-panel__eyebrow">{t('noAccount')}</p>
-          <h2 id="guest-panel-title">{t('guestTitle')}</h2>
-          <p className="muted">{t('guestDescription')}</p>
-          <Link className="auth-guest-button" to={localizedPath('guest-builder', locale)}>
-            <span className="auth-guest-button__label">{t('openBuilder')}</span>
-            <span className="auth-guest-button__hint">{t('loginLater')}</span>
-          </Link>
-          <Link className="auth-guest-button" to={localizedPath('games', locale)}>
-            <span className="auth-guest-button__label">{t('openGame')}</span>
-            <span className="auth-guest-button__hint">{t('gameHint')}</span>
-          </Link>
         </section>
       </div>
     </AuthShell>
@@ -216,7 +217,7 @@ function ResetPassword() {
   const token = new URLSearchParams(window.location.search).get('token'); const [email, setEmail] = useState(''); const [password, setPassword] = useState(''); const [message, setMessage] = useState<string | null>(null); const [pending, setPending] = useState(false);
   const submitRequest = async (event: FormEvent) => { event.preventDefault(); setPending(true); setMessage(null); try { await requestPasswordReset(email, locale); setMessage(t('resetRequestConfirmation')); } catch (error) { setMessage(error instanceof Error ? error.message : t('genericError')); } finally { setPending(false); } };
   const submitReset = async (event: FormEvent) => { event.preventDefault(); setPending(true); setMessage(null); try { await resetPassword(token!, password); setMessage(t('passwordUpdated')); } catch (error) { setMessage(error instanceof Error ? error.message : t('genericError')); } finally { setPending(false); } };
-  return <AuthLayout><h1>{token ? t('resetTitle') : t('recoverTitle')}</h1><form className="stack auth-form" onSubmit={token ? submitReset : submitRequest}>{token ? <label className="field">{t('newPassword')}<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} minLength={12} autoComplete="new-password" required /></label> : <label className="field">{t('email')}<input type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" required /></label>}{message && <p className="issue">{message}</p>}<button className="auth-action auth-action--primary" type="submit" disabled={pending}>{pending ? t('processing') : token ? t('savePassword') : t('sendLink')}</button></form><a href={localizedPath('home', locale)}>{t('backToAccess')}</a></AuthLayout>;
+  return <AuthLayout><h1>{token ? t('resetTitle') : t('recoverTitle')}</h1><form className="stack auth-form" onSubmit={token ? submitReset : submitRequest}>{token ? <label className="field">{t('newPassword')}<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} minLength={12} autoComplete="new-password" required /></label> : <label className="field">{t('email')}<input type="email" value={email} onChange={(event) => setEmail(event.target.value)} autoComplete="email" required /></label>}{message && <p className="issue">{message}</p>}<button className="auth-action auth-action--primary" type="submit" disabled={pending}>{pending ? t('processing') : token ? t('savePassword') : t('sendLink')}</button></form><a href={localizedPath('login', locale)}>{t('backToAccess')}</a></AuthLayout>;
 }
 
 function VerifyEmail() {
@@ -224,5 +225,5 @@ function VerifyEmail() {
   const locale = routeLocale(window.location.pathname);
   const [message, setMessage] = useState(t('verifying'));
   useEffect(() => { const token = new URLSearchParams(window.location.search).get('token'); if (!token) { setMessage(t('invalidVerification')); return; } void verifyEmail(token).then(() => setMessage(t('emailVerified'))).catch((error: Error) => setMessage(error.message)); }, [t]);
-  return <AuthLayout><p>{message}</p><a href={localizedPath('home', locale)}>{t('backToAccess')}</a></AuthLayout>;
+  return <AuthLayout><p>{message}</p><a href={localizedPath('login', locale)}>{t('backToAccess')}</a></AuthLayout>;
 }

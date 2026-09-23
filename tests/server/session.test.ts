@@ -15,8 +15,8 @@ const env: ServerEnvironment = {
 
 afterEach(() => vi.useRealTimers());
 
-describe('sesión persistente de dos días', () => {
-  it('mantiene la cookie y el token válidos hasta 48 horas y expira en ese límite', () => {
+describe('sesión persistente de catorce días', () => {
+  it('mantiene la cookie y el token válidos durante dos semanas y expira en ese límite', () => {
     vi.useFakeTimers();
     const start = new Date('2026-09-21T12:00:00Z');
     vi.setSystemTime(start);
@@ -29,18 +29,18 @@ describe('sesión persistente de dos días', () => {
       httpOnly: true,
       secure: true,
       sameSite: 'lax',
-      maxAge: 172_800_000,
+      maxAge: 1_209_600_000,
       path: '/api',
     });
     const payload = jwt.decode(token) as jwt.JwtPayload;
-    expect(payload.exp! - payload.iat!).toBe(172_800);
+    expect(payload.exp! - payload.iat!).toBe(1_209_600);
 
     // El navegador vuelve a enviar la cookie persistente al abrirse al día siguiente.
     vi.setSystemTime(start.getTime() + 24 * 60 * 60 * 1000);
     expect(readSession(token, env)).toEqual({ sub: 'user-123', sv: 7 });
-    vi.setSystemTime(start.getTime() + 172_800_000 - 1000);
+    vi.setSystemTime(start.getTime() + 1_209_600_000 - 1000);
     expect(readSession(token, env)).toEqual({ sub: 'user-123', sv: 7 });
-    vi.setSystemTime(start.getTime() + 172_800_000);
+    vi.setSystemTime(start.getTime() + 1_209_600_000);
     expect(readSession(token, env)).toBeNull();
   });
 });

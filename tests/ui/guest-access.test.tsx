@@ -12,7 +12,7 @@ describe('ruta pública del constructor', () => {
     useListStore.getState().resetForRace('ZERG');
   });
 
-  it('muestra únicamente las capacidades del invitado', () => {
+  it('muestra las capacidades públicas y mantiene visible el menú completo', () => {
     const html = renderToStaticMarkup(
       <MemoryRouter initialEntries={['/crear-lista']}>
         <App />
@@ -27,11 +27,12 @@ describe('ruta pública del constructor', () => {
     expect(html).toContain('Exportar');
     expect(html).toContain('Copiar en texto');
     expect(html).toContain('Imprimir / PDF');
-    expect(html).not.toContain('Mis listas');
-    expect(html).not.toContain('Listas públicas');
+    expect(html).toContain('Mis listas');
+    expect(html).toContain('Listas públicas');
+    expect(html).toContain('Mis partidas');
     expect(html).not.toContain('Visibilidad');
     expect(html).not.toContain('Abrir perfil');
-    expect(html).not.toContain('header-logout');
+    expect(html).toContain('Iniciar sesión');
   });
 
   it('tiene la hoja imprimible montada desde el primer paso', () => {
@@ -52,7 +53,7 @@ describe('ruta pública del constructor', () => {
     expect(initialPageFor('account', false, 'public-list-id')).toBe('public-list');
   });
 
-  it('abre directamente la configuración de partida para invitados', () => {
+  it('conserva el estado inicial del gestor aunque la ruta invitada esté protegida', () => {
     expect(initialGameView('guest', false)).toBe('setup');
     expect(initialGameView('account', false)).toBe('library');
     expect(initialGameView('account', true)).toBe('setup');
@@ -70,9 +71,9 @@ describe('ruta pública del constructor', () => {
     expect(pageForPathname('/public-lists/id', 'id')).toBe('public-list');
   });
 
-  it('integra Mis partidas en la estructura principal cuando hay sesión', () => {
+  it('protege Mis partidas cuando no hay sesión', () => {
     expect(gameRouteSurface('checking')).toBe('loading');
     expect(gameRouteSurface('authenticated')).toBe('account-shell');
-    expect(gameRouteSurface('anonymous')).toBe('guest-page');
+    expect(gameRouteSurface('anonymous')).toBe('auth-gate');
   });
 });

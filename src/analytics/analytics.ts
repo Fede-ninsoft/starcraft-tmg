@@ -17,7 +17,7 @@ export function getAnalyticsMeasurementId(): string | null {
 }
 
 export function analyticsAvailable(): boolean {
-  return import.meta.env.PROD && getAnalyticsMeasurementId() !== null;
+  return import.meta.env.MODE === 'production' && getAnalyticsMeasurementId() !== null;
 }
 
 /** Quita query string y hash para no enviar tokens, seeds ni parámetros de sesión. */

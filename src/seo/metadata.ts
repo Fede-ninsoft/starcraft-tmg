@@ -29,7 +29,7 @@ export interface SeoMetadataDescriptor {
 const PUBLIC_PAGES = new Set<LocalizedPage>([
   'home',
   'guest-builder',
-  'games',
+  'public-lists',
   'support',
   'faqs',
   'organised-play',
@@ -40,6 +40,7 @@ const PUBLIC_PAGES = new Set<LocalizedPage>([
 const PAGE_COPY: Record<SupportedLocale, Record<LocalizedPage, PageCopy>> = {
   es: {
     tournaments: { title: 'Torneos | Starcraft Builder', description: 'Organiza y participa en torneos de StarCraft TMG.', breadcrumb: 'Torneos' },
+    login: { title: 'Iniciar sesión | Starcraft Builder', description: 'Accede a tu cuenta de Starcraft Builder.', breadcrumb: 'Iniciar sesión' },
     home: {
       title: 'Starcraft Builder | Listas para StarCraft TMG',
       description: 'Crea, valida e imprime listas de ejército y gestiona partidas de StarCraft: The Miniatures Game en español o inglés.',
@@ -79,6 +80,7 @@ const PAGE_COPY: Record<SupportedLocale, Record<LocalizedPage, PageCopy>> = {
   },
   en: {
     tournaments: { title: 'Tournaments | Starcraft Builder', description: 'Host and join StarCraft TMG tournaments.', breadcrumb: 'Tournaments' },
+    login: { title: 'Sign in | Starcraft Builder', description: 'Access your Starcraft Builder account.', breadcrumb: 'Sign in' },
     home: {
       title: 'Starcraft Builder | StarCraft TMG Army Lists',
       description: 'Create, validate, and print army lists and manage games for StarCraft: The Miniatures Game in English or Spanish.',

@@ -859,6 +859,9 @@ button.topbar__brand:active:not(:disabled) {
 }
 .admin-section { min-height: 220px; padding-top: 4px; }
 .admin-section__heading h3, .admin-section__heading p { margin: 0; }
+.admin-pagination { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.admin-pagination__status { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 12px; color: var(--text-dim); font-size: 12px; font-variant-numeric: tabular-nums; }
+.admin-pagination__actions { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
 .admin-user-list { display: grid; gap: 8px; }
 .admin-user { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); }
 .admin-user > .row { gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
@@ -876,6 +879,7 @@ button.topbar__brand:active:not(:disabled) {
 .email-log-result { justify-items: end; text-align: right; }
 .email-log-error { color: var(--danger) !important; max-width: 520px; }
 .admin-support-layout { display: grid; grid-template-columns: minmax(220px, 0.42fr) minmax(0, 1fr); gap: 12px; min-height: 360px; }
+.admin-support-list-column { display: grid; align-content: start; gap: 10px; min-width: 0; }
 .admin-support-list { display: grid; align-content: start; gap: 6px; max-height: 520px; overflow: auto; }
 .admin-support-ticket { display: grid; gap: 3px; width: 100%; padding: 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--bg-raised); color: var(--text); text-align: left; box-shadow: none; }
 .admin-support-ticket:hover, .admin-support-ticket--active { border-color: var(--accent-dim); background: var(--accent-deep); }
@@ -915,6 +919,9 @@ button.topbar__brand:active:not(:disabled) {
   .admin-support-layout { grid-template-columns: 1fr; }
   .admin-support-list { max-height: 240px; }
   .admin-support-detail__heading { flex-direction: column; }
+  .admin-pagination { align-items: stretch; flex-direction: column; }
+  .admin-pagination__actions { width: 100%; }
+  .admin-pagination__actions button { flex: 1 1 0; }
   .support-page__heading { align-items: flex-start; }
   .support-page__aside { margin-top: -8px; }
   .support-form-grid { grid-template-columns: 1fr; }

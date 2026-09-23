@@ -16,9 +16,13 @@ const RACE_LABEL: Record<Race, string> = { ZERG: 'Zerg', TERRAN: 'Terran', PROTO
 const SCALE_LABEL: Record<ScaleId, string> = { skirmish: 'Escaramuza', standard: 'Estándar', grand_offensive: 'Gran Ofensiva' };
 
 export function PublicListsPage({
+  canLike,
+  onRequireAuthentication,
   onViewPublic,
   onClonePublic,
 }: {
+  canLike: boolean;
+  onRequireAuthentication: () => void;
   onViewPublic: (id: string) => void;
   onClonePublic: (id: string) => void;
 }) {
@@ -48,6 +52,10 @@ export function PublicListsPage({
   }, []);
 
   const handleLike = async (id: string, liked: boolean) => {
+    if (!canLike) {
+      onRequireAuthentication();
+      return;
+    }
     try {
       const updated = await setPublicListLike(id, !liked);
       setLists((current) => current.map((list) => list.id === id ? updated : list));
