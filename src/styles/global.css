@@ -1820,6 +1820,21 @@ button.topbar__brand:active:not(:disabled) {
   .saved-list-table--directory th:nth-child(8),
   .saved-list-table--directory td:nth-child(8) { width: 15%; }
 
+  .saved-list-table--without-creator th:nth-child(1),
+  .saved-list-table--without-creator td:nth-child(1) { width: 28%; }
+  .saved-list-table--without-creator th:nth-child(2),
+  .saved-list-table--without-creator td:nth-child(2) { width: 8%; }
+  .saved-list-table--without-creator th:nth-child(3),
+  .saved-list-table--without-creator td:nth-child(3) { width: 12%; }
+  .saved-list-table--without-creator th:nth-child(4),
+  .saved-list-table--without-creator td:nth-child(4) { width: 8%; }
+  .saved-list-table--without-creator th:nth-child(5),
+  .saved-list-table--without-creator td:nth-child(5) { width: 15%; }
+  .saved-list-table--without-creator th:nth-child(6),
+  .saved-list-table--without-creator td:nth-child(6) { width: 12%; }
+  .saved-list-table--without-creator th:nth-child(7),
+  .saved-list-table--without-creator td:nth-child(7) { width: 17%; }
+
   .saved-list-table__actions > button {
     min-height: 28px;
     padding: 4px 7px;
@@ -1832,6 +1847,12 @@ button.topbar__brand:active:not(:disabled) {
   .saved-list-table--owner td:nth-child(3),
   .saved-list-table--directory th:nth-child(4),
   .saved-list-table--directory td:nth-child(4) {
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
+
+  .saved-list-table--without-creator th:nth-child(3),
+  .saved-list-table--without-creator td:nth-child(3) {
     white-space: nowrap;
     overflow-wrap: normal;
   }

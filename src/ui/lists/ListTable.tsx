@@ -13,6 +13,12 @@ import { slotLabel } from '../common/Chips';
 import { normalizeLocale, type SupportedLocale } from '@/i18n/types';
 
 const RACE_LABEL: Record<Race, string> = { ZERG: 'Zerg', TERRAN: 'Terran', PROTOSS: 'Protoss' };
+
+function shortenOwnerName(name: string): string {
+  const characters = Array.from(name);
+  return characters.length > 12 ? `${characters.slice(0, 12).join('')}…` : name;
+}
+
 export function ListTable({
   lists,
   onOpen,
@@ -40,7 +46,7 @@ export function ListTable({
 
   return (
     <section className="panel saved-list-table-wrap">
-      <table className="saved-list-table saved-list-table--directory">
+      <table className={`saved-list-table saved-list-table--directory${showCreator ? '' : ' saved-list-table--without-creator'}`}>
         <thead>
           <tr>
             <th scope="col">{t('list')}</th>
@@ -67,7 +73,7 @@ export function ListTable({
                   </div>
                 </div>
               </td>
-              {showCreator && <td><div className="saved-list-table__owner"><ProfileAvatar user={{ email: 'usuario@local', nickname: row.list.ownerNickname, avatar: row.list.ownerAvatar ?? null }} /><span>{row.list.ownerNickname ?? t('user')}</span></div></td>}
+              {showCreator && <td><div className="saved-list-table__owner"><ProfileAvatar user={{ email: 'usuario@local', nickname: row.list.ownerNickname, avatar: row.list.ownerAvatar ?? null }} /><span title={row.list.ownerNickname ?? t('user')} aria-label={row.list.ownerNickname ?? t('user')}>{shortenOwnerName(row.list.ownerNickname ?? t('user'))}</span></div></td>}
               <td><span className="chip">{RACE_LABEL[row.list.race]}</span></td>
               <td>{row.scaleName}</td>
               <td className="saved-list-table__validity"><span className={`list-status ${row.legal ? 'list-status--valid' : 'list-status--invalid'}`} title={row.legal ? t('validList') : t('invalidList', { count: row.errorCount })} aria-label={row.legal ? t('validList') : t('invalidList', { count: row.errorCount })}>{row.legal ? '✓' : `× ${row.errorCount}`}</span></td>

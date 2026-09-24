@@ -106,7 +106,7 @@ export function HomePage({
             {data.recentLists.length === 0 ? (
               <div className="panel empty">{t('emptyRecent')}</div>
             ) : (
-              <ListTable lists={data.recentLists} onOpen={onOpenOwn} onViewPublic={onViewPublic} onLikePublic={handleLike} onClonePublic={undefined} showCreator showVisibility={false} openLabel={i18n.language.startsWith('en') ? 'Edit' : 'Editar'} />
+              <ListTable lists={data.recentLists} onOpen={onOpenOwn} onViewPublic={onViewPublic} onLikePublic={handleLike} onClonePublic={undefined} showCreator={false} showVisibility={false} openLabel={i18n.language.startsWith('en') ? 'Edit' : 'Editar'} />
             )}
           </section>}
 
