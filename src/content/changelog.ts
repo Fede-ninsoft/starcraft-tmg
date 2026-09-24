@@ -27,6 +27,8 @@ export const CHANGELOG_ENTRIES: readonly ChangelogEntry[] = [
       { es: 'Añadida la misión Artefact Hunt para Estándar y Escaramuza, junto con los nuevos despliegues Meeting Engagement y Green Valleys.', en: 'Added the Artefact Hunt mission for Standard and Skirmish, along with the new Meeting Engagement and Green Valleys deployments.' },
       { es: 'La sesión dura dos días y se conserva al cerrar y volver a abrir el navegador.', en: 'Sessions last two days and persist when closing and reopening the browser.' },
       { es: 'Menú móvil con desplegables sin resaltados incorrectos, una sola flecha y submenús en mayúsculas.', en: 'Mobile dropdowns no longer show incorrect highlights and use a single arrow with uppercase submenu labels.' },
+      { es: 'Menú móvil con iconos para todas las secciones y sus submenús, adaptados a Zerg, Terran y Protoss.', en: 'The mobile menu now has icons for every section and submenu, styled for Zerg, Terran and Protoss.' },
+      { es: 'Las páginas de acceso comparten el mismo menú de navegación que el resto de la aplicación.', en: 'Sign-in pages now share the same navigation menu as the rest of the app.' },
       { es: 'Ver, clonar y dar me gusta a las listas públicas desde una sola fila de iconos.', en: 'View, clone and like public lists from a single row of icons.' },
     ],
   },
