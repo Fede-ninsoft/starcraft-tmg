@@ -695,10 +695,10 @@
 }
 
 .page-content .home-race-card {
-  min-height: 104px;
+  min-height: 72px;
   justify-content: flex-start;
   gap: 14px;
-  padding: 16px;
+  padding: 11px 14px;
   border-color: var(--page-line);
   border-radius: 12px;
   background: var(--page-surface);
@@ -711,24 +711,14 @@
 }
 
 .home-race-card img {
-  width: 56px;
-  height: 56px;
-}
-
-.home-race-card__copy {
-  gap: 4px;
+  width: 48px;
+  height: 48px;
 }
 
 .home-race-card__copy strong {
   font-family: 'Chakra Petch', var(--font-heading, system-ui), sans-serif;
   font-size: 20px;
   font-weight: 600;
-}
-
-.home-race-card__copy small {
-  color: var(--page-muted);
-  font-size: 13px;
-  line-height: 1.45;
 }
 
 .home-race-card__action {
@@ -1538,7 +1528,7 @@
   }
 
   .home-race-card__action {
-    align-self: flex-end;
+    align-self: center;
   }
 
   .support-page__aside {

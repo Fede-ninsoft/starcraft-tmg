@@ -6,10 +6,10 @@ import type { Race } from '@/engine/types';
 import { ListTable } from '../lists/ListTable';
 import { HomeTournaments } from './HomeTournaments';
 
-const RACES: Array<{ id: Race; label: string; description: string }> = [
-  { id: 'ZERG', label: 'Zerg', description: 'races.ZERG' },
-  { id: 'TERRAN', label: 'Terran', description: 'races.TERRAN' },
-  { id: 'PROTOSS', label: 'Protoss', description: 'races.PROTOSS' },
+const RACES: Array<{ id: Race; label: string }> = [
+  { id: 'ZERG', label: 'Zerg' },
+  { id: 'TERRAN', label: 'Terran' },
+  { id: 'PROTOSS', label: 'Protoss' },
 ];
 
 export function HomePage({
@@ -88,7 +88,6 @@ export function HomePage({
               <FactionIcon race={race.id} alt={`Logo ${race.label}`} />
               <span className="home-race-card__copy">
                 <strong>{race.label}</strong>
-              <small>{t(race.description)}</small>
               </span>
               <span className="home-race-card__action">{t('create')}</span>
             </button>
