@@ -56,9 +56,11 @@ export function loadGoogleAnalytics(): boolean {
   if (document.getElementById(GOOGLE_TAG_SCRIPT_ID)) return true;
 
   analyticsWindow.dataLayer = analyticsWindow.dataLayer ?? [];
-  analyticsWindow.gtag = analyticsWindow.gtag ?? ((...args: unknown[]) => {
-    analyticsWindow.dataLayer!.push(args);
-  });
+  // gtag.js procesa los comandos con el formato del fragmento oficial:
+  // un objeto Arguments por cada llamada, no un Array de parámetros.
+  analyticsWindow.gtag = analyticsWindow.gtag ?? function gtag() {
+    analyticsWindow.dataLayer!.push(arguments);
+  };
 
   analyticsWindow.gtag('js', new Date());
   // La medición mejorada de cambios del historial registra la navegación SPA;
