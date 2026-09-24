@@ -1,5 +1,6 @@
 import { spawnSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { closeSync, existsSync, mkdirSync, openSync, utimesSync } from 'node:fs';
+import { join } from 'node:path';
 
 const pleskBin = '/opt/plesk/node/22/bin';
 const pleskNpm = `${pleskBin}/npm`;
@@ -33,4 +34,15 @@ for (const [entrypoint, arguments_] of tasks) {
   });
   if (result.error) throw result.error;
   if (result.status !== 0) process.exit(result.status ?? 1);
+}
+
+// Plesk can deploy the new static bundle while Passenger keeps an older API
+// process alive. Touch the restart marker after the server build succeeds.
+if (existsSync(pleskNpm)) {
+  const directory = join(process.cwd(), 'tmp');
+  const restartMarker = join(directory, 'restart.txt');
+  mkdirSync(directory, { recursive: true });
+  closeSync(openSync(restartMarker, 'a'));
+  const now = new Date();
+  utimesSync(restartMarker, now, now);
 }

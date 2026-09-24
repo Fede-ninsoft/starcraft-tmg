@@ -71,8 +71,11 @@ En "Acciones adicionales de despliegue", configurar una orden por línea:
 ```sh
 cd httpdocs
 npm run deploy:plesk
-touch tmp/restart.txt
 ```
+
+El script actualiza `tmp/restart.txt` al terminar la compilación y migración,
+para reiniciar también la API de Node.js. No hace falta una acción adicional de
+reinicio en Plesk.
 
 No añadas otro `npm ci`: `deploy:plesk` ya ejecuta una instalación limpia con
 las dependencias de desarrollo y opcionales necesarias para compilar.

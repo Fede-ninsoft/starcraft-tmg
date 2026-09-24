@@ -20,6 +20,7 @@ import { ShareTournamentButton } from './ShareTournamentButton';
 type Text = (es: string, en: string) => string;
 type DirectoryPeriod = 'current' | 'past';
 type DirectoryPage = { entries: TournamentSummary[]; next: number | null };
+const directoryPeriod = (entry: TournamentSummary): DirectoryPeriod => ['COMPLETED', 'CANCELLED'].includes(entry.status) ? 'past' : 'current';
 const statuses: Record<string, [string, string]> = { DRAFT: ['Borrador', 'Draft'], PUBLISHED: ['Publicado', 'Published'], IN_PROGRESS: ['En curso', 'In progress'], COMPLETED: ['Finalizado', 'Completed'], CANCELLED: ['Cancelado', 'Cancelled'], ACTIVE: ['Activo', 'Active'], CLOSED: ['Cerrada', 'Closed'], WITHDRAWN: ['Retirado', 'Withdrawn'], DISQUALIFIED: ['Descalificado', 'Disqualified'] };
 function initialConfig(): TournamentConfig {
   const start = new Date(Date.now() + 14 * 86400000);
@@ -73,11 +74,12 @@ function ResultForm({ match, event, correction, send, text, busy }: { match: Tou
 
 export function TournamentsPage() {
   const registration = useRef<HTMLDivElement>(null);
+  const directorySize = useRef(25);
   const { i18n } = useTranslation(); const text: Text = (es, en) => i18n.language.startsWith('en') ? en : es;
   const location = useLocation(); const navigate = useNavigate(); const user = useAuthStore((s) => s.user);
   const locale = routeLocale(location.pathname); const base = localizedPath('tournaments', locale);
   const id = location.pathname.split('/')[3] || null;
-  const [directory, setDirectory] = useState<Record<DirectoryPeriod, DirectoryPage>>({ current: { entries: [], next: null }, past: { entries: [], next: null } });
+  const [directory, setDirectory] = useState<DirectoryPage>({ entries: [], next: null });
   const [directoryLoading, setDirectoryLoading] = useState(true);
   const [data, setData] = useState<TournamentResponse | null>(null); const [error, setError] = useState(''); const [busy, setBusy] = useState(false);
   const [savedNotice, setSavedNotice] = useState<{ destination?: string } | null>(null);
@@ -98,15 +100,22 @@ export function TournamentsPage() {
   }, [location.hash, location.pathname, navigate]);
   useEffect(() => {
     let cancelled = false; setData(null); setError(''); setShareLink(''); setResultId(null); setRoundNumber(null); setAudit(null); setEditing(false);
-    if (!id) setDirectoryLoading(true);
+    if (!id) { directorySize.current = 25; setDirectoryLoading(true); }
     const load = async (silent = false) => {
       try {
         if (id) {
           const value = await getTournament(id);
           if (!cancelled) { setData(value); setError(''); }
         } else {
-          const [current, past] = await Promise.all([listTournaments(0, 'current'), listTournaments(0, 'past')]);
-          if (!cancelled) { setDirectory({ current: { entries: current.tournaments, next: current.nextOffset }, past: { entries: past.tournaments, next: past.nextOffset } }); setError(''); }
+          const entries: TournamentSummary[] = [];
+          let next: number | null = 0;
+          const targetSize = silent ? directorySize.current : 25;
+          while (next !== null && entries.length < targetSize) {
+            const page = await listTournaments(next);
+            entries.push(...page.tournaments);
+            next = page.nextOffset;
+          }
+          if (!cancelled) { setDirectory({ entries, next }); directorySize.current = Math.max(entries.length, 25); setError(''); }
         }
       } catch (e) { if (!cancelled && !silent) setError(String(e)); }
       finally { if (!cancelled && !id) setDirectoryLoading(false); }
@@ -132,12 +141,12 @@ export function TournamentsPage() {
     void load().catch((e) => { if (!cancelled) setError(String(e)); }); return () => { cancelled = true; };
   }, [user?.id, user?.emailVerified]);
   async function run(operation: () => Promise<void>) { setBusy(true); setError(''); try { await operation(); } catch (e) { setError(e instanceof Error ? e.message : String(e)); } finally { setBusy(false); } }
-  async function loadMore(period: DirectoryPeriod) {
-    const offset = directory[period].next;
+  async function loadMore() {
+    const offset = directory.next;
     if (offset === null) return;
     await run(async () => {
-      const page = await listTournaments(offset, period);
-      setDirectory((previous) => ({ ...previous, [period]: { entries: [...previous[period].entries, ...page.tournaments], next: page.nextOffset } }));
+      const page = await listTournaments(offset);
+      setDirectory((previous) => { const entries = [...previous.entries, ...page.tournaments]; directorySize.current = Math.max(entries.length, 25); return { entries, next: page.nextOffset }; });
     });
   }
   async function send(command: TournamentCommand) { if (!data) return; await run(async () => { const response = await tournamentCommand(data.tournament, command); setData(response); setResultId(null); if (command.type === 'CONFIGURE') { setEditing(false); setSavedNotice({}); } if (command.type === 'INVITATION' && !response.token) setShareLink(''); if (response.token) setShareLink(`${window.location.origin}${base}/${response.tournament.id}#invite=${response.token}`); }); }
@@ -170,15 +179,14 @@ export function TournamentsPage() {
       </section>
       {directoryLoading && <p role="status">{text('Cargando torneos…', 'Loading tournaments…')}</p>}
       {!directoryLoading && (['current', 'past'] as const).map((period) => {
-        const page = directory[period];
-        const visible = page.entries.filter((e) => (!mine || e.ownerId === user?.id) && `${e.config.name} ${e.config.location}`.toLowerCase().includes(query.toLowerCase()));
+        const visible = directory.entries.filter((e) => directoryPeriod(e) === period && (!mine || e.ownerId === user?.id) && `${e.config.name} ${e.config.location}`.toLowerCase().includes(query.toLowerCase()));
         return <section key={period} className="t-directory-group" data-period={period} aria-labelledby={`tournaments-${period}`}>
           <div className="t-directory-group-heading"><span className="t-directory-group-icon"><TournamentIcon name={period === 'current' ? 'swords' : 'flag'} /></span><div><h2 id={`tournaments-${period}`}>{period === 'current' ? text('Actuales', 'Current') : text('Pasados', 'Past')}</h2><p>{period === 'current' ? text('Torneos no finalizados ni cancelados.', 'Events that have not been completed or cancelled.') : text('Torneos finalizados o cancelados.', 'Completed or cancelled events.')}</p></div></div>
           <div className="tournament-grid">{visible.map((e) => <article key={e.id}><EventSummary config={e.config} ownerName={e.ownerName} count={e.playerCount} isRegistered={e.isRegistered} status={e.status} statusLabel={status(e.status)} text={text} date={(v) => new Date(v).toLocaleString(locale, { timeZone: e.config.timezone, dateStyle: 'medium', timeStyle: 'short' })} title={<a href={`${base}/${e.id}`} onClick={(ev) => { ev.preventDefault(); navigate(`${base}/${e.id}`); }}>{e.config.name}</a>} /></article>)}</div>
           {!visible.length && <p className="t-directory-empty">{period === 'current' ? text('No hay torneos actuales que coincidan con la búsqueda.', 'No current events match your search.') : text('No hay torneos pasados que coincidan con la búsqueda.', 'No past events match your search.')}</p>}
-          {page.next !== null && <button disabled={busy} className="t-directory-more" onClick={() => void loadMore(period)}>{text('Cargar más', 'Load more')}</button>}
         </section>;
       })}
+      {!directoryLoading && directory.next !== null && <button disabled={busy} className="t-directory-more" onClick={() => void loadMore()}>{text('Cargar más torneos', 'Load more tournaments')}</button>}
       </>}
     </>}
     {id && !t && !error && <p role="status">{text('Cargando torneo…', 'Loading tournament…')}</p>}
