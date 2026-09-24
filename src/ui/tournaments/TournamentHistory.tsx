@@ -13,7 +13,7 @@ const labels: Record<string, [string, string]> = {
   PUBLISH_ROUND: ['Emparejamientos publicados', 'Pairings published'], START_ROUND: ['Ronda iniciada', 'Round started'], CLOSE_ROUND: ['Ronda cerrada', 'Round closed'],
   RESULT: ['Resultado registrado', 'Result recorded'], DISPUTE: ['Discrepancia comunicada', 'Discrepancy reported'], RESOLVE: ['Resultado corregido', 'Result corrected'],
   PENALTY: ['Sanción registrada', 'Penalty recorded'], APPROVE_DQ: ['Descalificación aprobada', 'Disqualification approved'],
-  COMPLETE: ['Torneo finalizado', 'Tournament completed'], CANCEL: ['Torneo cancelado', 'Tournament cancelled'], REOPEN: ['Torneo reabierto', 'Tournament reopened'],
+  COMPLETE: ['Torneo finalizado', 'Tournament completed'], AUTO_COMPLETE: ['Torneo finalizado automáticamente', 'Tournament completed automatically'], CANCEL: ['Torneo cancelado', 'Tournament cancelled'], REOPEN: ['Torneo reabierto', 'Tournament reopened'],
 };
 const fields: Record<string, [string, string]> = {
   name: ['Nombre', 'Name'], description: ['Descripción', 'Description'], location: ['Lugar', 'Venue'], timezone: ['Zona horaria', 'Time zone'],
@@ -42,7 +42,7 @@ export function TournamentHistory({ entries, event, text, locale }: { entries: u
       const action = string(entry.action); const label = labels[action];
       const playerName = (id: unknown) => event.players.find((p) => p.id === id)?.name
         ?? (Array.isArray(previous.players) ? previous.players.map(record).find((p) => p.id === id)?.name as string | undefined : undefined);
-      const actor = string(entry.actor_name) || (entry.actor_id === event.ownerId ? event.ownerName : playerName(entry.actor_id))
+      const actor = action === 'AUTO_COMPLETE' ? text('Sistema', 'System') : string(entry.actor_name) || (entry.actor_id === event.ownerId ? event.ownerName : playerName(entry.actor_id))
         || event.judges.find((j) => j.id === entry.actor_id)?.name || text('Usuario', 'User');
       const notes: string[] = [];
       if (action === 'ADD_GUEST' && typeof command.name === 'string') notes.push(`${text('Participante', 'Player')}: ${command.name}`);

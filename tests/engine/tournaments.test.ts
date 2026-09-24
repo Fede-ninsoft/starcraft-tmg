@@ -1,9 +1,20 @@
 import { describe, expect, it } from 'vitest';
 import fc from 'fast-check';
-import { swissPairings, tournamentScore, tournamentStandings, type Tournament } from '@/engine/tournaments';
+import { swissPairings, tournamentPastCloseDeadline, tournamentScore, tournamentStandings, type Tournament } from '@/engine/tournaments';
 
 import { tournamentConfig } from '../tournament-fixture';
 function event(count: number): Tournament { return { id: 'event', ownerId: 'owner', ownerName: 'Owner', createdAt: '', revision: 1, status: 'IN_PROGRESS', config: tournamentConfig, judges: [], penalties: [], rulesVersion: '1', rounds: [], players: Array.from({ length: count }, (_, i) => ({ id: String(i), name: String(i), race: 'TERRAN', status: 'ACTIVE', checkedIn: true, spare: false, rosters: [] })) }; }
+describe('automatic tournament finish deadline', () => {
+  it('starts strictly after 48 hours from the configured end', () => {
+    const config = { ...tournamentConfig, endsAt: '2030-10-20T18:00:00.000Z' };
+    expect(tournamentPastCloseDeadline(config, Date.parse('2030-10-22T18:00:00.000Z'))).toBe(false);
+    expect(tournamentPastCloseDeadline(config, Date.parse('2030-10-22T18:00:00.001Z'))).toBe(true);
+  });
+  it('uses the scheduled rounds for older tournaments without an end date', () => {
+    expect(tournamentPastCloseDeadline(tournamentConfig, Date.parse('2030-10-22T17:30:00.000Z'))).toBe(false);
+    expect(tournamentPastCloseDeadline(tournamentConfig, Date.parse('2030-10-22T17:30:00.001Z'))).toBe(true);
+  });
+});
 describe('tournament scoring (Organised Play p.7)', () => {
   it.each([
     [0, 1, 2, 1, 2], [2, 1, 2, 1, 2], [3, 3, 3, 0, 2], [6, 3, 3, 0, 2], [7, 3, 4, 0, 1], [9, 3, 4, 0, 1], [10, 3, 5, 0, 0],

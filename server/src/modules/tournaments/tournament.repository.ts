@@ -1,29 +1,54 @@
 import type { Pool, RowDataPacket } from 'mysql2/promise';
-import type { StoredTournament } from '../../../../src/engine/tournaments.js';
+import { TOURNAMENT_CLOSE_DELAY_MS, type StoredTournament } from '../../../../src/engine/tournaments.js';
 import { HttpError } from '../../lib/errors.js';
 
-interface TournamentRow extends RowDataPacket { payload: string; revision: number }
+interface TournamentRow extends RowDataPacket { id: string; owner_id: string; payload: string; revision: number }
 function decode(row: TournamentRow): StoredTournament { return typeof row.payload === 'string' ? JSON.parse(row.payload) as StoredTournament : row.payload; }
+const dateField = (key: string) => `CAST(REPLACE(LEFT(JSON_UNQUOTE(JSON_EXTRACT(payload, '$.config.${key}')), 23), 'T', ' ') AS DATETIME(3))`;
+const endDate = `COALESCE(${dateField('endsAt')}, DATE_ADD(${dateField('startsAt')}, INTERVAL (JSON_EXTRACT(payload, '$.config.rounds') * JSON_EXTRACT(payload, '$.config.roundMinutes')) MINUTE))`;
 
 /** A tournament is a transaction aggregate (max 128 players). One row lock
  * serializes seats, deadlines, pairings and results; history is append-only.
  * Catalog snapshots never leave the server in ordinary event responses. */
 export class TournamentRepository {
   constructor(private readonly pool: Pool) {}
-  async list(ownerId: string | null, offset: number, period: 'all' | 'current' | 'past' | 'future' = 'all', now = new Date()): Promise<StoredTournament[]> {
-    // JSON dates are UTC; compare with an explicit UTC clock, independent of DB timezone.
-    const dateField = (key: string) => `CAST(REPLACE(LEFT(JSON_UNQUOTE(JSON_EXTRACT(payload, '$.config.${key}')), 23), 'T', ' ') AS DATETIME(3))`;
-    const end = `COALESCE(${dateField('endsAt')}, DATE_ADD(${dateField('startsAt')}, INTERVAL (JSON_EXTRACT(payload, '$.config.rounds') * JSON_EXTRACT(payload, '$.config.roundMinutes')) MINUTE))`;
-    const category = `CASE WHEN status = 'CANCELLED' OR ? > DATE_ADD(${end}, INTERVAL 2 DAY) THEN 'past' WHEN status <> 'DRAFT' AND ? >= ${dateField('rosterDeadlineAt')} THEN 'current' ELSE 'future' END`;
-    const clock = now.toISOString().replace('T', ' ').replace('Z', '');
-    const filter = period === 'all' ? '' : ` AND (${category}) = ?`;
-    const parameters = period === 'all' ? [ownerId, ownerId, offset] : [ownerId, clock, clock, period, ownerId, offset];
+  /** Persist the automatic finish before directory, detail or command reads. */
+  async completeExpired(now = new Date()): Promise<number> {
+    // JSON dates are UTC; use an explicit UTC cutoff independent of DB timezone.
+    const cutoff = new Date(now.getTime() - TOURNAMENT_CLOSE_DELAY_MS).toISOString().replace('T', ' ').replace('Z', '');
+    let total = 0;
+    for (;;) {
+      const connection = await this.pool.getConnection();
+      let count = 0;
+      try {
+        await connection.beginTransaction();
+        const [rows] = await connection.query<TournamentRow[]>(`SELECT id, owner_id, payload, revision FROM tournaments WHERE status IN ('PUBLISHED', 'IN_PROGRESS') AND starts_at < ? AND ${endDate} < ? ORDER BY starts_at, id LIMIT 100 FOR UPDATE`, [cutoff, cutoff]);
+        count = rows.length;
+        for (const row of rows) {
+          const event = decode(row);
+          event.status = 'COMPLETED';
+          event.revision = row.revision + 1;
+          event.invitationHash = null;
+          event.invitationExpiresAt = null;
+          await connection.execute('UPDATE tournaments SET status = ?, revision = ?, payload = ? WHERE id = ?', [event.status, event.revision, JSON.stringify(event), row.id]);
+          await connection.execute('INSERT INTO tournament_audit (tournament_id, revision, actor_id, action, detail) VALUES (?, ?, ?, ?, ?)', [row.id, event.revision, row.owner_id, 'AUTO_COMPLETE', JSON.stringify({ command: { type: 'AUTO_COMPLETE' }, previous: null })]);
+        }
+        await connection.commit();
+      } catch (error) { await connection.rollback(); throw error; } finally { connection.release(); }
+      total += count;
+      if (count < 100) return total;
+    }
+  }
+  async list(ownerId: string | null, offset: number, period: 'all' | 'current' | 'past' = 'all', now = new Date()): Promise<StoredTournament[]> {
+    await this.completeExpired(now);
+    const filter = period === 'current' ? " AND status NOT IN ('COMPLETED', 'CANCELLED')" : period === 'past' ? " AND status IN ('COMPLETED', 'CANCELLED')" : '';
     // Prioritize active registrations before LIMIT so they also lead the first page.
     const registered = `COALESCE(JSON_CONTAINS(payload, JSON_OBJECT('id', ?, 'status', 'ACTIVE'), '$.players'), 0)`;
-    const [rows] = await this.pool.query<TournamentRow[]>(`SELECT payload, revision FROM tournaments WHERE (status <> 'DRAFT' OR owner_id = ?)${filter} ORDER BY ${registered} DESC, starts_at DESC, id LIMIT 25 OFFSET ?`, parameters);
+    const [rows] = await this.pool.query<TournamentRow[]>(`SELECT payload, revision FROM tournaments WHERE (status <> 'DRAFT' OR owner_id = ?)${filter} ORDER BY ${registered} DESC, starts_at DESC, id LIMIT 25 OFFSET ?`, [ownerId, ownerId, offset]);
     return rows.map(decode);
   }
   async find(id: string): Promise<StoredTournament> {
+    await this.completeExpired();
     const [rows] = await this.pool.execute<TournamentRow[]>('SELECT payload, revision FROM tournaments WHERE id = ?', [id]);
     if (!rows[0]) throw new HttpError(404, 'TOURNAMENT_NOT_FOUND', 'No existe ese torneo.');
     return decode(rows[0]);
@@ -32,6 +57,7 @@ export class TournamentRepository {
     await this.pool.execute('INSERT INTO tournaments (id, owner_id, status, starts_at, payload) VALUES (?, ?, ?, ?, ?)', [t.id, t.ownerId, t.status, t.config.startsAt.slice(0, 19).replace('T', ' '), JSON.stringify(t)]);
   }
   async mutate(id: string, revision: number, actor: string, action: string, detail: unknown, change: (t: StoredTournament) => void | Promise<void>): Promise<StoredTournament> {
+    await this.completeExpired();
     const connection = await this.pool.getConnection();
     try {
       await connection.beginTransaction();

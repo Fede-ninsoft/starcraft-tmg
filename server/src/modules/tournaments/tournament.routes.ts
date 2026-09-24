@@ -19,7 +19,7 @@ export function createTournamentRouter(repository: TournamentRepository, auth: A
   router.get('/', async (req, res) => {
     const offset = z.coerce.number().int().min(0).max(100000).safeParse(req.query.offset ?? 0);
     if (!offset.success) throw new HttpError(400, 'INVALID_INPUT', 'Paginación no válida.');
-    const period = z.enum(['all', 'current', 'past', 'future']).safeParse(req.query.period ?? 'all');
+    const period = z.enum(['all', 'current', 'past']).safeParse(req.query.period ?? 'all');
     if (!period.success) throw new HttpError(400, 'INVALID_INPUT', 'Filtro no válido.');
     const entries = await repository.list(req.authenticatedUser?.id ?? null, offset.data, period.data);
     res.json({ tournaments: entries.map((t) => ({ id: t.id, ownerId: t.ownerId, ownerName: t.ownerName, status: t.status, config: t.config, playerCount: t.players.filter((p) => p.status === 'ACTIVE').length, isRegistered: t.players.some((p) => p.id === req.authenticatedUser?.id && p.status === 'ACTIVE') })), nextOffset: entries.length === 25 ? offset.data + 25 : null });

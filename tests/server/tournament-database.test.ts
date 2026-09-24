@@ -83,23 +83,38 @@ describe.skipIf(process.env.TEST_TOURNAMENT_DATABASE !== '1')('tournament HTTP +
     expect(reloaded.players[0]).toMatchObject({ name: 'Invitado manual', race: 'ZERG', guest: true });
     expect(await new AuthRepository(pool).findById(reloaded.players[0]!.id)).toBeNull();
   });
-  it('filters before pagination using roster closure and the two-day end boundary', async () => {
+  it('moves tournaments to Past when finalized, cancelled, or 48 hours after their end', async () => {
     const { TournamentRepository } = await import('../../server/src/modules/tournaments/tournament.repository');
     const { createTournament } = await import('../../server/src/modules/tournaments/tournament.service');
     const repository = new TournamentRepository(pool);
     const t = createTournament({ ...tournamentConfig, endsAt: '2030-10-20T18:00:00.000Z' }, users[0]!, '2030-10-10T10:00:00.000Z');
     t.status = 'PUBLISHED'; events.push(t.id); await repository.create(t);
-    const present = async (period: 'current' | 'future' | 'past', at: string) => (await repository.list(users[0]!.id, 0, period, new Date(at))).some((e) => e.id === t.id);
-    expect(await present('future', '2030-10-19T09:59:59.999Z')).toBe(true);
-    expect(await present('current', t.config.rosterDeadlineAt)).toBe(true);
-    expect(await present('current', '2030-10-22T18:00:00.000Z')).toBe(true);
-    expect(await present('past', '2030-10-22T18:00:00.001Z')).toBe(true);
-    expect(await present('current', '2030-10-22T18:00:00.001Z')).toBe(false);
-    await pool.execute("UPDATE tournaments SET payload = JSON_SET(payload, '$.config.rosterDeadlineAt', '2030-10-20T17:00:00.000Z') WHERE id = ?", [t.id]);
-    expect(await present('future', '2030-10-20T16:00:00.000Z')).toBe(true);
-    await pool.execute("UPDATE tournaments SET payload = JSON_REMOVE(payload, '$.config.endsAt') WHERE id = ?", [t.id]);
-    expect(await present('current', '2030-10-22T17:30:00.000Z')).toBe(true);
-    expect(await present('past', '2030-10-22T17:30:00.001Z')).toBe(true);
+    const present = async (id: string, period: 'current' | 'past', at: string) => {
+      const date = new Date(at);
+      for (let offset = 0; ; offset += 25) {
+        const page = await repository.list(users[0]!.id, offset, period, date);
+        if (page.some((e) => e.id === id)) return true;
+        if (page.length < 25) return false;
+      }
+    };
+    expect(await present(t.id, 'current', '2030-10-19T09:59:59.999Z')).toBe(true);
+    expect(await present(t.id, 'current', '2030-10-22T18:00:00.000Z')).toBe(true);
+    expect(await present(t.id, 'past', '2030-10-22T18:00:00.000Z')).toBe(false);
+    expect(await present(t.id, 'past', '2030-10-22T18:00:00.001Z')).toBe(true);
+    expect(await present(t.id, 'current', '2030-10-22T18:00:00.001Z')).toBe(false);
+    const persisted = await repository.find(t.id);
+    expect(persisted.status).toBe('COMPLETED');
+    expect(persisted.revision).toBe(t.revision + 1);
+    expect((await repository.audit(t.id) as { action: string }[])[0]?.action).toBe('AUTO_COMPLETE');
+
+    const legacy = createTournament(tournamentConfig, users[0]!, '2030-10-10T10:00:00.000Z');
+    legacy.status = 'PUBLISHED'; events.push(legacy.id); await repository.create(legacy);
+    expect(await present(legacy.id, 'current', '2030-10-22T17:30:00.000Z')).toBe(true);
+    expect(await present(legacy.id, 'past', '2030-10-22T17:30:00.001Z')).toBe(true);
+
+    const cancelled = createTournament({ ...tournamentConfig, startsAt: '2091-01-01T10:00:00.000Z' }, users[0]!, '2030-10-10T10:00:00.000Z');
+    cancelled.status = 'CANCELLED'; events.push(cancelled.id); await repository.create(cancelled);
+    expect(await present(cancelled.id, 'past', '2030-10-10T10:00:00.000Z')).toBe(true);
     expect((await fetch(`${base}?period=invalid`)).status).toBe(400);
   });
   it('serializes concurrent registration and result writes, survives repository reload and completes a tournament', async () => {

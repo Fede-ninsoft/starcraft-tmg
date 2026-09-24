@@ -3,7 +3,7 @@ import { loadCatalog } from '../../../../src/catalog/loader.js';
 import { buildCatalogIndex } from '../../../../src/engine/catalogIndex.js';
 import { validateList } from '../../../../src/engine/validate.js';
 import { entryMineralCost, entrySlotUsage } from '../../../../src/engine/costing.js';
-import { swissPairings, tournamentScore, type StoredTournament, type Tournament, type TournamentConfig, type TournamentPlayer } from '../../../../src/engine/tournaments.js';
+import { swissPairings, tournamentPastCloseDeadline, tournamentScore, type StoredTournament, type Tournament, type TournamentConfig, type TournamentPlayer } from '../../../../src/engine/tournaments.js';
 import { HttpError } from '../../lib/errors.js';
 import type { AuthRepository, UserRecord } from '../auth/auth.repository.js';
 import type { ListRepository } from '../lists/list.repository.js';
@@ -211,7 +211,12 @@ export async function applyTournamentCommand(t: StoredTournament, command: Tourn
   } else if (command.type === 'COMPLETE') {
     check(!t.penalties.some((p) => p.pending), 'PENALTY_PENDING', 'Hay sanciones pendientes de acuerdo.');
     requireOwner(t, actor); active(); check(t.rounds.length === t.config.rounds && t.rounds.every((r) => r.status === 'CLOSED' && r.matches.every((m) => m.result && !m.disputed)), 'ROUND_UNFINISHED', 'Completa todas las rondas y resuelve las disputas.'); t.status = 'COMPLETED';
-  } else if (command.type === 'CANCEL') { requireOwner(t, actor); check(t.status !== 'COMPLETED', 'TOURNAMENT_STATE', 'El torneo está terminado.'); t.status = 'CANCELLED'; t.invitationHash = null; }
-  else if (command.type === 'REOPEN') { requireOwner(t, actor); check(t.status === 'COMPLETED', 'TOURNAMENT_STATE', 'Solo se reabre un torneo terminado.'); t.status = 'IN_PROGRESS'; }
+  } else if (command.type === 'CANCEL') { requireOwner(t, actor); check(!['COMPLETED', 'CANCELLED'].includes(t.status), 'TOURNAMENT_STATE', 'El torneo está cerrado.'); t.status = 'CANCELLED'; t.invitationHash = null; }
+  else if (command.type === 'REOPEN') {
+    requireOwner(t, actor);
+    check(t.status === 'COMPLETED', 'TOURNAMENT_STATE', 'Solo se reabre un torneo terminado.');
+    check(!tournamentPastCloseDeadline(t.config, Date.parse(now)), 'REOPEN_DEADLINE', 'No se puede reabrir pasadas 48 horas desde el fin del torneo.');
+    t.status = 'IN_PROGRESS';
+  }
   return {};
 }

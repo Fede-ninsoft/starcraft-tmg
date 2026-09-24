@@ -12,6 +12,7 @@ const englishErrors: Record<string, string> = {
   UNAUTHENTICATED: 'Sign in to continue.', EMAIL_NOT_VERIFIED: 'Verify your email first.',
   TOURNAMENT_NOT_FOUND: 'This tournament could not be found.', TOURNAMENT_FORBIDDEN: 'You do not have permission for this action.',
   TOURNAMENT_CONFLICT: 'The tournament has changed. Refresh before trying again.', TOURNAMENT_STATE: 'This action is unavailable in the current event state.',
+  REOPEN_DEADLINE: 'This event cannot be reopened more than 48 hours after its scheduled end.',
   REGISTRATION_CLOSED: 'Registration has closed.', ALREADY_REGISTERED: 'You are already registered.', CAPACITY: 'There are no available seats, or capacity is below current registration.',
   INVITATION_REQUIRED: 'Open a valid private invitation link.', COMPETITIVE_STAFF: 'Competitive event staff cannot compete.',
   NOT_REGISTERED: 'Join the tournament first.', ROSTER_DEADLINE: 'The roster deadline has passed. The organiser can extend it.',
@@ -36,7 +37,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   if (!response.ok) throw new Error(i18n.language.startsWith('en') ? englishErrors[payload.error?.code] ?? 'The action could not be completed. Check the event state and your permissions.' : payload.error?.message || 'No se pudo completar la solicitud.');
   return payload as T;
 }
-export const listTournaments = (offset = 0, period: 'all' | 'current' | 'past' | 'future' = 'all') => request<{ tournaments: TournamentSummary[]; nextOffset: number | null }>(`?offset=${offset}&period=${period}`);
+export const listTournaments = (offset = 0, period: 'all' | 'current' | 'past' = 'all') => request<{ tournaments: TournamentSummary[]; nextOffset: number | null }>(`?offset=${offset}&period=${period}`);
 export const getTournament = (id: string) => request<TournamentResponse>(`/${encodeURIComponent(id)}`);
 export const createTournament = (config: TournamentConfig) => request<TournamentResponse>('', { method: 'POST', body: JSON.stringify(config) });
 export const tournamentCommand = (t: Tournament, command: TournamentCommand) => request<TournamentResponse>(`/${t.id}/commands`, { method: 'POST', headers: { 'If-Match': String(t.revision) }, body: JSON.stringify(command) });

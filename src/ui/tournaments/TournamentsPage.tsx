@@ -6,7 +6,7 @@ import { loadRemoteLists, type RemoteList } from '@/auth/listService';
 import { createTournament, getTournament, getTournamentAudit, listTournaments, tournamentCommand, type TournamentResponse, type TournamentSummary } from '@/auth/tournamentService';
 import { localizedPath, routeLocale } from '@/i18n/routing';
 import { MatchSummary } from './MatchSummary';
-import type { Tournament, TournamentConfig, TournamentMatch, TournamentRoster } from '@/engine/tournaments';
+import { tournamentPastCloseDeadline, type Tournament, type TournamentConfig, type TournamentMatch, type TournamentRoster } from '@/engine/tournaments';
 import type { TournamentCommand } from '../../../server/src/modules/tournaments/tournament.schema';
 import { EventSummary, ParticipantTable, StandingsTable, TournamentIcon, RaceEmblem, PlayerActions, type TournamentIconName } from './TournamentDisplay';
 import './tournaments.css';
@@ -18,6 +18,8 @@ import { TournamentRegistration } from './TournamentRegistration';
 import { ShareTournamentButton } from './ShareTournamentButton';
 
 type Text = (es: string, en: string) => string;
+type DirectoryPeriod = 'current' | 'past';
+type DirectoryPage = { entries: TournamentSummary[]; next: number | null };
 const statuses: Record<string, [string, string]> = { DRAFT: ['Borrador', 'Draft'], PUBLISHED: ['Publicado', 'Published'], IN_PROGRESS: ['En curso', 'In progress'], COMPLETED: ['Finalizado', 'Completed'], CANCELLED: ['Cancelado', 'Cancelled'], ACTIVE: ['Activo', 'Active'], CLOSED: ['Cerrada', 'Closed'], WITHDRAWN: ['Retirado', 'Withdrawn'], DISQUALIFIED: ['Descalificado', 'Disqualified'] };
 function initialConfig(): TournamentConfig {
   const start = new Date(Date.now() + 14 * 86400000);
@@ -75,7 +77,8 @@ export function TournamentsPage() {
   const location = useLocation(); const navigate = useNavigate(); const user = useAuthStore((s) => s.user);
   const locale = routeLocale(location.pathname); const base = localizedPath('tournaments', locale);
   const id = location.pathname.split('/')[3] || null;
-  const [entries, setEntries] = useState<TournamentSummary[]>([]); const [next, setNext] = useState<number | null>(null);
+  const [directory, setDirectory] = useState<Record<DirectoryPeriod, DirectoryPage>>({ current: { entries: [], next: null }, past: { entries: [], next: null } });
+  const [directoryLoading, setDirectoryLoading] = useState(true);
   const [data, setData] = useState<TournamentResponse | null>(null); const [error, setError] = useState(''); const [busy, setBusy] = useState(false);
   const [savedNotice, setSavedNotice] = useState<{ destination?: string } | null>(null);
   const [creating, setCreating] = useState(false); const [editing, setEditing] = useState(false); const [tab, setTab] = useState('info');
@@ -88,7 +91,6 @@ export function TournamentsPage() {
   const [audit, setAudit] = useState<unknown[] | null>(null); const [now, setNow] = useState(Date.now());
   const [revisedRounds, setRevisedRounds] = useState(3);
   const [reason, setReason] = useState(''); const [penaltyPlayer, setPenaltyPlayer] = useState(''); const [penalty, setPenalty] = useState<'CAUTION' | 'WARNING' | 'GAME_LOSS' | 'DISQUALIFICATION'>('WARNING');
-  const [period, setPeriod] = useState<'all' | 'current' | 'past' | 'future'>('all');
   const [query, setQuery] = useState(''); const [mine, setMine] = useState(false);
   useEffect(() => {
     const token = new URLSearchParams(location.hash.slice(1)).get('invite');
@@ -96,9 +98,25 @@ export function TournamentsPage() {
   }, [location.hash, location.pathname, navigate]);
   useEffect(() => {
     let cancelled = false; setData(null); setError(''); setShareLink(''); setResultId(null); setRoundNumber(null); setAudit(null); setEditing(false);
-    const load = async () => { try { if (id) { const value = await getTournament(id); if (!cancelled) setData(value); } else { const page = await listTournaments(0, period); if (!cancelled) { setEntries(page.tournaments); setNext(page.nextOffset); } } } catch (e) { if (!cancelled) setError(String(e)); } };
-    void load(); return () => { cancelled = true; };
-  }, [id, user?.id, period]);
+    if (!id) setDirectoryLoading(true);
+    const load = async (silent = false) => {
+      try {
+        if (id) {
+          const value = await getTournament(id);
+          if (!cancelled) { setData(value); setError(''); }
+        } else {
+          const [current, past] = await Promise.all([listTournaments(0, 'current'), listTournaments(0, 'past')]);
+          if (!cancelled) { setDirectory({ current: { entries: current.tournaments, next: current.nextOffset }, past: { entries: past.tournaments, next: past.nextOffset } }); setError(''); }
+        }
+      } catch (e) { if (!cancelled && !silent) setError(String(e)); }
+      finally { if (!cancelled && !id) setDirectoryLoading(false); }
+    };
+    void load();
+    const refresh = () => { void load(true); };
+    const interval = !id ? window.setInterval(refresh, 60_000) : null;
+    if (!id) window.addEventListener('focus', refresh);
+    return () => { cancelled = true; if (interval !== null) clearInterval(interval); window.removeEventListener('focus', refresh); };
+  }, [id, user?.id]);
   useEffect(() => {
     if (!id || busy || resultId || editing) return;
     let cancelled = false;
@@ -114,9 +132,18 @@ export function TournamentsPage() {
     void load().catch((e) => { if (!cancelled) setError(String(e)); }); return () => { cancelled = true; };
   }, [user?.id, user?.emailVerified]);
   async function run(operation: () => Promise<void>) { setBusy(true); setError(''); try { await operation(); } catch (e) { setError(e instanceof Error ? e.message : String(e)); } finally { setBusy(false); } }
+  async function loadMore(period: DirectoryPeriod) {
+    const offset = directory[period].next;
+    if (offset === null) return;
+    await run(async () => {
+      const page = await listTournaments(offset, period);
+      setDirectory((previous) => ({ ...previous, [period]: { entries: [...previous[period].entries, ...page.tournaments], next: page.nextOffset } }));
+    });
+  }
   async function send(command: TournamentCommand) { if (!data) return; await run(async () => { const response = await tournamentCommand(data.tournament, command); setData(response); setResultId(null); if (command.type === 'CONFIGURE') { setEditing(false); setSavedNotice({}); } if (command.type === 'INVITATION' && !response.token) setShareLink(''); if (response.token) setShareLink(`${window.location.origin}${base}/${response.tournament.id}#invite=${response.token}`); }); }
   const t = data?.tournament; const owner = !!t && t.ownerId === user?.id; const staff = owner; const self = t?.players.find((p) => p.id === user?.id);
   const beforeStart = !!t && ['DRAFT', 'PUBLISHED'].includes(t.status); const latest = t?.rounds.at(-1); const displayed = t?.rounds.find((r) => r.number === roundNumber) ?? latest;
+  const finalStandings = !!t && t.status === 'COMPLETED' && t.rounds.length === t.config.rounds && t.rounds.every((r) => r.status === 'CLOSED' && r.matches.every((m) => m.result && !m.disputed));
   const date = (v: string) => new Date(v).toLocaleString(locale, { timeZone: t?.config.timezone, dateStyle: 'medium', timeStyle: 'short' });
   const status = (v: string) => statuses[v] ? text(...statuses[v]) : v;
   const action = (label: string, command: TournamentCommand, icon?: TournamentIconName) => <button className={['WITHDRAW', 'CANCEL'].includes(command.type) ? 't-danger' : 'tournament-primary'} data-command={command.type} disabled={busy} onClick={() => void send(command)}>{icon && <TournamentIcon name={icon} />}{label}</button>;
@@ -135,16 +162,23 @@ export function TournamentsPage() {
       {!creating && <>
       <section className="t-directory-filters" aria-label={text('Filtrar torneos', 'Filter tournaments')}>
         <h2>{text('Explorar torneos', 'Explore tournaments')}</h2>
-        <div className="t-period-filters" role="group" aria-label={text('Periodo del torneo', 'Tournament period')}>{(['all', 'current', 'future', 'past'] as const).map((v, i) => <button key={v} data-period={v} aria-pressed={period === v} onClick={() => setPeriod(v)}><span className="t-filter-icon"><TournamentIcon name={v === 'all' ? 'list' : v === 'current' ? 'swords' : v === 'past' ? 'flag' : 'calendar'} /></span>{[text('Todos', 'All'), text('En curso', 'Current'), text('Futuros', 'Upcoming'), text('Pasados', 'Past')][i]}</button>)}</div>
         <div className="t-directory-search-row">
           <label className="t-directory-search">{text('Buscar torneos', 'Search tournaments')}<span className="t-directory-search-input"><TournamentIcon name="search" /><input type="search" placeholder={text('Nombre del torneo o ciudad…', 'Tournament name or city…')} aria-describedby="t-directory-search-hint" value={query} onChange={(e) => setQuery(e.target.value)} /></span><small id="t-directory-search-hint">{text('Busca entre los torneos cargados.', 'Search among loaded tournaments.')}</small></label>
           {user && <label className="t-directory-mine"><input type="checkbox" checked={mine} onChange={(e) => setMine(e.target.checked)} /><TournamentIcon name="users" /><span>{text('Organizados por mí', 'Hosted by me')}</span></label>}
         </div>
-        <p className="t-directory-note"><TournamentIcon name="info" /><span>{text('En curso: listas cerradas y hasta dos días después del fin del torneo.', 'Current: rosters closed and up to two days after the event ends.')}</span></p>
+        <p className="t-directory-note"><TournamentIcon name="info" /><span>{text('Los torneos publicados o en curso se finalizan automáticamente más de 48 horas después de su fecha de fin. Hasta entonces permanecen en Actuales, salvo que se finalicen o cancelen antes.', 'Published or in-progress events are completed automatically more than 48 hours after their scheduled end. Until then they remain Current, unless completed or cancelled earlier.')}</span></p>
       </section>
-      <div className="tournament-grid">{entries.filter((e) => (!mine || e.ownerId === user?.id) && `${e.config.name} ${e.config.location}`.toLowerCase().includes(query.toLowerCase())).map((e) => <article key={e.id}><EventSummary config={e.config} ownerName={e.ownerName} count={e.playerCount} isRegistered={e.isRegistered} status={e.status} statusLabel={status(e.status)} text={text} date={(v) => new Date(v).toLocaleString(locale, { timeZone: e.config.timezone, dateStyle: 'medium', timeStyle: 'short' })} title={<a href={`${base}/${e.id}`} onClick={(ev) => { ev.preventDefault(); navigate(`${base}/${e.id}`); }}>{e.config.name}</a>} /></article>)}</div>
-      {!entries.length && <p>{text('No hay torneos en este filtro.', 'No tournaments match this filter.')}</p>}
-      {next !== null && <button disabled={busy} onClick={() => void run(async () => { const page = await listTournaments(next, period); setEntries([...entries, ...page.tournaments]); setNext(page.nextOffset); })}>{text('Cargar más', 'Load more')}</button>}
+      {directoryLoading && <p role="status">{text('Cargando torneos…', 'Loading tournaments…')}</p>}
+      {!directoryLoading && (['current', 'past'] as const).map((period) => {
+        const page = directory[period];
+        const visible = page.entries.filter((e) => (!mine || e.ownerId === user?.id) && `${e.config.name} ${e.config.location}`.toLowerCase().includes(query.toLowerCase()));
+        return <section key={period} className="t-directory-group" data-period={period} aria-labelledby={`tournaments-${period}`}>
+          <div className="t-directory-group-heading"><span className="t-directory-group-icon"><TournamentIcon name={period === 'current' ? 'swords' : 'flag'} /></span><div><h2 id={`tournaments-${period}`}>{period === 'current' ? text('Actuales', 'Current') : text('Pasados', 'Past')}</h2><p>{period === 'current' ? text('Torneos no finalizados ni cancelados.', 'Events that have not been completed or cancelled.') : text('Torneos finalizados o cancelados.', 'Completed or cancelled events.')}</p></div></div>
+          <div className="tournament-grid">{visible.map((e) => <article key={e.id}><EventSummary config={e.config} ownerName={e.ownerName} count={e.playerCount} isRegistered={e.isRegistered} status={e.status} statusLabel={status(e.status)} text={text} date={(v) => new Date(v).toLocaleString(locale, { timeZone: e.config.timezone, dateStyle: 'medium', timeStyle: 'short' })} title={<a href={`${base}/${e.id}`} onClick={(ev) => { ev.preventDefault(); navigate(`${base}/${e.id}`); }}>{e.config.name}</a>} /></article>)}</div>
+          {!visible.length && <p className="t-directory-empty">{period === 'current' ? text('No hay torneos actuales que coincidan con la búsqueda.', 'No current events match your search.') : text('No hay torneos pasados que coincidan con la búsqueda.', 'No past events match your search.')}</p>}
+          {page.next !== null && <button disabled={busy} className="t-directory-more" onClick={() => void loadMore(period)}>{text('Cargar más', 'Load more')}</button>}
+        </section>;
+      })}
       </>}
     </>}
     {id && !t && !error && <p role="status">{text('Cargando torneo…', 'Loading tournament…')}</p>}
@@ -211,14 +245,15 @@ export function TournamentsPage() {
           {resultId === m.id && <ResultForm key={`${m.id}-${m.result?.at}`} match={m} event={t} correction={!!m.result} text={text} busy={busy} send={(c) => void send(c)} />}
         </article>)}
       </>}
-      {tab === 'standings' && <div className="t-standings"><h2>{t.status === 'COMPLETED' ? text('Clasificación final', 'Final standings') : text('Clasificación provisional', 'Provisional standings')}</h2><p className="t-muted">MP → TP → SoS → oTP · {text('Los empates completos comparten posición.', 'Complete ties share a position.')}</p><StandingsTable standings={data.standings} players={t.players} me={user?.id} text={text} view={setViewer} /></div>}
+      {tab === 'standings' && <div className="t-standings"><h2>{finalStandings ? text('Clasificación final', 'Final standings') : t.status === 'COMPLETED' ? text('Clasificación registrada', 'Recorded standings') : text('Clasificación provisional', 'Provisional standings')}</h2><p className="t-muted">MP → TP → SoS → oTP · {text('Los empates completos comparten posición.', 'Complete ties share a position.')}</p><StandingsTable standings={data.standings} players={t.players} me={user?.id} text={text} view={setViewer} /></div>}
       {tab === 'manage' && staff && <>
         <div className="tournament-card"><h2>{text('Control del torneo', 'Event control')}</h2><div className="tournament-actions">
           {owner && beforeStart && <button onClick={() => setEditing(!editing)}>{text('Editar configuración', 'Edit settings')}</button>}
           {owner && t.status === 'DRAFT' && action(text('Publicar torneo', 'Publish event'), { type: 'PUBLISH' })}
           {owner && t.status === 'IN_PROGRESS' && latest?.status === 'DRAFT' && t.rounds.filter((r) => r.status !== 'DRAFT').length < t.config.rounds && action(text('Regenerar emparejamientos', 'Regenerate pairings'), { type: 'GENERATE' }, 'users')}
           {owner && t.status === 'IN_PROGRESS' && latest?.status === 'CLOSED' && t.rounds.length === t.config.rounds && action(text('Finalizar torneo', 'Complete event'), { type: 'COMPLETE' })}
-          {owner && <button onClick={() => { const note = window.prompt(text('Motivo', 'Reason')); if (note) void send(t.status === 'COMPLETED' ? { type: 'REOPEN', reason: note } : { type: 'CANCEL', reason: note }); }}>{t.status === 'COMPLETED' ? text('Reabrir para corregir', 'Reopen for correction') : text('Cancelar torneo', 'Cancel event')}</button>}
+          {owner && t.status === 'COMPLETED' && !tournamentPastCloseDeadline(t.config, now) && <button onClick={() => { const note = window.prompt(text('Motivo', 'Reason')); if (note) void send({ type: 'REOPEN', reason: note }); }}>{text('Reabrir para corregir', 'Reopen for correction')}</button>}
+          {owner && ['DRAFT', 'PUBLISHED', 'IN_PROGRESS'].includes(t.status) && <button onClick={() => { const note = window.prompt(text('Motivo', 'Reason')); if (note) void send({ type: 'CANCEL', reason: note }); }}>{text('Cancelar torneo', 'Cancel event')}</button>}
         </div>{editing && <ConfigForm key={t.revision} initial={t.config} text={text} busy={busy} save={(config) => void send({ type: 'CONFIGURE', config })} />}</div>
         {owner && beforeStart && <div className="tournament-card"><h3>{text('Plazo de listas', 'Roster deadline')}</h3><form className="tournament-actions" onSubmit={(e) => { e.preventDefault(); void send({ type: 'DEADLINE', deadline: new Date(deadline).toISOString() }); }}><label>{text('Nuevo plazo (hora de tu dispositivo)', 'New deadline (device time)')}<input type="datetime-local" required value={deadline} onChange={(e) => setDeadline(e.target.value)} /></label><button disabled={busy}>{text('Cambiar o reabrir plazo', 'Change or reopen deadline')}</button></form></div>}
         {owner && beforeStart && t.config.registrationMode === 'INVITE_ONLY' && <div className="tournament-card"><h3>{text('Invitaciones', 'Invitations')}</h3>{t.config.registrationMode === 'INVITE_ONLY' && <><div className="tournament-actions">{action(text('Crear / renovar enlace privado', 'Create / rotate private link'), { type: 'INVITATION', revoke: false })}{action(text('Revocar enlace', 'Revoke link'), { type: 'INVITATION', revoke: true })}</div>{shareLink && <label>{text('Copia este enlace para invitar', 'Copy this invitation link')}<input readOnly value={shareLink} onFocus={(e) => e.target.select()} /></label>}</>}

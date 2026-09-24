@@ -10,6 +10,18 @@ const user = (name: string): UserRecord => ({ id: randomUUID(), nickname: name, 
 const owner = user('TO'); const a = user('A'); const b = user('B');
 const deps = { auth: { findById: async () => owner, findByEmail: async () => owner }, lists: { findForOwner: async () => ({ payload: manualExampleList() } as SavedListRecord) } };
 describe('tournament lifecycle and permissions', () => {
+  it('keeps Finalizado as the terminal status after the 48-hour reopen window', async () => {
+    const config = { ...tournamentConfig, endsAt: '2030-10-20T18:00:00.000Z' };
+    const withinWindow = createTournament(config, owner, now);
+    withinWindow.status = 'COMPLETED';
+    await applyTournamentCommand(withinWindow, { type: 'REOPEN', reason: 'Corrección' }, owner, deps, '2030-10-22T18:00:00.000Z');
+    expect(withinWindow.status).toBe('IN_PROGRESS');
+
+    const expired = createTournament(config, owner, now);
+    expired.status = 'COMPLETED';
+    await expect(applyTournamentCommand(expired, { type: 'REOPEN', reason: 'Corrección' }, owner, deps, '2030-10-22T18:00:00.001Z')).rejects.toMatchObject({ code: 'REOPEN_DEADLINE' });
+    expect(expired.status).toBe('COMPLETED');
+  });
   it.each(['COMMUNITY', 'COMPETITIVE'] as const)('accepts valid rosters from another catalog version in %s events', async (kind) => {
     const t = createTournament({ ...tournamentConfig, kind }, owner, now);
     const payload = manualExampleList(); payload.catalogContentVersion = 'older-catalog';

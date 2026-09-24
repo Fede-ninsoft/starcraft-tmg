@@ -51,17 +51,7 @@
 .t-registration-badge .t-icon{width:16px;height:16px;color:#f0cc79}
 .t-directory-filters{margin:26px 0 24px;padding:24px;border:1px solid #364f65;border-radius:14px;background:linear-gradient(135deg,#192b3c,#142231)}
 .tournaments .t-directory-filters h2{margin:0 0 18px;font-size:20px;color:#eff6ff}
-.t-directory-filters .t-period-filters{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0}
-.t-directory-filters .t-period-filters button{justify-content:flex-start;gap:12px;min-height:64px;padding:12px 16px;background:#101d2b;border:1px solid #3a5065;border-radius:10px;font-size:15px;color:#dce8f4}
-.t-directory-filters [data-period=all]{--filter-color:#c0a4f3;--filter-bg:#302747}
-.t-directory-filters [data-period=current]{--filter-color:#80dbac;--filter-bg:#193c32}
-.t-directory-filters [data-period=future]{--filter-color:#86c8ff;--filter-bg:#1c3650}
-.t-directory-filters [data-period=past]{--filter-color:#e8c17d;--filter-bg:#403624}
-.t-directory-filters .t-filter-icon{display:grid;place-items:center;flex-shrink:0;width:34px;height:34px;border-radius:8px;background:var(--filter-bg);color:var(--filter-color)}
-.t-directory-filters .t-period-filters button[aria-pressed=true],.t-directory-filters .t-period-filters button:hover:not(:disabled){background:var(--filter-bg);border-color:var(--filter-color);color:#fff}
-.t-directory-filters .t-period-filters button[aria-pressed=true]{box-shadow:inset 0 -3px var(--filter-color)}
-.t-directory-filters .t-period-filters button:focus-visible{outline-color:var(--filter-color)}
-.t-directory-search-row{display:flex;align-items:center;flex-wrap:wrap;gap:20px;margin-top:24px;padding-top:24px;border-top:1px solid #34495b}
+.t-directory-search-row{display:flex;align-items:center;flex-wrap:wrap;gap:20px}
 .t-directory-filters .t-directory-search{flex:1 1 320px;gap:9px;font-size:13px}
 .t-directory-search-input{display:block;position:relative}
 .t-directory-search-input>.t-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#89bada;pointer-events:none}
@@ -73,7 +63,17 @@
 .t-directory-mine:has(input:checked){border-color:#b394df;background:#302747}
 .t-directory-filters .t-directory-note{display:flex;align-items:flex-start;gap:9px;margin:20px 0 0;color:#a5bacc;font-size:12px;line-height:1.6}
 .t-directory-note .t-icon{width:16px;height:16px;margin-top:2px;color:#86c8ff}
-@media(max-width:700px){.t-directory-filters{padding:16px;margin-top:20px}.t-directory-filters .t-period-filters{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.t-directory-filters .t-period-filters button{padding:10px;gap:8px;font-size:14px}.t-directory-search-row{gap:16px;margin-top:20px;padding-top:20px}.t-directory-filters .t-directory-search{flex-basis:100%}.t-directory-filters .t-directory-search input{font-size:16px}.t-directory-filters .t-directory-mine{width:100%}}
+@media(max-width:700px){.t-directory-filters{padding:16px;margin-top:20px}.t-directory-search-row{gap:16px}.t-directory-filters .t-directory-search{flex-basis:100%}.t-directory-filters .t-directory-search input{font-size:16px}.t-directory-filters .t-directory-mine{width:100%}}
+.t-directory-group{margin:28px 0 36px;--group-color:#80dbac;--group-bg:#193c32}
+.t-directory-group[data-period=past]{--group-color:#e8c17d;--group-bg:#403624}
+.t-directory-group+.t-directory-group{padding-top:30px;border-top:1px solid #34495b}
+.t-directory-group-heading{display:flex;align-items:center;gap:12px}
+.t-directory-group-icon{display:grid;place-items:center;flex-shrink:0;width:42px;height:42px;border-radius:10px;background:var(--group-bg);color:var(--group-color)}
+.t-directory-group-icon .t-icon{width:22px;height:22px}
+.tournaments .t-directory-group-heading h2{margin:0;color:#f1f7ff;font-size:21px}
+.t-directory-group-heading p{margin:3px 0 0;color:#a9bfce;font-size:12px}
+.t-directory-empty{margin:16px 0;padding:22px;border:1px dashed #455b6d;border-radius:8px;color:#b9cbd9;background:#172633}
+.t-directory-more{margin-top:16px}
 .tournament-card.tournament-form>button{align-self:end;justify-self:start;width:auto;min-height:40px}
 .t-event-summary .t-event-details{grid-template-columns:minmax(0,1fr) auto;column-gap:20px}
 .t-event-details>span{grid-column:1}
@@ -97,7 +97,6 @@
 .tournament-result{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:12px;margin-top:14px;padding-top:12px;border-top:1px solid #486276;align-items:end}.t-result-player{padding:10px;background:#172b3b;border:1px solid #46748f;border-radius:5px;display:grid;gap:8px}.t-result-player:nth-child(2){background:#30293c;border-color:#76608d}.tournament-clock{color:#f5d78d;background:#393525;border-left:3px solid #d5b568;padding:10px;font-variant-numeric:tabular-nums}.tournament-my-match{border-color:#62c8df}.tournament-error{padding:12px;background:#472b35;border:1px solid #ac6371;border-radius:5px;margin-bottom:12px}.tournament-modal{position:fixed;margin:auto;inset:0;width:min(800px,94vw);max-height:92vh;padding:0;border:1px solid #59778e;border-radius:8px;background:#1c2e3d;color:#edf5ff;z-index:1000}.tournament-modal:not([open]){display:none}.tournament-modal::backdrop{background:#000b}.tournament-modal>div{width:100%;box-sizing:border-box;padding:20px}.tournament-modal pre,.tournament-audit{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6}.tournament-audit{max-height:500px;overflow:auto;font-size:12px}
 @media(max-width:700px){.tournaments{padding:12px}.tournament-heading{align-items:flex-start;flex-direction:column;gap:5px}.tournament-heading h1{font-size:24px}.tournament-heading .tournament-actions{margin:4px 0}.t-info-grid{grid-template-columns:1fr}.t-info-grid>div{display:flex;justify-content:space-between;gap:12px}.t-info-grid dt{margin:0}.t-event-footer{gap:8px 14px}.t-event-details small{font-size:10px}.tournament-tabs button{font-size:12px;padding:9px}.tournament-card{padding:12px}.tournament-actions>label{flex:1;min-width:140px}.tournament-actions>button{align-self:end}.t-field-grid{grid-template-columns:1fr}.t-player-table td{padding:6px 8px}.t-race>span{display:none}.t-config-form fieldset{padding:10px}.tournament-form{grid-template-columns:1fr}}
 @media print{body:has(.tournament-modal[open]) *{visibility:hidden}.tournament-modal[open],.tournament-modal[open] *{visibility:visible!important}.tournament-modal[open]{position:absolute;display:block;background:white;color:black;inset:0;width:100%;max-height:none;border:0;overflow:visible}.tournament-modal[open] button{display:none}}
-.t-period-filters{display:flex;gap:7px;flex-wrap:wrap;margin-top:16px}.t-period-filters button{display:inline-flex;align-items:center;gap:7px}.t-period-filters button[aria-pressed=true]{background:#15546d;border-color:#62cbe5;color:#a9eeff}
 
 .t-match-player{display:flex;align-items:center;gap:10px;padding:7px 10px;margin:3px 0;background:#263e51;border-radius:4px}.t-match-score{margin-left:auto;background:#14232d;border-radius:5px;padding:5px 12px;font-weight:700;min-width:42px;text-align:center}.t-match--win{background:#244737;border-left:3px solid #7cd4a0}.t-match--loss{background:#462d38;border-left:3px solid #d88192}.t-match--draw{background:#44412c;border-left:3px solid #d7bc6b}.t-event-details>span:has(time){flex-wrap:wrap}
 .tournament-tabs button{flex:1 0 auto}

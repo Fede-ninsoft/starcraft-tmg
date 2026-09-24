@@ -30,6 +30,18 @@ export interface Tournament {
 export interface StoredTournament extends Tournament { invitationHash: string | null; invitationExpiresAt: string | null; catalogs: Record<Race, Catalog> }
 export interface Standing { id: string; name: string; race: Race; mp: number; tp: number; wins: number; draws: number; losses: number; sos: number; otp: number; opponentMP: number; opponentTP: number; opponentCount: number; position: number }
 
+export const TOURNAMENT_CLOSE_DELAY_MS = 48 * 60 * 60 * 1000;
+
+/** Legacy events without endsAt use their scheduled rounds as the end time. */
+export function tournamentEndTime(config: TournamentConfig): number {
+  return config.endsAt ? Date.parse(config.endsAt) : Date.parse(config.startsAt) + config.rounds * config.roundMinutes * 60_000;
+}
+
+export function tournamentPastCloseDeadline(config: TournamentConfig, now: number): boolean {
+  const end = tournamentEndTime(config);
+  return Number.isFinite(end) && now > end + TOURNAMENT_CLOSE_DELAY_MS;
+}
+
 /** Organised Play v1.0, pp. 7–8. PV are not tournament points. */
 export function tournamentScore(result: Pick<TournamentResult, 'vp' | 'end' | 'winner'>, scale: 'standard' | 'skirmish'): [[number, number], [number, number]] {
   if (result.end !== 'NORMAL' && result.end !== 'TIME') {
