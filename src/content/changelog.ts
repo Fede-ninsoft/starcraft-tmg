@@ -18,6 +18,18 @@ export interface ChangelogEntry {
  */
 export const CHANGELOG_ENTRIES: readonly ChangelogEntry[] = [
   {
+    version: '2.07',
+    date: '2026-09-24',
+    title: { es: 'Torneos y listas más claros', en: 'Clearer tournaments and lists' },
+    changes: [
+      { es: 'Los torneos se muestran como activos o pasados. Los que siguen publicados o en curso se finalizan automáticamente 48 horas después de su fecha de fin.', en: 'Tournaments are grouped as active or past. Published and in-progress events finish automatically 48 hours after their end date.' },
+      { es: 'La portada muestra los ocho torneos públicos activos con las fechas más próximas y permite verlos todos.', en: 'The home page shows the eight nearest active public tournaments and links to the full list.' },
+      { es: 'Las tarjetas de torneos mantienen tres columnas en ordenador, aunque haya pocos eventos.', en: 'Tournament cards keep three columns on desktop, even when only a few events are available.' },
+      { es: 'Las listas públicas acortan los nombres de usuario largos; las listas propias dejan de mostrar la columna de creador.', en: 'Public lists shorten long user names, while your own lists no longer show a creator column.' },
+      { es: 'Los botones para crear una lista por facción son más compactos.', en: 'The faction buttons for creating a list are more compact.' },
+    ],
+  },
+  {
     version: '2.06',
     date: '2026-09-21',
     title: { es: 'Nuevas cartas y mejoras de navegación', en: 'New cards and navigation improvements' },
