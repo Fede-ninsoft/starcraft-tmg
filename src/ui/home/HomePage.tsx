@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { loadHomeData, loadPublicLists, setPublicListLike, type RemoteList } from '@/auth/listService';
 import type { Race } from '@/engine/types';
 import { ListTable } from '../lists/ListTable';
+import { HomeTournaments } from './HomeTournaments';
 
 const RACES: Array<{ id: Race; label: string; description: string }> = [
   { id: 'ZERG', label: 'Zerg', description: 'races.ZERG' },
@@ -97,9 +98,7 @@ export function HomePage({
 
       {message && <section className="panel empty">{message}</section>}
 
-      {data && (
-        <>
-          {authenticated && <section className="home-section" aria-labelledby="home-recent-title">
+      {data && authenticated && <section className="home-section" aria-labelledby="home-recent-title">
             <div className="home-section__heading">
               <h2 id="home-recent-title">{t('recent')}</h2>
               <span className="muted small">{t('recentHint', { defaultValue: i18n.language.startsWith('en') ? 'Up to 5 recently saved lists.' : 'Hasta 5 listas guardadas recientemente.' })}</span>
@@ -111,7 +110,9 @@ export function HomePage({
             )}
           </section>}
 
-          <section className="home-section" aria-labelledby="home-public-title">
+      <HomeTournaments />
+
+      {data && <section className="home-section" aria-labelledby="home-public-title">
             <div className="home-section__heading">
               <h2 id="home-public-title">{t('publicRecent')}</h2>
               <div className="row home-section__heading-actions"><span className="muted small">{t('publicHint')}</span><button type="button" className="button-link button-link--compact" onClick={onViewAllPublic}>{t('viewAll')}</button></div>
@@ -121,9 +122,7 @@ export function HomePage({
             ) : (
               <ListTable lists={data.publicLists} onViewPublic={onViewPublic} onClonePublic={onClonePublic} onLikePublic={handleLike} showCreator showVisibility={false} />
             )}
-          </section>
-        </>
-      )}
+          </section>}
     </main>
   );
 }

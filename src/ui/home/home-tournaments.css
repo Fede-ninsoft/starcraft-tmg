@@ -1,0 +1,20 @@
+.home-tournaments__heading{align-items:end}
+.home-tournaments__heading>div{display:grid;gap:4px}
+.home-tournaments__all{display:inline-flex;align-items:center;gap:6px;color:#a6dfff;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap}
+.home-tournaments__all:hover{text-decoration:underline;color:#d5efff}
+.home-tournaments__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:12px}
+.home-tournament-card{display:flex;align-items:center;gap:14px;min-width:0;min-height:112px;padding:14px;border:1px solid #405b70;border-radius:12px;background:linear-gradient(125deg,#1d3142,#1a2636);color:#edf6ff;text-decoration:none;transition:border-color .18s ease,background .18s ease,transform .18s ease}
+.home-tournament-card:hover{border-color:#86c8ff;background:linear-gradient(125deg,#25445a,#1d3142);transform:translateY(-2px)}
+.home-tournament-card:focus-visible{outline:2px solid #a6dfff;outline-offset:3px}
+.home-tournament-card__date{display:grid;place-items:center;align-content:center;flex:0 0 62px;min-height:67px;border:1px solid #4e7188;border-radius:9px;background:#122535;color:#bdeaff;text-align:center}
+.home-tournament-card__date strong{font-family:'Chakra Petch',var(--font-heading,system-ui),sans-serif;font-size:27px;line-height:1}
+.home-tournament-card__date span{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.home-tournament-card__main{display:grid;gap:4px;min-width:0;flex:1}
+.home-tournament-card__state{width:max-content;color:#b8dfff;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.home-tournament-card__state--live{color:#88e1b1}
+.home-tournament-card__name{overflow:hidden;color:#eff9ff;font-family:'Chakra Petch',var(--font-heading,system-ui),sans-serif;font-size:18px;text-overflow:ellipsis;white-space:nowrap}
+.home-tournament-card__meta{overflow:hidden;color:#b2c7d6;font-size:12px;text-overflow:ellipsis;white-space:nowrap}
+.home-tournament-card__aside{display:grid;align-self:stretch;justify-items:end;align-content:space-between;flex:0 0 auto;color:#b6ccda;font-size:11px;white-space:nowrap}
+.home-tournament-card__arrow{display:grid;place-items:center;width:27px;height:27px;border-radius:50%;background:#304b60;color:#d3f0ff;font-size:18px}
+@media(max-width:800px){.home-tournaments__grid{grid-template-columns:1fr}}
+@media(max-width:500px){.home-tournament-card{gap:10px;padding:11px;min-height:101px}.home-tournament-card__date{flex-basis:52px;min-height:60px}.home-tournament-card__date strong{font-size:23px}.home-tournament-card__name{font-size:16px}.home-tournament-card__aside{font-size:10px}.home-tournaments__heading{align-items:flex-start}}
