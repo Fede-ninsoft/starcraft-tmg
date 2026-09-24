@@ -72,6 +72,9 @@
 .t-directory-group-icon .t-icon{width:22px;height:22px}
 .tournaments .t-directory-group-heading h2{margin:0;color:#f1f7ff;font-size:21px}
 .t-directory-group-heading p{margin:3px 0 0;color:#a9bfce;font-size:12px}
+.t-directory-group .tournament-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:900px){.t-directory-group .tournament-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.t-directory-group .tournament-grid{grid-template-columns:minmax(0,1fr)}}
 .t-directory-empty{margin:16px 0;padding:22px;border:1px dashed #455b6d;border-radius:8px;color:#b9cbd9;background:#172633}
 .t-directory-more{margin-top:16px}
 .tournament-card.tournament-form>button{align-self:end;justify-self:start;width:auto;min-height:40px}
