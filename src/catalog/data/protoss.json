@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "contentVersion": "2026.09.21.3",
-  "sourceRef": "StarCraft-TMG_EN.pdf §12.10/§12.11 (costes) + StarCraft-Protoss-P2P-Card-Sheets-A4_EN.pdf (perfiles, etiquetas, espacios) + cartas v1.06.26 y capturas de costes aportadas el 2026-09-21 (docs/catalog-import-2026-09-21.md)",
+  "contentVersion": "2026.09.25.1",
+  "sourceRef": "StarCraft-TMG_EN.pdf §12.10/§12.11 (costes) + StarCraft-Protoss-P2P-Card-Sheets-A4_EN.pdf (perfiles, etiquetas, espacios) + StarCraft-Protoss-P2P-W2-Card-Sheets-A4_EN.pdf (cartas Wave 2 de septiembre de 2026) + capturas de costes aportadas el 2026-09-21 (docs/catalog-import-2026-09-21.md)",
   "race": "PROTOSS",
 
   "upgradeGlossary": {
@@ -991,8 +991,8 @@
           "cost": null,
           "fromUpgrade": false,
           "text": {
-            "en": "While Enemy Units are Within 6\" of a Shade token, they lose HIDDEN Status.",
-            "es": "Mientras las unidades enemigas estén a menos de 6\" de una ficha Shade, pierden el estado HIDDEN."
+            "en": "While Enemy Units are Within 6\" of this Unit's Shade token, they lose HIDDEN Status.",
+            "es": "Mientras las unidades enemigas estén a menos de 6\" de la ficha Shade de esta unidad, pierden el estado HIDDEN."
           }
         },
         {
@@ -1083,8 +1083,8 @@
           "fromUpgrade": false,
           "resource": "PE",
           "text": {
-            "en": "REPEATABLE. Use when this Unit is selected as the target of an attack. This Unit’s Evade characteristic is treated as 4+ against this attack.",
-            "es": "REPETIBLE. Úsala cuando esta unidad sea seleccionada como objetivo de un ataque. Su Evasión se considera 4+ contra este ataque."
+            "en": "REPEATABLE. Use when this Unit is selected as the target of an attack. This Unit's Evade characteristic is treated as 4+ against this attack and cannot be modified.",
+            "es": "REPETIBLE. Úsala cuando esta unidad sea seleccionada como objetivo de un ataque. Su Evasión se considera 4+ contra este ataque y no puede modificarse."
           }
         },
         {
@@ -1112,15 +1112,15 @@
           }
         },
         {
-          "name": "Blink",
-          "phase": "MOVEMENT",
+          "name": "Void Blink",
+          "phase": "ASSAULT",
           "type": "ACTIVE",
           "cost": 1,
           "fromUpgrade": false,
           "resource": "PE",
           "text": {
-            "en": "Resolve the PLACE (6) effect. Models set by this effect cannot be set up Within the Engagement Range of any Enemy Unit.",
-            "es": "Resuelve el efecto PLACE (6). Las miniaturas colocadas mediante este efecto no pueden colocarse dentro del Alcance de Enfrentamiento de ninguna unidad enemiga."
+            "en": "If Unengaged, resolve the PLACE (6) effect.",
+            "es": "Si esta unidad no está trabada, resuelve el efecto PLACE (6)."
           }
         },
         {
@@ -1553,8 +1553,8 @@
       ],
       "slotType": "CORE",
       "combatRole": {
-        "es": "Sin confirmar",
-        "en": "Unconfirmed"
+        "es": "Especialista en daño",
+        "en": "Damage Dealer"
       },
       "unique": false,
       "summoned": false,
@@ -1579,8 +1579,8 @@
       ],
       "slotType": "HERO",
       "combatRole": {
-        "es": "Sin confirmar",
-        "en": "Unconfirmed"
+        "es": "Especialista en daño",
+        "en": "Damage Dealer"
       },
       "unique": true,
       "summoned": false,

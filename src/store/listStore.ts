@@ -3,6 +3,7 @@ import { loadCatalog } from '@/catalog/loader';
 import { buildCatalogIndex, type CatalogIndex } from '@/engine/catalogIndex';
 import { computeCosts, findComposition } from '@/engine/costing';
 import { evaluateRecruitment } from '@/engine/eligibility';
+import { tagsAreEligible } from '@/engine/tags';
 import type {
   AppliedUpgrade,
   ArmyList,
@@ -27,7 +28,7 @@ export function createEmptyList(race: Race = 'ZERG'): ArmyList {
     name: 'Nueva lista',
     createdAt: now,
     updatedAt: now,
-    catalogContentVersion: '2026.05.1.2',
+    catalogContentVersion: loadCatalog(race).catalog.contentVersion,
     schemaVersion: SCHEMA_VERSION,
     race,
     scaleId: 'standard',
@@ -162,12 +163,15 @@ export const useListStore = create<ListState>((set, get) => {
       const { list, index } = get();
       if (list.factionCardId === id) return;
       const faction = index.factionCards.get(id);
+      const creep = list.creepCardId ? index.creepCards.get(list.creepCardId) : undefined;
       // Al cambiar de facción se limpia lo que dependía de la anterior:
       // dejarlo produciría una lista con errores que el usuario no ha causado.
       apply({
         factionCardId: id,
         tacticalCardIds: [],
-        creepCardId: faction?.race === 'ZERG' ? list.creepCardId : null,
+        creepCardId: faction?.race === 'ZERG' && creep && tagsAreEligible(creep.tags, faction.tags)
+          ? creep.id
+          : null,
         entries: [],
       });
     },

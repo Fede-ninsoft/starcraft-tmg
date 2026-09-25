@@ -21,6 +21,14 @@ const rootDir = path.resolve(scriptDir, '../..');
 const manifestPath = path.join(scriptDir, 'card-assets.manifest.json');
 const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
 const keepQa = process.argv.includes('--qa');
+const onlyArg = process.argv.find((arg) => arg.startsWith('--only='));
+const onlyIds = onlyArg ? new Set(onlyArg.slice('--only='.length).split(',').filter(Boolean)) : null;
+const selectedAssets = onlyIds
+  ? manifest.assets.filter((asset) => onlyIds.has(asset.id))
+  : manifest.assets;
+if (onlyIds && selectedAssets.length !== onlyIds.size) {
+  fail(`Assets desconocidos: ${[...onlyIds].filter((id) => !selectedAssets.some((asset) => asset.id === id)).join(', ')}`);
+}
 const tmpDir = path.join(rootDir, 'tmp', 'pdfs', 'card-crops');
 const pagesDir = path.join(tmpDir, 'source-pages');
 const publicDir = path.join(rootDir, 'public');
@@ -180,6 +188,18 @@ async function generateAsset(asset) {
 
   if (asset.layout === 'unit') {
     const bounds = pixelBounds(layout, asset);
+    if (asset.half) {
+      if (!['upper', 'lower'].includes(asset.half)
+        || typeof asset.output !== 'string'
+        || ![0, 90, 180, 270].includes(asset.rotation)) {
+        fail(`${asset.id} necesita half upper/lower, rotación y una salida única`);
+      }
+      const faceBounds = asset.half === 'upper'
+        ? bounds
+        : { ...bounds, y1: bounds.backY1, y2: bounds.backY2 };
+      await writeCard(input, asset.output, faceBounds, asset.rotation);
+      return [asset.output];
+    }
     await writeCard(input, asset.output.front, bounds, layout.rotation.front);
     await writeCard(input, asset.output.back, { ...bounds, y1: bounds.backY1, y2: bounds.backY2 }, layout.rotation.back);
     return [asset.output.front, asset.output.back];
@@ -212,13 +232,13 @@ await verifySources();
 await mkdir(publicDir, { recursive: true });
 
 const generated = [];
-for (const asset of manifest.assets) {
+for (const asset of selectedAssets) {
   generated.push(...await generateAsset(asset));
 }
 
 if (keepQa) {
   const byGroup = new Map();
-  for (const asset of manifest.assets) {
+  for (const asset of selectedAssets) {
     const outputs = typeof asset.output === 'string' ? [asset.output] : Object.values(asset.output);
     const group = asset.layout === 'unit' ? `${asset.source}-units` : asset.layout === 'command' ? `${asset.source}-command` : asset.layout;
     byGroup.set(group, [...(byGroup.get(group) ?? []), ...outputs]);
@@ -231,6 +251,9 @@ const totalBytes = sizes.reduce((sum, size) => sum + size, 0);
 console.log(`[makeCards] Generadas ${generated.length} imágenes (${(totalBytes / 1024 / 1024).toFixed(1)} MiB) a ${dpi} dpi.`);
 
 if (!keepQa) {
+  if (!isInside(rootDir, tmpDir) || tmpDir === rootDir) {
+    fail(`Directorio temporal fuera del proyecto: ${tmpDir}`);
+  }
   await rm(tmpDir, { recursive: true, force: true });
 } else {
   console.log(`[makeCards] QA guardada en ${tmpDir}`);

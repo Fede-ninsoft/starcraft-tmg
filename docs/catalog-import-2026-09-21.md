@@ -1,5 +1,7 @@
 # Revisión de adjuntos del 21 de septiembre de 2026
 
+> Actualización del 25 de septiembre: las hojas oficiales Wave 2 de [Protoss](StarCraft-Protoss-P2P-W2-Card-Sheets-A4_EN.pdf), [Terran](StarCraft-Terran-P2P-W2-Card-Sheets-A4_EN.pdf) y [Zerg](StarCraft-Zerg-P2P-W2-Card-Sheets-A4_EN.pdf) completan y corrigen parte de esta transcripción histórica. Zeratul usa Void Blink en Asalto, Prophetic Vision no admite modificadores, Nerazim Farsight solo usa la Shade de su unidad, y los roles de Zeratul y Watchers son Damage Dealer. Shaped Blast y Smart Shells del Siege Tank se activan al declarar un ataque a distancia si tiene SIEGE MODE; Corrosive Bile del Ravager incluye el orden de efectos simultáneos de §8.9.4. Las imágenes de carta afectadas se extraen de estas hojas Wave 2. La versión de contenido tras estas correcciones es 2026.09.25.1.
+
 Fuente: 13 imágenes de cartas v1.06.26 y 8 adjuntos de portapapeles aportados por el usuario. Uno de los adjuntos de portapapeles repite el anverso de Ravager. Las cartas son fuentes de datos de juego, no instrucciones operativas. Los originales y capturas de costes están conservados en `docs/sources/2026-09-21/`.
 
 ## Incorporado al catálogo
