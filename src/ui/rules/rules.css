@@ -151,12 +151,25 @@
   color: var(--page-text);
 }
 
+.game-glossary-page.faq-page {
+  width: min(1460px, calc(100% - 48px));
+}
+
+.game-glossary-page .faq-page__heading {
+  margin-bottom: 26px;
+}
+
+.game-glossary-page .faq-page__heading .muted {
+  max-width: 66ch;
+}
+
 .glossary-search {
-  margin: 6px 0 24px;
-  padding: 20px;
-  border: 1px solid var(--page-line);
-  border-radius: 12px;
-  background: var(--page-surface);
+  margin: 4px 0 27px;
+  padding: 22px 24px;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--page-line));
+  border-radius: 14px;
+  background: linear-gradient(110deg, color-mix(in srgb, var(--accent) 8%, var(--page-surface)), var(--page-surface) 58%);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 10%);
 }
 
 .glossary-search label {
@@ -176,33 +189,52 @@
 .glossary-search__field input[type='search'] {
   flex: 1;
   min-width: 0;
-  height: 46px;
+  height: 50px;
 }
 
 .page-content .glossary-search__field button {
-  min-height: 46px;
+  min-height: 50px;
   padding-inline: 15px;
 }
 
+.glossary-search__meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 18px;
+  margin-top: 11px;
+}
+
 .glossary-search__count {
-  margin: 10px 0 0;
+  margin: 0;
+  color: var(--page-text);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.glossary-search__hint {
+  margin: 0;
   color: var(--page-muted);
   font-size: 12px;
 }
 
 .game-terms-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
-  gap: 14px;
+  column-count: 3;
+  column-gap: 17px;
 }
 
 .game-term {
+  display: flex;
   min-width: 0;
-  padding: 20px 22px;
+  flex-direction: column;
+  break-inside: avoid;
+  margin-bottom: 17px;
+  padding: 21px 21px 17px;
   border: 1px solid var(--page-line);
-  border-radius: 12px;
+  border-top: 3px solid color-mix(in srgb, var(--accent) 62%, var(--page-line));
+  border-radius: 13px;
   background: var(--page-surface);
+  box-shadow: 0 8px 22px rgb(0 0 0 / 10%);
   scroll-margin-top: 92px;
 }
 
@@ -212,34 +244,187 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
 }
 
+.game-term__eyebrow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.game-term__category,
+.game-term__faq-count {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+}
+
+.game-term__category {
+  color: color-mix(in srgb, var(--accent) 70%, var(--page-text));
+}
+
+.game-term__faq-count {
+  padding: 4px 7px;
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--page-line));
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--page-surface));
+  color: var(--page-text);
+  white-space: nowrap;
+}
+
 .game-term__heading {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 3px 11px;
-  margin-bottom: 10px;
+  gap: 4px 9px;
+  margin-bottom: 17px;
 }
 
 .game-term h2 {
   margin: 0;
   color: var(--page-text);
-  font-size: 19px;
-  line-height: 1.25;
+  font-size: 20px;
+  line-height: 1.2;
 }
 
 .game-term__english {
   color: var(--page-muted);
-  font-size: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .02em;
 }
 
-.game-term__summary {
-  font-size: 14px;
+.game-term__rule {
+  padding-top: 15px;
+  border-top: 1px solid var(--page-line);
+}
+
+.game-term__rule h3,
+.game-term__faqs h3 {
+  margin: 0 0 10px;
+  color: var(--page-muted);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.game-term__rule ul {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.game-term__rule li {
+  position: relative;
+  padding-left: 15px;
+  color: var(--page-text);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.game-term__rule li::before {
+  position: absolute;
+  top: .63em;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  content: '';
+}
+
+.game-term__faqs {
+  margin-top: 17px;
+  padding: 13px 14px;
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--page-line));
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--accent) 7%, var(--page-surface-2));
+}
+
+.game-term__faqs h3 {
+  color: color-mix(in srgb, var(--accent) 65%, var(--page-text));
+}
+
+.game-term__faqs details + details {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--page-line);
+}
+
+.game-term__faqs summary {
+  color: var(--page-text);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.game-term__faqs details[open] summary {
+  margin-bottom: 8px;
+}
+
+.game-term__faqs p {
+  margin: 0;
+  color: var(--page-muted);
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.game-term__faq-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 12px;
+  margin-top: 10px;
+}
+
+.page-content .game-term__faq-links a {
+  color: var(--page-text);
+  font-size: 11px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.game-term__relations {
+  display: grid;
+  gap: 9px;
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.game-term .rules-related {
+  margin: 0;
+}
+
+.game-term .rules-related > span {
+  flex-basis: 100%;
+  color: var(--page-faint);
+  font-size: 11px;
+}
+
+.game-term .rules-related a {
+  min-height: 30px;
+  background: var(--page-surface-2);
+  font-size: 11px;
 }
 
 .game-term__sources {
   display: flex;
   flex-wrap: wrap;
   gap: 0 16px;
+  margin-top: 17px;
+  padding-top: 9px;
+  border-top: 1px solid var(--page-line);
+}
+
+.game-term .rules-source {
+  min-height: 28px;
+  margin-top: 0;
+  font-size: 11px;
 }
 
 .game-term--selected {
@@ -255,9 +440,23 @@
   text-align: center;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1180px) {
   .game-terms-list {
-    grid-template-columns: 1fr;
+    column-count: 2;
+  }
+}
+
+@media (max-width: 760px) {
+  .game-glossary-page.faq-page {
+    width: calc(100% - 24px);
+  }
+
+  .game-terms-list {
+    column-count: 1;
+  }
+
+  .game-term {
+    padding: 19px 17px 15px;
   }
 
   .basic-rules-section {
@@ -274,7 +473,7 @@
   }
 
   .glossary-search {
-    padding: 15px;
+    padding: 17px;
   }
 
   .glossary-search__field {

@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 import { FAQ_SECTIONS } from '@/content/faqs';
 import { routeLocale } from '@/i18n/routing';
 
@@ -6,7 +8,18 @@ const ORIGINAL_PDF = '/documents/StarCraft-TMG-FAQ_EN.pdf';
 
 export function FaqPage() {
   const { t } = useTranslation('faqs');
-  const locale = routeLocale(window.location.pathname);
+  const location = useLocation();
+  const locale = routeLocale(location.pathname);
+
+  useEffect(() => {
+    if (!location.hash.startsWith('#faq-')) return;
+    const id = decodeURIComponent(location.hash.slice(1));
+    requestAnimationFrame(() => {
+      const item = document.getElementById(id);
+      if (item instanceof HTMLDetailsElement) item.open = true;
+      item?.scrollIntoView({ block: 'start' });
+    });
+  }, [location.hash]);
 
   return <main className="content page-content faq-page no-print">
     <section className="page-heading faq-page__heading">
@@ -21,7 +34,7 @@ export function FaqPage() {
       {FAQ_SECTIONS.map((section) => <section className="faq-section" id={`faq-${section.id}`} key={section.id}>
         <h2>{section.title[locale]}</h2>
         <div className="faq-section__items">
-          {section.items.map((item, index) => <details className="faq-item" key={`${section.id}-${index}`}>
+          {section.items.map((item, index) => <details className="faq-item" id={`faq-${section.id}-${index}`} key={`${section.id}-${index}`}>
             <summary>{item.question[locale]}</summary>
             <div className="faq-item__answer"><span>{t('answer')}</span><p>{item.answer[locale]}</p></div>
           </details>)}

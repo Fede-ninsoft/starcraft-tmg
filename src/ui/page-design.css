@@ -742,6 +742,8 @@
 .faq-section h2 { margin: 0 0 13px; color: var(--page-text); font-size: 24px; }
 .faq-section__items { display: grid; gap: 9px; }
 .faq-item { border: 1px solid var(--page-line); border-radius: 10px; background: var(--page-surface); overflow: clip; }
+.faq-item[id^='faq-'] { scroll-margin-top: 92px; }
+.faq-item[id^='faq-']:target { border-color: color-mix(in srgb, var(--accent) 75%, var(--page-line)); }
 .faq-item summary { position: relative; padding: 15px 46px 15px 17px; color: var(--page-text); cursor: pointer; font-weight: 650; line-height: 1.45; list-style: none; }
 .faq-item summary::-webkit-details-marker { display: none; }
 .faq-item summary::after { content: '+'; position: absolute; top: 12px; right: 17px; color: var(--accent); font-size: 23px; font-weight: 400; }

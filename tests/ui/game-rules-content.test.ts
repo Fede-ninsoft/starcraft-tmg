@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { BASIC_RULE_SECTIONS } from '@/content/basicRules';
+import { FAQ_SECTIONS } from '@/content/faqs';
+import { GAME_TERM_FAQ_LINKS } from '@/content/gameTermFaqLinks';
 import { GAME_TERMS } from '@/content/gameTerms';
 import { normalizeTermSearch, searchGameTerms } from '@/ui/rules/searchGameTerms';
 
@@ -28,10 +30,23 @@ describe('contenido de reglas', () => {
 
     for (const term of GAME_TERMS) {
       expect(term.name.es && term.name.en && term.summary.es && term.summary.en).toBeTruthy();
+      expect(term.details.es.length).toBeGreaterThanOrEqual(2);
+      expect(term.details.en.length).toBe(term.details.es.length);
+      for (const point of [...term.details.es, ...term.details.en]) expect(point.trim()).not.toBe('');
       expect(term.source.section).not.toBe('');
       expect(term.source.printedPage).toBeGreaterThan(0);
       for (const id of term.phaseIds ?? []) expect(phaseIds.has(id)).toBe(true);
       for (const id of term.relatedIds ?? []) expect(termIds.has(id)).toBe(true);
+    }
+
+    for (const [termId, links] of Object.entries(GAME_TERM_FAQ_LINKS)) {
+      expect(termIds.has(termId)).toBe(true);
+      expect(links.length).toBeGreaterThan(0);
+      for (const link of links) {
+        const section = FAQ_SECTIONS.find((item) => item.id === link.sectionId);
+        expect(section?.items[link.itemIndex]).toBeDefined();
+        expect(link.pdfPage).toBeGreaterThan(0);
+      }
     }
   });
 });
@@ -52,5 +67,9 @@ describe('búsqueda de términos', () => {
     expect(searchGameTerms(GAME_TERMS, 'palabra inexistente zzzzz', 'es')).toEqual([]);
     const first = GAME_TERMS[0]!;
     expect(searchGameTerms(GAME_TERMS, first.name.en, 'en')[0]?.id).toBe(first.id);
+  });
+
+  it('incluye aclaraciones de la FAQ en la búsqueda', () => {
+    expect(searchGameTerms(GAME_TERMS, 'Artefact Hunt', 'es').map((term) => term.id)).toContain('burrowed');
   });
 });

@@ -1,5 +1,16 @@
 import type { GameTerm } from '@/content/gameTerms';
+import { GAME_TERM_FAQ_LINKS } from '@/content/gameTermFaqLinks';
+import { FAQ_SECTIONS } from '@/content/faqs';
 import type { SupportedLocale } from '@/i18n/types';
+
+const faqSectionsById = new Map(FAQ_SECTIONS.map((section) => [section.id, section]));
+
+function faqSearchText(termId: string): string[] {
+  return (GAME_TERM_FAQ_LINKS[termId] ?? []).flatMap(({ sectionId, itemIndex }) => {
+    const item = faqSectionsById.get(sectionId)?.items[itemIndex];
+    return item ? [item.question.es, item.question.en, item.answer.es, item.answer.en] : [];
+  });
+}
 
 /** Keep English card keywords searchable alongside their Spanish explanations. */
 export function normalizeTermSearch(value: string): string {
@@ -28,7 +39,11 @@ export function searchGameTerms(
     .map((term) => {
       const names = [term.name.es, term.name.en].map(normalizeTermSearch);
       const aliases = [...(term.aliases?.es ?? []), ...(term.aliases?.en ?? [])].map(normalizeTermSearch);
-      const definitions = [term.summary.es, term.summary.en].map(normalizeTermSearch);
+      const definitions = [
+        term.summary.es, term.summary.en,
+        ...term.details.es, ...term.details.en,
+        ...faqSearchText(term.id),
+      ].map(normalizeTermSearch);
       const searchable = [...names, ...aliases, ...definitions].join(' ');
       if (!tokens.every((token) => searchable.includes(token))) return null;
 

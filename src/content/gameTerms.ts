@@ -1,5 +1,7 @@
+import { GAME_TERM_DETAILS, type GameTermDetail } from './gameTermDetails';
+
 /**
- * Short, original-language summaries of the core rulebook's Part 11 glossary.
+ * Search labels and rule references for the core rulebook's Part 11 glossary.
  * `source.printedPage` is the page number printed in the English rulebook, not
  * the PDF viewer's page index. The final entries add frequently needed basic
  * concepts defined elsewhere in the same rulebook.
@@ -9,9 +11,10 @@ export interface GameTerm {
   name: { es: string; en: string };
   aliases?: { es: string[]; en: string[] };
   summary: { es: string; en: string };
+  details: GameTermDetail;
   category: string;
   phaseIds?: string[];
-  source: { section: string; printedPage: number; faqPage?: number };
+  source: { section: string; printedPage: number; printedEndPage?: number; faqPage?: number };
   relatedIds?: string[];
 }
 
@@ -24,11 +27,13 @@ function term(
   phaseIds: string[],
   name: LocalizedText,
   summary: LocalizedText,
-  options: { aliases?: { es: string[]; en: string[] }; relatedIds?: string[]; section?: string; faqPage?: number } = {},
+  options: { aliases?: { es: string[]; en: string[] }; relatedIds?: string[]; section?: string; printedEndPage?: number; faqPage?: number } = {},
 ): GameTerm {
+  const details = GAME_TERM_DETAILS[id];
+  if (!details) throw new Error(`Missing rule details for game term: ${id}`);
   return {
-    id, name, summary, category, phaseIds,
-    source: { section: options.section ?? '11', printedPage, ...(options.faqPage ? { faqPage: options.faqPage } : {}) },
+    id, name, summary, details, category, phaseIds,
+    source: { section: options.section ?? '11', printedPage, ...(options.printedEndPage ? { printedEndPage: options.printedEndPage } : {}), ...(options.faqPage ? { faqPage: options.faqPage } : {}) },
     ...(options.aliases ? { aliases: options.aliases } : {}),
     ...(options.relatedIds ? { relatedIds: options.relatedIds } : {}),
   };
@@ -70,7 +75,7 @@ export const GAME_TERMS: readonly GameTerm[] = [
   term('burrowed', 82, 'status', ['movement', 'combat', 'scoring-cleanup'],
     { en: 'BURROWED', es: 'BURROWED' },
     { en: 'A status that grants HIDDEN and Size 0, prevents objective control and limits actions. Most allowed actions remove BURROWED immediately; it can Evade every attack.', es: 'Estado que da HIDDEN y Tamaño 0, impide controlar objetivos y limita las acciones. Casi todas las acciones permitidas lo retiran de inmediato; permite Evasión ante cada ataque.' },
-    { aliases: { en: ['burrow'], es: ['enterrada', 'enterrado'] }, relatedIds: ['hidden', 'mission-markers'] }),
+    { aliases: { en: ['burrow'], es: ['enterrada', 'enterrado'] }, relatedIds: ['hidden', 'mission-markers'], printedEndPage: 83 }),
   term('burst-fire', 83, 'weapons', ['assault'],
     { en: 'BURST FIRE Y” (X)', es: 'BURST FIRE Y” (X)' },
     { en: 'Against a target within Y inches of the firing model, this weapon gains X Rate of Attack for that attack.', es: 'Contra un objetivo a Y pulgadas o menos de la miniatura atacante, esta arma gana X de Cadencia de Ataque en ese ataque.' },
