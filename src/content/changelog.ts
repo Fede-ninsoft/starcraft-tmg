@@ -18,6 +18,15 @@ export interface ChangelogEntry {
  */
 export const CHANGELOG_ENTRIES: readonly ChangelogEntry[] = [
   {
+    version: '2.11',
+    date: '2026-09-25',
+    title: { es: 'Reglas básicas y términos del juego', en: 'Basic rules and game terms' },
+    changes: [
+      { es: 'Nueva guía de reglas organizada por preparación, conceptos de la ronda y las cuatro fases del juego, con enlaces al reglamento y aclaraciones de la FAQ.', en: 'A new rules guide covers setup, round essentials and all four game phases, with rulebook links and FAQ clarifications.' },
+      { es: 'Glosario bilingüe de términos del juego con buscador y enlaces entre conceptos y fases.', en: 'A bilingual game glossary adds search and links between terms and game phases.' },
+    ],
+  },
+  {
     version: '2.10',
     date: '2026-09-25',
     title: { es: 'Cartas ampliables', en: 'Enlargeable cards' },

@@ -31,6 +31,8 @@ const PUBLIC_PAGES = new Set<LocalizedPage>([
   'guest-builder',
   'public-lists',
   'support',
+  'basic-rules',
+  'glossary',
   'faqs',
   'organised-play',
   'tournaments',
@@ -61,6 +63,8 @@ const PAGE_COPY: Record<SupportedLocale, Record<LocalizedPage, PageCopy>> = {
       description: 'Contacta con el soporte de Starcraft Builder para comunicar incidencias o resolver dudas sobre la aplicación.',
       breadcrumb: 'Soporte',
     },
+    'basic-rules': { title: 'Reglas básicas de StarCraft TMG | Starcraft Builder', description: 'Consulta la secuencia y las fases de juego de StarCraft: The Miniatures Game en español.', breadcrumb: 'Reglas básicas' },
+    glossary: { title: 'Términos del juego StarCraft TMG | Starcraft Builder', description: 'Busca términos y conceptos de StarCraft: The Miniatures Game en el glosario en español.', breadcrumb: 'Términos del juego' },
     faqs: { title: 'FAQ de StarCraft TMG | Starcraft Builder', description: 'Consulta en español las preguntas frecuentes y aclaraciones oficiales de StarCraft: The Miniatures Game.', breadcrumb: 'Preguntas frecuentes' },
     'organised-play': { title: 'Reglas de torneo StarCraft TMG | Starcraft Builder', description: 'Consulta en español las reglas de juego organizado, formatos, emparejamientos, puntuación y arbitraje de StarCraft: The Miniatures Game.', breadcrumb: 'Reglas de torneo' },
     terms: {
@@ -101,6 +105,8 @@ const PAGE_COPY: Record<SupportedLocale, Record<LocalizedPage, PageCopy>> = {
       description: 'Contact Starcraft Builder support to report an issue or ask a question about the application.',
       breadcrumb: 'Support',
     },
+    'basic-rules': { title: 'StarCraft TMG Basic Rules | Starcraft Builder', description: 'Follow the game sequence and phases of StarCraft: The Miniatures Game.', breadcrumb: 'Basic rules' },
+    glossary: { title: 'StarCraft TMG Game Terms | Starcraft Builder', description: 'Search terms and concepts from StarCraft: The Miniatures Game in the English glossary.', breadcrumb: 'Game terms' },
     faqs: { title: 'StarCraft TMG FAQ | Starcraft Builder', description: 'Read the official frequently asked questions and rules clarifications for StarCraft: The Miniatures Game.', breadcrumb: 'FAQ' },
     'organised-play': { title: 'StarCraft TMG Tournament Rules | Starcraft Builder', description: 'Read the organised play rules for StarCraft: The Miniatures Game, including formats, pairings, scoring, judging and chess clocks.', breadcrumb: 'Organised play' },
     terms: {

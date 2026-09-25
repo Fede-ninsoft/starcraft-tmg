@@ -19,6 +19,10 @@ describe('rutas localizadas', () => {
     expect(pageFromPath('/en/games/game-123')).toBe('games');
     expect(pageFromPath('/es/faqs')).toBe('faqs');
     expect(pageFromPath('/en/faqs')).toBe('faqs');
+    expect(pageFromPath('/es/reglas-basicas')).toBe('basic-rules');
+    expect(pageFromPath('/en/basic-rules')).toBe('basic-rules');
+    expect(pageFromPath('/es/glosario')).toBe('glossary');
+    expect(pageFromPath('/en/glossary')).toBe('glossary');
     expect(pageFromPath('/es/reglas-de-torneo')).toBe('organised-play');
     expect(pageFromPath('/en/organised-play')).toBe('organised-play');
   });
@@ -35,6 +39,10 @@ describe('rutas localizadas', () => {
     expect(localizedPath('games', 'en')).toBe('/en/games');
     expect(localizedPath('faqs', 'es')).toBe('/es/faqs');
     expect(localizedPath('faqs', 'en')).toBe('/en/faqs');
+    expect(localizedPath('basic-rules', 'es')).toBe('/es/reglas-basicas');
+    expect(localizedPath('basic-rules', 'en')).toBe('/en/basic-rules');
+    expect(localizedPath('glossary', 'es')).toBe('/es/glosario');
+    expect(localizedPath('glossary', 'en')).toBe('/en/glossary');
     expect(localizedPath('organised-play', 'es')).toBe('/es/reglas-de-torneo');
     expect(localizedPath('organised-play', 'en')).toBe('/en/organised-play');
     expect(findPublicListId('/es/listas-publicas/abc')).toBe('abc');

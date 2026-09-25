@@ -74,6 +74,30 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.starcraft-builder.com/es/terminos-y-condiciones" />
   </url>
   <url>
+    <loc>https://www.starcraft-builder.com/es/reglas-basicas</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.starcraft-builder.com/es/reglas-basicas" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.starcraft-builder.com/en/basic-rules" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.starcraft-builder.com/es/reglas-basicas" />
+  </url>
+  <url>
+    <loc>https://www.starcraft-builder.com/en/basic-rules</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.starcraft-builder.com/es/reglas-basicas" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.starcraft-builder.com/en/basic-rules" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.starcraft-builder.com/es/reglas-basicas" />
+  </url>
+  <url>
+    <loc>https://www.starcraft-builder.com/es/glosario</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.starcraft-builder.com/es/glosario" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.starcraft-builder.com/en/glossary" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.starcraft-builder.com/es/glosario" />
+  </url>
+  <url>
+    <loc>https://www.starcraft-builder.com/en/glossary</loc>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.starcraft-builder.com/es/glosario" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.starcraft-builder.com/en/glossary" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.starcraft-builder.com/es/glosario" />
+  </url>
+  <url>
     <loc>https://www.starcraft-builder.com/es/faqs</loc>
     <xhtml:link rel="alternate" hreflang="es" href="https://www.starcraft-builder.com/es/faqs" />
     <xhtml:link rel="alternate" hreflang="en" href="https://www.starcraft-builder.com/en/faqs" />

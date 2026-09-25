@@ -1,0 +1,287 @@
+.rules-index {
+  padding-block: 2px;
+}
+
+.rules-index a {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+}
+
+.basic-rules-page .faq-page__sections {
+  gap: 22px;
+}
+
+.basic-rules-section {
+  overflow: hidden;
+  padding: 25px 28px 28px;
+  border: 1px solid var(--page-line);
+  border-radius: 14px;
+  background: var(--page-surface);
+}
+
+.basic-rules-section__number {
+  margin: 0 0 5px;
+  color: color-mix(in srgb, var(--accent) 68%, var(--page-text));
+  font-family: 'Chakra Petch', var(--font-heading, system-ui), sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.basic-rules-section h2 {
+  margin-bottom: 8px;
+}
+
+.basic-rules-section__intro {
+  max-width: 75ch;
+  margin: 0 0 20px;
+  color: var(--page-muted);
+  line-height: 1.65;
+}
+
+.basic-rules-section__steps {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: rule-step;
+}
+
+.basic-rules-section__steps > li {
+  position: relative;
+  padding: 18px 20px 17px 54px;
+  border: 1px solid var(--page-line);
+  border-radius: 10px;
+  background: var(--page-surface-2);
+  scroll-margin-top: 92px;
+  counter-increment: rule-step;
+}
+
+.basic-rules-section__steps > li::before {
+  position: absolute;
+  top: 17px;
+  left: 18px;
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 50%, var(--page-line));
+  border-radius: 50%;
+  color: var(--page-text);
+  content: counter(rule-step);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.basic-rules-section__steps h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.basic-rules-section__steps p,
+.game-term__summary {
+  margin: 0;
+  color: var(--page-text);
+  line-height: 1.65;
+}
+
+.rules-related {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 15px;
+}
+
+.rules-related > span {
+  margin-right: 3px;
+  color: var(--page-muted);
+  font-size: 12px;
+}
+
+.page-content .rules-related a {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  padding: 3px 9px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--page-line));
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--accent) 7%, var(--page-surface));
+  color: var(--page-text);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.page-content .rules-related a:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 15%, var(--page-surface));
+}
+
+.page-content .rules-source {
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  margin-top: 10px;
+  color: var(--page-muted);
+  font-size: 11px;
+  line-height: 1.5;
+  text-decoration: underline;
+  text-decoration-color: var(--page-line-strong);
+  text-underline-offset: 3px;
+}
+
+.page-content .rules-source:hover {
+  color: var(--page-text);
+}
+
+.page-content .rules-back {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  margin-top: 24px;
+  color: var(--page-muted);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.page-content .rules-back:hover {
+  color: var(--page-text);
+}
+
+.glossary-search {
+  margin: 6px 0 24px;
+  padding: 20px;
+  border: 1px solid var(--page-line);
+  border-radius: 12px;
+  background: var(--page-surface);
+}
+
+.glossary-search label {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--page-text);
+  font-family: 'Chakra Petch', var(--font-heading, system-ui), sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.glossary-search__field {
+  display: flex;
+  gap: 8px;
+}
+
+.glossary-search__field input[type='search'] {
+  flex: 1;
+  min-width: 0;
+  height: 46px;
+}
+
+.page-content .glossary-search__field button {
+  min-height: 46px;
+  padding-inline: 15px;
+}
+
+.glossary-search__count {
+  margin: 10px 0 0;
+  color: var(--page-muted);
+  font-size: 12px;
+}
+
+.game-terms-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 14px;
+}
+
+.game-term {
+  min-width: 0;
+  padding: 20px 22px;
+  border: 1px solid var(--page-line);
+  border-radius: 12px;
+  background: var(--page-surface);
+  scroll-margin-top: 92px;
+}
+
+.game-term:target,
+.basic-rules-section:target {
+  border-color: color-mix(in srgb, var(--accent) 75%, var(--page-line));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.game-term__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 3px 11px;
+  margin-bottom: 10px;
+}
+
+.game-term h2 {
+  margin: 0;
+  color: var(--page-text);
+  font-size: 19px;
+  line-height: 1.25;
+}
+
+.game-term__english {
+  color: var(--page-muted);
+  font-size: 12px;
+}
+
+.game-term__summary {
+  font-size: 14px;
+}
+
+.game-term__sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 16px;
+}
+
+.game-term--selected {
+  border-color: color-mix(in srgb, var(--accent) 75%, var(--page-line));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.glossary-empty {
+  padding: 26px;
+  border: 1px dashed var(--page-line-strong);
+  border-radius: 12px;
+  color: var(--page-muted);
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .game-terms-list {
+    grid-template-columns: 1fr;
+  }
+
+  .basic-rules-section {
+    padding: 20px 16px;
+  }
+
+  .basic-rules-section__steps > li {
+    padding: 16px 15px 15px 47px;
+  }
+
+  .basic-rules-section__steps > li::before {
+    top: 15px;
+    left: 13px;
+  }
+
+  .glossary-search {
+    padding: 15px;
+  }
+
+  .glossary-search__field {
+    flex-wrap: wrap;
+  }
+
+  .glossary-search__field input[type='search'] {
+    flex-basis: 100%;
+  }
+}

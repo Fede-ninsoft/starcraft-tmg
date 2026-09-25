@@ -100,6 +100,10 @@ describe('metadatos SEO y rich snippets', () => {
     ['terms', 'en', '/en/home', '/en/terms-and-conditions'],
     ['faqs', 'es', '/es/inicio', '/es/faqs'],
     ['faqs', 'en', '/en/home', '/en/faqs'],
+    ['basic-rules', 'es', '/es/inicio', '/es/reglas-basicas'],
+    ['basic-rules', 'en', '/en/home', '/en/basic-rules'],
+    ['glossary', 'es', '/es/inicio', '/es/glosario'],
+    ['glossary', 'en', '/en/home', '/en/glossary'],
     ['organised-play', 'es', '/es/inicio', '/es/reglas-de-torneo'],
     ['organised-play', 'en', '/en/home', '/en/organised-play'],
   ] as const)('crea breadcrumbs absolutos para %s en %s', (page, locale, homePath, pagePath) => {
@@ -150,6 +154,8 @@ describe('metadatos SEO y rich snippets', () => {
       { page: 'support', es: '/es/soporte', en: '/en/support' },
       { page: 'terms', es: '/es/terminos-y-condiciones', en: '/en/terms-and-conditions' },
       { page: 'faqs', es: '/es/faqs', en: '/en/faqs' },
+      { page: 'basic-rules', es: '/es/reglas-basicas', en: '/en/basic-rules' },
+      { page: 'glossary', es: '/es/glosario', en: '/en/glossary' },
       { page: 'organised-play', es: '/es/reglas-de-torneo', en: '/en/organised-play' },
     ];
 
@@ -170,7 +176,7 @@ describe('metadatos SEO y rich snippets', () => {
   });
 
   it('no inventa reseñas ni valoraciones en ningún rich snippet', () => {
-    for (const page of ['home', 'guest-builder', 'games', 'support', 'terms', 'faqs', 'organised-play'] as const) {
+    for (const page of ['home', 'guest-builder', 'games', 'support', 'terms', 'basic-rules', 'glossary', 'faqs', 'organised-play'] as const) {
       for (const locale of ['es', 'en'] as const) {
         const keys = structuredDataKeys(buildSeoMetadata(page, locale).structuredData);
 

@@ -1,5 +1,5 @@
 import { TournamentsPage } from './ui/tournaments/TournamentsPage';
-import { useCallback, useEffect, useRef, useState, type MouseEvent } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState, type MouseEvent } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { capabilitiesFor, type AccessMode } from '@/auth/access';
@@ -44,8 +44,11 @@ import { SeoMetadata } from './seo/SeoMetadata';
 import './ui/app.css';
 import { findPublicListId, localizedPath, pageFromPath, routeLocale, type LocalizedPage } from './i18n/routing';
 
+const BasicRulesPage = lazy(() => import('./ui/rules/BasicRulesPage').then(({ BasicRulesPage }) => ({ default: BasicRulesPage })));
+const GameGlossaryPage = lazy(() => import('./ui/rules/GameGlossaryPage').then(({ GameGlossaryPage }) => ({ default: GameGlossaryPage })));
+
 type StepId = 'cards' | 'units' | 'scenario' | 'review' | 'stats';
-type PageId = 'home' | 'builder' | 'lists' | 'public-lists' | 'games' | 'profile' | 'public-list' | 'support' | 'faqs' | 'organised-play' | 'tournaments';
+type PageId = 'home' | 'builder' | 'lists' | 'public-lists' | 'games' | 'profile' | 'public-list' | 'support' | 'basic-rules' | 'glossary' | 'faqs' | 'organised-play' | 'tournaments';
 const STEPS: Array<{ id: StepId; label: string }> = [
   { id: 'cards', label: 'commandCards' }, { id: 'units', label: 'recruitment' },
   { id: 'scenario', label: 'mission' }, { id: 'review', label: 'review' },
@@ -63,6 +66,8 @@ const NAV_ITEMS = [
   { page: 'games' as const, key: 'games', icon: 'partidas' },
   { page: 'public-lists' as const, key: 'publicLists', icon: 'listas-publicas' },
   { page: 'builder' as const, key: 'newList', icon: 'nueva-lista' },
+  { page: 'basic-rules' as const, key: 'basicRules', icon: 'reglas' },
+  { page: 'glossary' as const, key: 'glossary', icon: 'preguntas' },
   { page: 'faqs' as const, key: 'faqs', icon: 'preguntas' },
   { page: 'organised-play' as const, key: 'organisedPlay', icon: 'juego-organizado' },
   { page: 'support' as const, key: 'support', icon: 'contacto' },
@@ -102,9 +107,9 @@ function RulesNavigation({ page, race, onNavigate }: { page: PageId; race: Race;
   return <details ref={ref} className="primary-nav__rules" onKeyDown={(event) => {
     if (event.key === 'Escape') { event.stopPropagation(); ref.current?.removeAttribute('open'); ref.current?.querySelector('summary')?.focus(); }
   }}>
-    <summary className={`primary-nav__item${page === 'faqs' || page === 'organised-play' ? ' primary-nav__item--active' : ''}`}><NavigationIcon race={race} icon="reglas" /><span>{t('rules')}</span><span className="primary-nav__chevron" aria-hidden="true">⌄</span></summary>
+    <summary className={`primary-nav__item${page === 'basic-rules' || page === 'glossary' || page === 'faqs' || page === 'organised-play' ? ' primary-nav__item--active' : ''}`}><NavigationIcon race={race} icon="reglas" /><span>{t('rules')}</span><span className="primary-nav__chevron" aria-hidden="true">⌄</span></summary>
     <div className="primary-nav__rules-menu">
-      {NAV_ITEMS.filter((item) => item.page === 'faqs' || item.page === 'organised-play').map((item) => <button type="button" key={item.page} aria-current={page === item.page ? 'page' : undefined} onClick={() => {
+      {NAV_ITEMS.filter((item) => item.page === 'basic-rules' || item.page === 'glossary' || item.page === 'faqs' || item.page === 'organised-play').map((item) => <button type="button" key={item.page} aria-current={page === item.page ? 'page' : undefined} onClick={() => {
         ref.current?.removeAttribute('open');
         ref.current?.closest('.primary-nav__mobile')?.removeAttribute('open');
         onNavigate(item.page, t(item.key));
@@ -125,7 +130,7 @@ function MobileNavigation({ page, race, onNavigate, onCreate }: { page: PageId; 
   return <details className="primary-nav__mobile">
     <summary>{marker(current)}<span>{t(current.key)}</span></summary>
     <div className="primary-nav__mobile-menu">
-      {NAV_ITEMS.filter((item) => item.page !== 'organised-play' && item.page !== 'builder').map((item) => item.page === 'lists'
+      {NAV_ITEMS.filter((item) => item.page !== 'basic-rules' && item.page !== 'glossary' && item.page !== 'organised-play' && item.page !== 'builder').map((item) => item.page === 'lists'
         ? <ListsNavigation key="lists" page={page} race={race} onNavigate={onNavigate} onCreate={onCreate} />
         : item.page === 'faqs'
         ? <RulesNavigation key="rules" page={page} race={race} onNavigate={onNavigate} />
@@ -145,6 +150,8 @@ const PAGE_PATHS: Record<Exclude<PageId, 'public-list'>, string> = {
   games: '/partidas',
   profile: '/perfil',
   support: '/soporte',
+  'basic-rules': '/reglas-basicas',
+  glossary: '/glosario',
   faqs: '/faqs',
   'organised-play': '/reglas-de-torneo',
   tournaments: '/torneos',
@@ -167,6 +174,8 @@ export function pageForPathname(pathname: string, publicListId: string | null = 
   if (localizedPage === 'games') return 'games';
   if (localizedPage === 'profile') return 'profile';
   if (localizedPage === 'support') return 'support';
+  if (localizedPage === 'basic-rules') return 'basic-rules';
+  if (localizedPage === 'glossary') return 'glossary';
   if (localizedPage === 'faqs') return 'faqs';
   if (localizedPage === 'organised-play') return 'organised-play';
   if (pathname === PAGE_PATHS.builder) return 'builder';
@@ -175,6 +184,8 @@ export function pageForPathname(pathname: string, publicListId: string | null = 
   if (pathname === PAGE_PATHS.games) return 'games';
   if (pathname === PAGE_PATHS.profile) return 'profile';
   if (pathname === PAGE_PATHS.support) return 'support';
+  if (pathname === PAGE_PATHS['basic-rules']) return 'basic-rules';
+  if (pathname === PAGE_PATHS.glossary) return 'glossary';
   if (pathname === PAGE_PATHS.faqs) return 'faqs';
   if (pathname === PAGE_PATHS['organised-play']) return 'organised-play';
   return 'home';
@@ -455,6 +466,11 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
     return () => window.removeEventListener('popstate', onPopState);
   }, []);
   useEffect(() => {
+    const id = publicListPath(location.pathname);
+    setPublicListId(id);
+    setPage(pageForPathname(location.pathname, id));
+  }, [location.pathname]);
+  useEffect(() => {
     if (!statsAvailable && step === 'stats') setStep('cards');
   }, [statsAvailable, step]);
   const reviewVisible = page === 'builder' && step === 'review';
@@ -493,7 +509,7 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
       onRequestAuthentication?.(nextPath);
       return;
     }
-    if (nextPage === 'tournaments') navigate(nextPath);
+    if (nextPage === 'tournaments' || nextPage === 'basic-rules' || nextPage === 'glossary') navigate(nextPath);
     else if (window.location.pathname !== nextPath) window.history.pushState({}, '', nextPath);
     setPublicListId(null);
     setPublicList(null);
@@ -623,7 +639,7 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
               onChange={(event) => {
                 const destination = event.target.value as PageId;
                 if (destination === 'builder') createList();
-                else navigateToPage(destination, tNavigation(destination === 'home' ? 'home' : destination === 'lists' ? 'lists' : destination === 'tournaments' ? 'tournaments' : destination === 'games' ? 'games' : destination === 'public-lists' ? 'publicLists' : destination === 'faqs' ? 'faqs' : destination === 'organised-play' ? 'organisedPlay' : 'support'));
+                else navigateToPage(destination, tNavigation(NAV_ITEMS.find((item) => item.page === destination)?.key ?? 'support'));
               }}
             >
               <option value="home">{tNavigation('home')}</option>
@@ -635,6 +651,8 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
               <option value="public-lists">{tNavigation('publicLists')}</option>
 
               <optgroup label={tNavigation('rules')}>
+                <option value="basic-rules">{tNavigation('basicRules')}</option>
+                <option value="glossary">{tNavigation('glossary')}</option>
                 <option value="faqs">{tNavigation('faqs')}</option>
                 <option value="tournaments">{tNavigation('tournaments')}</option>
                 <option value="organised-play">{tNavigation('organisedPlay')}</option>
@@ -765,12 +783,14 @@ function ArmyBuilderApp({ mode, initialSeed = null, initialListId = null, preser
       {mode === 'account' && page === 'games' && <GamePage mode="account" embedded />}
       {page === 'public-lists' && <PublicListsPage canLike={mode === 'account'} onRequireAuthentication={() => onRequestAuthentication?.()} onViewPublic={(id) => { void openPublicList(id); }} onClonePublic={(id) => { void clonePublicList(id); }} />}
       {page === 'support' && <SupportPage user={mode === 'account' ? user : null} />}
+      {page === 'basic-rules' && <Suspense fallback={<main className="content" role="status">{tCommon('loading')}</main>}><BasicRulesPage /></Suspense>}
+      {page === 'glossary' && <Suspense fallback={<main className="content" role="status">{tCommon('loading')}</main>}><GameGlossaryPage /></Suspense>}
       {page === 'faqs' && <FaqPage />}
       {page === 'organised-play' && <OrganisedPlayPage />}
       {mode === 'account' && page === 'profile' && <AccountPage />}
       {page === 'public-list' && publicList && <PublicListPage list={publicList} canLike={mode === 'account'} onRequireAuthentication={() => onRequestAuthentication?.()} onBack={closePublicList} onClone={() => { void clonePublicList(publicList.id); }} />}
       {toast && <div className="toast no-print">{toast}</div>}
-      <footer className="auth-page__footer app__footer no-print">{tLegal('footer')} <a href={localizedPath('faqs', locale)}>{tNavigation('faqs')}</a> · <a href={localizedPath('organised-play', locale)}>{tNavigation('organisedPlay')}</a> · <a href={localizedPath('support', locale)}>{tNavigation('support')}</a> · <a href={localizedPath('terms', locale)}>{tLegal('terms')}</a> · <ChangelogLink /> · <AppVersion /></footer>
+      <footer className="auth-page__footer app__footer no-print">{tLegal('footer')} <a href={localizedPath('basic-rules', locale)}>{tNavigation('basicRules')}</a> · <a href={localizedPath('glossary', locale)}>{tNavigation('glossary')}</a> · <a href={localizedPath('faqs', locale)}>{tNavigation('faqs')}</a> · <a href={localizedPath('organised-play', locale)}>{tNavigation('organisedPlay')}</a> · <a href={localizedPath('support', locale)}>{tNavigation('support')}</a> · <a href={localizedPath('terms', locale)}>{tLegal('terms')}</a> · <ChangelogLink /> · <AppVersion /></footer>
     </div>
   );
 }

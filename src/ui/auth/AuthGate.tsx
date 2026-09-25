@@ -109,7 +109,7 @@ function AuthNavigation() {
     menu.open = false;
     menu.querySelector('summary')?.focus();
   };
-  const icons = { home: 'inicio', lists: 'mis-listas', builder: 'nueva-lista', tournaments: 'torneos', games: 'partidas', 'public-lists': 'listas-publicas', faqs: 'preguntas', 'organised-play': 'juego-organizado', support: 'contacto' } as const;
+  const icons = { home: 'inicio', lists: 'mis-listas', builder: 'nueva-lista', tournaments: 'torneos', games: 'partidas', 'public-lists': 'listas-publicas', 'basic-rules': 'reglas', glossary: 'preguntas', faqs: 'preguntas', 'organised-play': 'juego-organizado', support: 'contacto' } as const;
   const link = (target: keyof typeof icons, label: string, className = 'primary-nav__item') => <Link
     key={target}
     to={localizedPath(target, locale)}
@@ -117,12 +117,12 @@ function AuthNavigation() {
     aria-current={page === target ? 'page' : undefined}
     onClick={closeOnNavigate}
   ><NavigationIcon race={race} icon={icons[target]} /><span>{t(label)}</span></Link>;
-  const group = (label: string, icon: string, targets: Array<['lists' | 'builder' | 'faqs' | 'organised-play', string]>, active: boolean) => <details className="primary-nav__rules">
+  const group = (label: string, icon: string, targets: Array<['lists' | 'builder' | 'basic-rules' | 'glossary' | 'faqs' | 'organised-play', string]>, active: boolean) => <details className="primary-nav__rules">
     <summary aria-label={t(label)} className={`primary-nav__item${active ? ' primary-nav__item--active' : ''}`}><NavigationIcon race={race} icon={icon} /><span>{t(label)}</span><span className="primary-nav__chevron" aria-hidden="true">⌄</span></summary>
     <div className="primary-nav__rules-menu">{targets.map(([target, itemLabel]) => link(target, itemLabel))}</div>
   </details>;
   const lists = () => group('lists', 'mis-listas', [['lists', 'lists'], ['builder', 'newList']], page === 'lists' || page === 'builder');
-  const rules = () => group('rules', 'reglas', [['faqs', 'faqs'], ['organised-play', 'organisedPlay']], page === 'faqs' || page === 'organised-play');
+  const rules = () => group('rules', 'reglas', [['basic-rules', 'basicRules'], ['glossary', 'glossary'], ['faqs', 'faqs'], ['organised-play', 'organisedPlay']], page === 'basic-rules' || page === 'glossary' || page === 'faqs' || page === 'organised-play');
 
   return <nav ref={navRef} className="primary-nav auth-page__navigation" aria-label={t('main')} onKeyDown={closeOnEscape}>
     <div className="primary-nav__buttons">
@@ -164,7 +164,7 @@ function AuthFooter() {
   const { t: tNavigation } = useTranslation('navigation');
   const location = useLocation();
   const locale = routeLocale(location.pathname);
-  return <footer className="auth-page__footer"><span>{tLegal('footer')}</span><span className="auth-page__footer-links"><a href={localizedPath('tournaments', locale)}>{tNavigation('tournaments')}</a><span aria-hidden="true">·</span><a href={localizedPath('support', locale)}>{tNavigation('support')}</a><span aria-hidden="true">·</span><a href={localizedPath('terms', locale)}>{tLegal('terms')}</a><span aria-hidden="true">·</span><ChangelogLink /><span aria-hidden="true">·</span><AppVersion /></span></footer>;
+  return <footer className="auth-page__footer"><span>{tLegal('footer')}</span><span className="auth-page__footer-links"><a href={localizedPath('basic-rules', locale)}>{tNavigation('basicRules')}</a><span aria-hidden="true">·</span><a href={localizedPath('glossary', locale)}>{tNavigation('glossary')}</a><span aria-hidden="true">·</span><a href={localizedPath('tournaments', locale)}>{tNavigation('tournaments')}</a><span aria-hidden="true">·</span><a href={localizedPath('support', locale)}>{tNavigation('support')}</a><span aria-hidden="true">·</span><a href={localizedPath('terms', locale)}>{tLegal('terms')}</a><span aria-hidden="true">·</span><ChangelogLink /><span aria-hidden="true">·</span><AppVersion /></span></footer>;
 }
 
 export function AuthModeTabs({ mode, locale, loginLabel, registerLabel, accessModeLabel, disabled, navigationState = null }: {
