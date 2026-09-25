@@ -18,6 +18,14 @@ export interface ChangelogEntry {
  */
 export const CHANGELOG_ENTRIES: readonly ChangelogEntry[] = [
   {
+    version: '2.10',
+    date: '2026-09-25',
+    title: { es: 'Cartas ampliables', en: 'Enlargeable cards' },
+    changes: [
+      { es: 'Pulsa una imagen en la previsualización para ampliarla y leer la carta con más comodidad. Vuelve a pulsarla o usa Escape para regresar.', en: 'Select an image in the preview to enlarge it and read the card more easily. Select it again or press Escape to return.' },
+    ],
+  },
+  {
     version: '2.09',
     date: '2026-09-25',
     title: { es: 'Previsualizaciones de cartas actualizadas', en: 'Updated card previews' },
