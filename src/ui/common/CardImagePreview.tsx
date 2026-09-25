@@ -7,6 +7,14 @@ export interface CardPreviewImage {
   alt: string;
 }
 
+function cardImageUrl(src: string): string {
+  const path = src.startsWith('/') ? src : `/${src}`;
+  const separator = path.includes('?') ? '&' : '?';
+  // Cada build recibe una URL distinta: CacheFirst no debe conservar la ficha
+  // anterior cuando el archivo WebP se sustituye en la misma ruta.
+  return `${path}${separator}build=${encodeURIComponent(__APP_BUILD_ID__)}`;
+}
+
 /** Small, deliberately text-free control that can sit beside a card title. */
 export function CardPreviewButton({
   cardName,
@@ -148,7 +156,7 @@ export function CardImageModal({
           {images.map((image, index) => (
             <figure className="card-image-modal__figure" key={`${image.src}-${index}`}>
               <img
-                src={image.src.startsWith('/') ? image.src : `/${image.src}`}
+                src={cardImageUrl(image.src)}
                 alt={image.alt}
                 loading="eager"
                 decoding="async"

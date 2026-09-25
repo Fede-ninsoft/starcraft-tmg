@@ -48,6 +48,8 @@ describe('visor de carta original', () => {
     );
     expect(html).toContain('role="dialog"');
     expect(html).toContain('aria-modal="true"');
+    expect(html).toContain(`/cards/zerg/unit-zergling-front.webp?build=${__APP_BUILD_ID__}`);
+    expect(html).toContain(`/cards/zerg/unit-zergling-back.webp?build=${__APP_BUILD_ID__}`);
     expect(html.indexOf('unit-zergling-front.webp')).toBeLessThan(
       html.indexOf('unit-zergling-back.webp'),
     );

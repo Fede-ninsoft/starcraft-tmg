@@ -82,11 +82,11 @@ export default defineConfig({
         // multiplicarían el peso de la primera carga (SDD §8).
         runtimeCaching: [
           {
-            urlPattern: /\/cards\/.*\.(?:png|webp|jpg)$/,
+            urlPattern: /\/cards\/.*\.(?:png|webp|jpg)(?:\?.*)?$/,
             handler: 'CacheFirst',
             options: {
-              // Invalida los recortes incorrectos guardados antes de esta corrección.
-              cacheName: 'card-images-v2',
+              // Evita reutilizar fichas antiguas ya cacheadas con la ruta fija.
+              cacheName: 'card-images-v3',
               expiration: { maxEntries: 400, maxAgeSeconds: 60 * 60 * 24 * 90 },
             },
           },
