@@ -7,6 +7,14 @@ export interface CardPreviewImage {
   alt: string;
 }
 
+function cardImageUrl(src: string): string {
+  const path = src.startsWith('/') ? src : `/${src}`;
+  const separator = path.includes('?') ? '&' : '?';
+  // Cada build recibe una URL distinta: CacheFirst no debe conservar la ficha
+  // anterior cuando el archivo WebP se sustituye en la misma ruta.
+  return `${path}${separator}build=${encodeURIComponent(__APP_BUILD_ID__)}`;
+}
+
 /** Small, deliberately text-free control that can sit beside a card title. */
 export function CardPreviewButton({
   cardName,
@@ -57,6 +65,11 @@ export function CardImageModal({
   const closeRef = useRef<HTMLButtonElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
   const [failedImages, setFailedImages] = useState<Set<number>>(() => new Set());
+  const [zoomedIndex, setZoomedIndex] = useState<number | null>(null);
+  const zoomedIndexRef = useRef(zoomedIndex);
+  const onCloseRef = useRef(onClose);
+  zoomedIndexRef.current = zoomedIndex;
+  onCloseRef.current = onClose;
 
   useEffect(() => {
     openerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
@@ -67,7 +80,11 @@ export function CardImageModal({
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
-        onClose();
+        if (zoomedIndexRef.current !== null) {
+          setZoomedIndex(null);
+        } else {
+          onCloseRef.current();
+        }
         return;
       }
       if (event.key !== 'Tab' || !dialogRef.current) return;
@@ -75,7 +92,7 @@ export function CardImageModal({
         dialogRef.current.querySelectorAll<HTMLElement>(
           'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
         ),
-      );
+      ).filter((element) => element.getClientRects().length > 0);
       if (focusable.length === 0) {
         event.preventDefault();
         return;
@@ -101,7 +118,7 @@ export function CardImageModal({
       document.body.style.overflow = previousOverflow;
       openerRef.current?.focus();
     };
-  }, [onClose]);
+  }, []);
 
   const markFailed = (index: number) => {
     setFailedImages((current) => {
@@ -116,12 +133,15 @@ export function CardImageModal({
       className="modal card-image-modal no-print"
       role="presentation"
       onMouseDown={(event) => {
-        if (event.target === event.currentTarget) onClose();
+        if (event.target === event.currentTarget) {
+          if (zoomedIndex !== null) setZoomedIndex(null);
+          else onClose();
+        }
       }}
     >
       <div
         ref={dialogRef}
-        className="modal__box modal__box--card-preview card-image-modal__box"
+        className={`modal__box modal__box--card-preview card-image-modal__box${zoomedIndex !== null ? ' card-image-modal__box--zoomed' : ''}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
@@ -131,6 +151,7 @@ export function CardImageModal({
           <div>
             <p className="eyebrow">{t('preview')}</p>
             <h2 id={titleId}>{title}</h2>
+            {zoomedIndex !== null && <p className="card-image-modal__zoom-hint">{t('cardImageZoomHint')}</p>}
           </div>
           <button
             ref={closeRef}
@@ -144,16 +165,30 @@ export function CardImageModal({
           </button>
         </div>
 
-        <div className="card-image-modal__images">
+        <div className={`card-image-modal__images${zoomedIndex !== null ? ' card-image-modal__images--zoomed' : ''}`}>
           {images.map((image, index) => (
-            <figure className="card-image-modal__figure" key={`${image.src}-${index}`}>
-              <img
-                src={image.src.startsWith('/') ? image.src : `/${image.src}`}
-                alt={image.alt}
-                loading="eager"
-                decoding="async"
-                onError={() => markFailed(index)}
-              />
+            <figure
+              className={`card-image-modal__figure${zoomedIndex === index ? ' card-image-modal__figure--zoomed' : ''}`}
+              key={`${image.src}-${index}`}
+              hidden={zoomedIndex !== null && zoomedIndex !== index}
+            >
+              <button
+                type="button"
+                className="card-image-modal__image-button"
+                aria-label={t(zoomedIndex === index ? 'reduceCardImage' : 'enlargeCardImage', { name: image.alt })}
+                aria-pressed={zoomedIndex === index}
+                title={t(zoomedIndex === index ? 'reduceCardImage' : 'enlargeCardImage', { name: image.alt })}
+                disabled={failedImages.has(index)}
+                onClick={() => setZoomedIndex((current) => current === index ? null : index)}
+              >
+                <img
+                  src={cardImageUrl(image.src)}
+                  alt=""
+                  loading="eager"
+                  decoding="async"
+                  onError={() => markFailed(index)}
+                />
+              </button>
               {failedImages.has(index) && (
                 <figcaption className="card-image-modal__error" role="status">
                   {t('cardImageLoadError')}
@@ -162,7 +197,7 @@ export function CardImageModal({
             </figure>
           ))}
         </div>
-        {children}
+        {zoomedIndex === null && children}
       </div>
     </div>
   );

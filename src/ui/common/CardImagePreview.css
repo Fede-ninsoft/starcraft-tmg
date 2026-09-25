@@ -148,6 +148,14 @@
   overflow: auto;
 }
 
+.card-image-modal__box.card-image-modal__box--zoomed {
+  width: calc(100vw - 32px);
+  max-width: min(1500px, calc(100vw - 32px));
+  height: calc(100dvh - 32px);
+  max-height: calc(100dvh - 32px);
+  overflow: hidden;
+}
+
 .card-image-modal__header {
   position: sticky;
   z-index: 1;
@@ -156,6 +164,12 @@
   margin: -2px -2px 0;
   padding: 2px 2px 10px;
   background: var(--bg-panel);
+}
+
+.card-image-modal__zoom-hint {
+  margin: 5px 0 0;
+  color: var(--text-dim);
+  font-size: 12px;
 }
 
 .card-image-modal__images {
@@ -167,11 +181,54 @@
   overscroll-behavior: contain;
 }
 
+.card-image-modal__images--zoomed {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: auto;
+}
+
 .card-image-modal__figure {
   margin: 0;
 }
 
-.card-image-modal__figure img {
+.card-image-modal__figure[hidden] {
+  display: none;
+}
+
+.card-image-modal__figure--zoomed {
+  width: max(100%, 900px);
+  max-width: 1378px;
+  margin-inline: auto;
+}
+
+.card-image-modal__image-button,
+.app:has(> .builder-toolbar) > main.content.no-print .card-image-modal__image-button {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  box-shadow: none;
+  line-height: 0;
+  transform: none;
+  cursor: zoom-in;
+}
+
+.card-image-modal__figure--zoomed .card-image-modal__image-button {
+  cursor: zoom-out;
+}
+
+.app:has(> .builder-toolbar) > main.content.no-print .card-image-modal__image-button:hover:not(:disabled),
+.app:has(> .builder-toolbar) > main.content.no-print .card-image-modal__image-button:active:not(:disabled) {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.card-image-modal__image-button img {
   display: block;
   width: 100%;
   height: auto;
@@ -179,6 +236,11 @@
   border-radius: 7px;
   object-fit: contain;
   background: #10131f;
+}
+
+.card-image-modal__image-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .card-image-modal__error {
@@ -218,6 +280,13 @@
     max-width: calc(100vw - 24px);
     max-height: calc(100dvh - 24px);
     padding: 12px;
+  }
+
+  .card-image-modal__box.card-image-modal__box--zoomed {
+    width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+    height: calc(100dvh - 16px);
+    max-height: calc(100dvh - 16px);
   }
 }
 

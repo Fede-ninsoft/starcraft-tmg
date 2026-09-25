@@ -18,6 +18,22 @@ export interface ChangelogEntry {
  */
 export const CHANGELOG_ENTRIES: readonly ChangelogEntry[] = [
   {
+    version: '2.10',
+    date: '2026-09-25',
+    title: { es: 'Cartas ampliables', en: 'Enlargeable cards' },
+    changes: [
+      { es: 'Pulsa una imagen en la previsualización para ampliarla y leer la carta con más comodidad. Vuelve a pulsarla o usa Escape para regresar.', en: 'Select an image in the preview to enlarge it and read the card more easily. Select it again or press Escape to return.' },
+    ],
+  },
+  {
+    version: '2.09',
+    date: '2026-09-25',
+    title: { es: 'Previsualizaciones de cartas actualizadas', en: 'Updated card previews' },
+    changes: [
+      { es: 'Las previsualizaciones muestran las imágenes actualizadas de las cartas W2 aunque el navegador hubiera guardado una copia anterior.', en: 'Card previews show the updated W2 images even if the browser had saved an older copy.' },
+    ],
+  },
+  {
     version: '2.08',
     date: '2026-09-25',
     title: { es: 'Cartas W2 y restricciones de facción revisadas', en: 'W2 cards and faction restrictions reviewed' },
