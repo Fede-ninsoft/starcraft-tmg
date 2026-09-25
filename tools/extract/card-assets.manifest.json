@@ -27,6 +27,24 @@
       "pages": 14,
       "pageSizePt": [595.276, 841.89]
     },
+    "zerg-w2": {
+      "path": "docs/StarCraft-Zerg-P2P-W2-Card-Sheets-A4_EN.pdf",
+      "sha256": "B62E9BBA04CB54DF2A77C36378FC8113F10ACF528AE2F8B1AD884A81C0F75045",
+      "pages": 2,
+      "pageSizePt": [595.276, 841.89]
+    },
+    "terran-w2": {
+      "path": "docs/StarCraft-Terran-P2P-W2-Card-Sheets-A4_EN.pdf",
+      "sha256": "63126DDBE922457F21A903CE186A6257AA5F20A932BA35F484F759B2AC62608E",
+      "pages": 2,
+      "pageSizePt": [595.276, 841.89]
+    },
+    "protoss-w2": {
+      "path": "docs/StarCraft-Protoss-P2P-W2-Card-Sheets-A4_EN.pdf",
+      "sha256": "09F6B940A7582719F1527574E22047529E3629D078E479E3BAF06C552C99F7FE",
+      "pages": 5,
+      "pageSizePt": [595.276, 841.89]
+    },
     "attachment-unit-immortal-front": {
       "path": "docs/sources/2026-09-21/unit-immortal-front.jpeg",
       "sha256": "f03abdb10a42b1a1eb8c9f9607dacf7b93db664023f6e1ba7adcb736e606c92d",
@@ -40,16 +58,6 @@
     "attachment-unit-siege-tank-front": {
       "path": "docs/sources/2026-09-21/unit-siege-tank-front.jpeg",
       "sha256": "322217fb80d6f043f8a2c9552616e30b93e713c7d8723063515e2fc359d5a161",
-      "format": "image"
-    },
-    "attachment-unit-siege-tank-back": {
-      "path": "docs/sources/2026-09-21/unit-siege-tank-back.jpeg",
-      "sha256": "893d606004a0b509f0a73bf4fb143b134d8d73e5e7f2ed284f8086412158f837",
-      "format": "image"
-    },
-    "attachment-unit-ravager-front": {
-      "path": "docs/sources/2026-09-21/unit-ravager-front.jpeg",
-      "sha256": "e3e7002570a0a4b50e084f97f5bde7c9c68596c567fbcedd330fce9dd1f5ea81",
       "format": "image"
     },
     "attachment-unit-ravager-back": {
@@ -67,11 +75,6 @@
       "sha256": "ed0f98d6ad961b1000f61d787720b17b44eccfdd2093bdc8ba4a8697bd5e08e8",
       "format": "image"
     },
-    "attachment-unit-nerazim-watchers-front": {
-      "path": "docs/sources/2026-09-21/WhatsApp Image 2026-09-21 at 16.11.20 (2).jpeg",
-      "sha256": "62c16d78b63e609eb48a982c94dd1d8edd4954428fd45f2fbf7548a9aa7eeacc",
-      "format": "image"
-    },
     "attachment-tactical-robotics-facility": {
       "path": "docs/sources/2026-09-21/WhatsApp Image 2026-09-21 at 16.11.21 (1).jpeg",
       "sha256": "1b4a02f88c672860ea47048aba7a08e2878b6ece2a09cbd657670b9995ff4bd2",
@@ -85,11 +88,6 @@
     "attachment-tactical-factory-tech-lab": {
       "path": "docs/sources/2026-09-21/WhatsApp Image 2026-09-21 at 16.11.20.jpeg",
       "sha256": "a8eec72d9de7dd5ead376ed6c842e942ed8f56b396bb2df5541bd67d89e6feda",
-      "format": "image"
-    },
-    "attachment-unit-zeratul-front": {
-      "path": "docs/sources/2026-09-21/WhatsApp Image 2026-09-21 at 16.11.22.jpeg",
-      "sha256": "f1b658a9f33f5093fcdcc2050a88d51d70992b542ea972fb04d4dea39fdcae92",
       "format": "image"
     },
     "attachment-artefact-hunt-sheet": {
@@ -235,14 +233,20 @@
     },
     {
       "id": "terran.unit-siege-tank-back",
-      "source": "attachment-unit-siege-tank-back",
-      "layout": "attachment",
+      "source": "terran-w2",
+      "page": 1,
+      "layout": "unit",
+      "half": "lower",
+      "rotation": 0,
       "output": "cards/terran/unit-siege-tank-back.webp"
     },
     {
       "id": "zerg.unit-ravager-front",
-      "source": "attachment-unit-ravager-front",
-      "layout": "attachment",
+      "source": "zerg-w2",
+      "page": 1,
+      "layout": "unit",
+      "half": "lower",
+      "rotation": 0,
       "output": "cards/zerg/unit-ravager-front.webp"
     },
     {
@@ -265,8 +269,11 @@
     },
     {
       "id": "protoss.unit-nerazim-watchers-front",
-      "source": "attachment-unit-nerazim-watchers-front",
-      "layout": "attachment",
+      "source": "protoss-w2",
+      "page": 3,
+      "layout": "unit",
+      "half": "upper",
+      "rotation": 180,
       "output": "cards/protoss/unit-nerazim-watchers-front.webp"
     },
     {
@@ -289,8 +296,11 @@
     },
     {
       "id": "protoss.unit-zeratul-front",
-      "source": "attachment-unit-zeratul-front",
-      "layout": "attachment",
+      "source": "protoss-w2",
+      "page": 2,
+      "layout": "unit",
+      "half": "upper",
+      "rotation": 180,
       "output": "cards/protoss/unit-zeratul-front.webp"
     }
   ]

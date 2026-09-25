@@ -197,6 +197,30 @@ function checkTags(
     }
   }
 
+  if (list.creepCardId) {
+    const creep = index.creepCards.get(list.creepCardId);
+    if (creep && !tagsAreEligible(creep.tags, faction.tags)) {
+      const missing = missingTags(creep.tags, faction.tags).join(', ');
+      errors.push(
+        issue(
+          'R3',
+          '§9.1.2',
+          'error',
+          t(
+            `La Creep Card ${creep.name} no es elegible: su etiqueta ${missing} no aparece en ${faction.name}.`,
+            `Creep Card ${creep.name} is not eligible: missing tag ${missing}.`,
+          ),
+          {
+            remedy: t(
+              `Sustituye ${creep.name} por una Creep Card válida o cambia de Carta de Facción.`,
+              `Replace ${creep.name} with a valid Creep Card or change Faction Card.`,
+            ),
+          },
+        ),
+      );
+    }
+  }
+
   for (const listEntry of list.entries) {
     const entry = index.unitEntries.get(listEntry.unitEntryId);
     if (!entry) continue;
@@ -632,8 +656,8 @@ function checkCreepCard(
         ),
         {
           remedy: t(
-            'Elige Accelerating Creep (0 de gas) o Malignant Creep (10 de gas).',
-            'Choose one Creep Card.',
+            'Elige una Creep Card válida para tu facción.',
+            'Choose a Creep Card valid for your faction.',
           ),
         },
       ),

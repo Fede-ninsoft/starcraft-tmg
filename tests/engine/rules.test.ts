@@ -95,6 +95,27 @@ describe('R3 — etiquetas: SUBCONJUNTO, no intersección', () => {
     });
     expect(rules(list)).toContain('R3');
   });
+
+  it('rechaza Malignant Creep importada bajo Zerg Swarm', () => {
+    const list = zergBase({ creepCardId: 'zerg.creep.malignant_creep' });
+    const validation = validateList(list, zerg);
+
+    expect(validation.errors).toEqual(expect.arrayContaining([
+      expect.objectContaining({
+        rule: 'R3',
+        message: expect.objectContaining({ en: expect.stringContaining('Malignant Creep') }),
+      }),
+    ]));
+  });
+
+  it('acepta Malignant Creep bajo Kerrigan’s Swarm', () => {
+    const list = zergBase({
+      factionCardId: 'zerg.faction.kerrigans_swarm',
+      creepCardId: 'zerg.creep.malignant_creep',
+    });
+
+    expect(rules(list)).not.toContain('R3');
+  });
 });
 
 describe('R4/R5 — espacios de ejército', () => {

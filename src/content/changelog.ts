@@ -18,6 +18,16 @@ export interface ChangelogEntry {
  */
 export const CHANGELOG_ENTRIES: readonly ChangelogEntry[] = [
   {
+    version: '2.08',
+    date: '2026-09-25',
+    title: { es: 'Cartas W2 y restricciones de facción revisadas', en: 'W2 cards and faction restrictions reviewed' },
+    changes: [
+      { es: 'Revisadas las cartas de la segunda oleada de Protoss, Terran y Zerg: corregidas habilidades de Zeratul, Nerazim Watchers, Siege Tank y Ravager, y actualizadas sus imágenes originales.', en: 'Reviewed the second wave of Protoss, Terran and Zerg cards: corrected abilities for Zeratul, Nerazim Watchers, Siege Tank and Ravager, and updated their original card images.' },
+      { es: 'Confirmados el coste de 45 de gas de Twilight Council y las restricciones de facción de las cartas y unidades del aviso del 22 de septiembre.', en: 'Confirmed Twilight Council’s 45 gas cost and the faction restrictions for the cards and units in the September 22 notice.' },
+      { es: 'Al cambiar de facción, una Creep Card exclusiva se retira si deja de ser válida. Las listas importadas con una Creep Card de otra facción muestran ahora un error.', en: 'When changing faction, an exclusive Creep Card is removed if it is no longer valid. Imported rosters with a Creep Card from another faction now show an error.' },
+    ],
+  },
+  {
     version: '2.07',
     date: '2026-09-24',
     title: { es: 'Torneos y listas más claros', en: 'Clearer tournaments and lists' },
